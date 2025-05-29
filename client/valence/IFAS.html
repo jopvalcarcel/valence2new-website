@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBR Calculator</title>
+<link rel="stylesheet" href="IFAS.css">
+  
+</head>
+<body>
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+
+      <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+
+
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    <h1>IFAS Stage with Preanoxic Tank</h1>
+
+    <div class="container">
+    <!-- MBBR Parameters -->
+    <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="IFAStxtFlowrate"></label>
+        <label>BOD (mg/L)<input type="number" id="IFASBODin"></label>
+        <label>bBOD (mg/L)<input type="number" id="IFAStxtbCODin"></label>
+        <label>bBOD/COD (mg/L)<input type="number" id="IFASbCODBODratio"></label>
+        <label>TKN (mg/L)<input type="number" id="IFASTKN"></label>
+        <label>NH4N (mg/L)<input type="number" id="IFASNo"></label>
+        <label>nbVSS (mg/L)<input type="number" id="IFASnbVSS"></label>
+        <label>iTSS (mg/L)<input type="number" id="IFASiTSS"></label>
+        <label>Temperature (°C)<input type="number" id="IFASTEMP"></label>
+    
+    </div>
+
+    <!-- Effluent -->
+    <div class="section">
+        <h3>Effluent</h3>
+        <label>BOD out (mg/L)<input type="number" id="IFASBODOut" readonly></label>
+        <label>NO3N out (mg/L)<input type="number" id="IFASNO3Nout" readonly></label>
+        <label>NH4N bulk liquid (mg/L)<input type="number" id="IFASNeffluent" readonly></label>
+      <label>Nitrate after Aeration<input type="number" id="IFASNe" readonly></label>
+
+  
+    </div>
+
+
+
+    <!-- rbCOD -->
+    <div class="section">
+        <h3>rbCOD</h3>
+        <label>rbCOD (mg/L)<input type="number" id="IFASrbCOD"></label>
+        <label>COD (mg/L)<input type="number" id="IFASCOD"></label>
+        <label>percent rbCOD (%)<input type="number" id="IFASpercentrbCOD" readonly></label>
+    </div>
+
+
+    <!-- preDN Tank -->
+    <div class="section">
+        <h3>preDN Tank - Tank Sizing</h3>
+      
+        <label>Anoxic Tank Volume (m³)<input type="number" id="IFASAnoxicTankVolume" readonly></label>
+        <label>HRT (hrs)<input type="number" id="IFASPreanoxHRT" readonly></label>
+    </div>
+
+
+    
+
+    <!-- Biological -->
+    <div class="section">n
+        <h3>preDN Tank - Biological</h3>
+        <label>IR (mg/L)<input type="number" id="IFASIR" readonly></label>
+        <label>Internal Reccylce (m³/d)<input type="number" id="IFASInternalRecycle" readonly></label>
+        <label>NOX feed to Anoxic (g/d)<input type="number" id="IFASNOXfeed" readonly></label>
+        <label>Tank Vol. to Vpre and V (%)<input type="number" id="IFASpercentanoxictankvolume" readonly></label>
+        <label>food to mass Ratio (g/gd)<input type="number" id="IFASFMb" readonly></label>
+        <label>b0<input type="number" id="IFASbo" readonly></label>
+        <label>b1<input type="number" id="IFASb1" readonly></label>
+        <label>SDNR20 (g/gd)<input type="number" id="IFASSDNR" readonly></label>
+        <label>SDNRT (g/gd)<input type="number" id="IFASSDNRT" readonly></label>
+        <label>SDNRadj (g/gd)<input type="number" id="IFASSDNRadj" readonly></label>
+        <label>Overall SDNR (g/gd)<input type="number" id="IFASSDNRoverall" readonly></label>
+        <label>MLSS (g/m³)<input type="number" id="IFASXpreanox" readonly></label>
+        <label>MLVSS (g/m³)<input type="number" id="IFASXMLVSSpreanox" readonly></label>
+        <label>NOX Removal (g/d)<input type="number" id="IFASNOXremoval" readonly></label>
+
+
+
+    </div>
+
+        <!-- Anoxic Mixing -->
+        <div class="section">
+            <h3>Anoxic Tank Mixing</h3>
+            <label>Mixing Energy (kW/m³) (%)<input type="number" id="IFASMixingEnergy"></label>
+            <label>Power (kW)<input type="number" id="IFASMixingPower" readonly></label>
+        </div>
+    
+
+    <!--Aeration Tank -->
+    <div class="section">
+        <h3>Aeration Tank</h3>
+        <label>Media Fill volume, Vm/V  (--)<input type="number" id="IFASVmV" readonly></label>
+        <label>Fraction NH4N  (--)<input type="number" id="IFASPercentNOxidized" readonly></label>
+        <label>Aeration Tank HRT (d)<input type="number" id="IFASHRT" readonly></label>
+        <label>Vaer   (m³)<input type="number" id="IFASVaer" readonly></label>
+
+    </div>
+
+
+
+
+    <!-- Aeration Tank -Biological Parameters -->
+    <div class="section">
+        <h3>Aeration Tank - Biological Parameters</h3>
+        <label>I. PX,BIO (kg/d) <input type="number" id="IFASpxbio" readonly></label>
+        <label>Heterotrophs (kg/d)<input type="number" id="IFAStxtHBkgd" readonly></label>
+        <label>Decay (kg/d)<input type="number" id="IFAStxtCDkgd" readonly></label>
+        <label>AOB Bacteria (kg/d)<input type="number" id="IFAStxtNBkgd" readonly></label>
+        <label>Px,vss (kg/d)<input type="number" id="IFASpxvss" readonly></label>
+        <label>Px,tss (kg/d)<input type="number" id="IFASpxtss" readonly></label>
+        <label>YH (--)<input type="number" id="IFAStxtYH" readonly></label>
+        <label>bH (g/gd)<input type="number" id="IFAStxtbH"></label>
+        <label>xh (g/m³)<input type="number" id="FASxh"></label>
+        <label>fd (--)<input type="number" id="IFAStxtfd"></label>
+        <label>Yn (--)<input type="number" id="IFAStxtYN" readonly></label>
+        <label>bn (g/ gd)<input type="number" id="IFAStxtbn" readonly></label>
+        <label>xBF (g/m³)<input type="number" id="IFASXBF" readonly></label>
+        <label>Xn (g/m³)<input type="number" id="IFASXn" readonly></label>
+        <label>umax, XAOB 12degC (g/g/d)<input type="number" id="IFASumax" readonly></label>
+        <label>b,AOB 12 °C (g/g/d)<input type="number" id="IFASbaob" readonly></label>
+        <label> SNH4 (g/m³)<input type="number" id="IFASSNH4" readonly></label>
+        <label> KNH4 (g/m³)<input type="number" id="IFASKNH4" readonly></label>
+        <label> So (g/m³)<input type="number" id="IFASSDO" readonly></label>
+        <label> Ko,aob (g/m³)<input type="number" id="IFASKOAOB" readonly></label>
+        <label> u (g/gd)<input type="number" id="IFASu" readonly></label>
+        <label> SRT (d)<input type="number" id="IFASNecSRT" readonly></label>
+        <label> Peak factor NH4 max/NH4min (--)<input type="number" id="IFASNH4Peakfactor" readonly></label>
+        <label> Conventional Design SRT (d)<input type="number" id="IFASSRT" readonly></label>
+        <label> IFAS suspended SRT (d)<input type="number" id="IFASSRTas" readonly></label>
+        <label> Biofilm SRT (d)<input type="number" id="IFASSRTbf" readonly></label>
+        <label>Specific Surface Area (m²/m³)<input type="number" id="IFASSSA" readonly></label>
+
+    </div>
+
+    
+    
+    <!-- Aeration Tank -Food to Mass Ratio -->
+    <div class="section">
+        <h3>Food to Mass Ratio</h3>
+        <label>MLSS (g/m³)<input type="number" id="IFASMLSSAeration" readonly></label>
+        <label>NOX (g/m³)<input type="number" id="IFASNOXX" readonly></label>
+        <label>fraction MLVSS (g/m³)<input type="number" id="IFASfractionMLVSS" readonly></label>
+        <label>MLVSS(g/m³)<input type="number" id="IFASMLVSS" readonly></label>
+        <label>F/M Ratio (kg/kgd)<input type="number" id="IFASFMRatio" readonly></label>
+        <label>BOD Loading in (kg/d)<input type="number" id="IFASBODloading" readonly></label>
+        <label>BOD Removed (kg/d)<input type="number" id="IFASBODremoved" readonly></label>
+        <label>BOD Loading out  (kg/d)<input type="number" id="IFASBODloadingout"></label>
+        <label>Yobs (gTSS/gBOD)<input type="number" id="IFASYOBS"></label>
+        <label>fraction xb (--)<input type="number" id="IFASfractionxb" readonly></label>
+       
+    
+    </div>
+
+
+    <!-- Alkalinity Dosing -->
+    <div class="section">
+        <h3>Alkalinity Sizing</h3>
+        <label>Residual Alkalinity (mg/L)<input type="number" id="IFASResAlkalinity"></label>
+        <label>Influent Alkalinity (mg/L)<input type="number" id="IFASInfAlkalinity"></label>
+        <label>Alkalinity Used (mg/L)<input type="number" id="IFASAlkalinityUsed" readonly></label>
+        <label>Alkalinity Produced (mg/L)<input type="number" id="IFASAlkalinityProduced" readonly></label>
+        <label>Alkalinity to be Added (mg/L)<input type="number" id="IFASAlkalinitytobeAdded" readonly></label>
+        <label>Mass to be Added (kg/d)<input type="number" id="IFASMassAlkalinity" readonly></label>
+    </div>
+
+
+    <!-- Clarifier Sizing -->
+    <div class="section">
+        <h3>Clarifier Sizing</h3>
+        <label>MLSS (g/m³)<input type="number" id="IFASXclarfier"></label>
+        <label>XR (g/m³)<input type="number" id="IFASXRAS" readonly></label>
+        <label> R (--)<input type="number" id="IFASR" readonly></label>
+        <label>RAS(m3/d)<input type="number" id="IFASRAS"></label>
+        <label>Hydraulic Application rate (m³/m²/d)<input type="number" id="IFASHAR"></label>
+        <label>Area Required (mm²)<input type="number" id="IFASClarifierAreaRequired" readonly></label>
+
+    </div>
+
+       <!-- Solids Parameters -->
+       <div class="section">
+        <h3>Sludge Wasting</h3>
+        <label>Solids Content (%)<input type="number" id="IFAStxtSolidsContent"></label>
+        <label>SG Sludge (kg/m³)<input type="number" id="IFAStxtSGSludgeperm3Sludge"></label>
+        <label>Sludge Flowrate (m³/d)<input type="number" id="IFAStxtSludgeflowrate" readonly></label>
+    </div>
+
+    <!-- Air Requirements -->
+    <div class="section">
+        <h3>Total Air Requirements</h3>
+        <label>OTR (kg O₂/d) Total<input type="number" id="IFASivOTR" readonly></label>
+        <label>OTR (kg O₂/d-BOD)<input type="number" id="IFASivOTRBOD" readonly></label>
+        <label>OTR (kg O₂/d-NH4N)<input type="number" id="IFASivOTRNH4N" readonly></label>
+        <label>OTR (kg O₂/d-Gained)<input type="number" id="IFASivOTRCredit" readonly></label>
+        <label>Total Aeration Requirement (m³/hr)<input type="number" id="IFASivtxtAFTOT" readonly></label>
+
+    </div>
+    <!-- Efficiences -->
+    <div class="section">
+        <h3>Efficienies</h3>
+        <label>AOTR (kg/h)<input type="number" id="IFASiv1txtOUR" readonly></label>
+        <label>Site Elevation (m)<input type="number" id="IFASiv1txtelev"></label>
+        <label>Temperature (degC)<input type="number" id="IFASiv1txtTemp"></label>
+        <label>Pa, Relative Pressure at elevation<input type="number" id="IFASiv1txtRP"></label>
+        <label>Water Depth (m)<input type="number" id="IFASiv1txtLD"></label>
+        <label>Diffuser height (m)<input type="number" id="IFASiv1txtDDfromBottom"></label>
+        <label>Diffuser Depth (m)<input type="number" id="IFASiv1txtDD" readonly></label>
+        <label>Mid Depth Correction Factor<input type="number" id="IFASiv1txtde"></label>
+        <label>Oxygen Conc. at Standard<input type="number" id="IFASiv1txtOCS"></label>
+        <label>Oxygen Conc. at Temperature<input type="number" id="IFASiv1txtOCT"></label>
+        <label>Oxygen Conc. at diff.Depth<input type="number" id="IFASiv1txtOCSd" readonly></label>
+        <label>α<input type="number" id="IFASiv1txta"></label>
+        <label>β<input type="number" id="IFASiv1txtb"></label>
+        <label>Fouling Factor<input type="number" id="IFASiv1txtf"></label>
+        <label>Operating DO (mg/L)<input type="number" id="IFASiv1txtDO"></label>
+        <label>SOTR (kg/hr)<input type="number" id="IFASiv1txtSOTR" readonly></label>
+        <label>Density of Air (kg/m³)<input type="number" id="IFASiv1txtDA"></label>
+.        <label>Concentration of O2 (kg/m³)<input type="number" id="IFASiv1txtO2"></label>
+        <label>OTE% per level (%/m)<input type="number" id="IFASiv1OTEpersubmerged"></label>
+        <label>Clean Water Transfer (%)<input type="number" id="IFASiv1txtE" readonly></label>
+        <label>Air Flow Required (m³/min)<input type="number" id="IFASiv1txtAF" readonly></label> 
+    </div>
+
+<!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+          <!-- MBBR Media Information Section -->
+  <div class="mbbr-media-info">
+    <h3>IFAS Media Information</h3>
+    <div class="mbbr-media-info-row">
+      <div class="mbbr-media-info-item">
+        <label for="mediaBrand">Media Brand:</label>
+        <input type="text" id="mediaBrand">
+      </div>
+      <div class="mbbr-media-info-item">
+        <label for="mediaName">Media Name:</label>
+        <input type="text" id="mediaName">
+      </div>
+    </div>
+  </div>
+
+
+
+        <h3>IFAS Tank Design Report</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+         <td>Average Flowrate</td>
+    <td>m<sup>3</sup>/d</td>
+    <td><input type="text" id="IFAStxtFlowrate2" readonly /></td>
+  </tr>
+
+
+
+
+  <tr>
+    <td>BODin</td>
+    <td>mg/L</td>
+    <td><input type="text" id="IFASBODin2" readonly /></td>
+  </tr>
+  <tr>
+    <td>TKNin</td>
+    <td>mg/L</td>
+    <td><input type="text" id="IFASTKN2" readonly /></td>
+  </tr>
+  <tr>
+    <td>BODout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="IFASBODOut2" readonly /></td>
+  </tr>
+  <tr>
+    <td>NH4Nout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="IFASNeffluent2" readonly /></td>
+  </tr>
+  <tr>
+    <td>NO3Nout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="IFASNO3Nout2" readonly /></td>
+  </tr>
+  <tr>
+    <td>Anoxic Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="IFASAnoxicTankVolume2" readonly /></td>
+  </tr>
+  
+  <tr>
+    <td>Internal Recylce Ration</td>
+    <td>--</td>
+    <td><input type="text" id="IFASIR2" readonly /></td>
+  </tr>
+
+
+ 
+   <tr>
+    <td>Aeration Tank Media Fraction</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="IFASVmV2" readonly /></td>
+  </tr>
+  
+     <tr>
+    <td>Specific Surface Area</td>
+    <td>m<sup>2</sup>/m<sup>3</sup></td>
+    <td><input type="text" id="IFASSSA2" readonly /></td>
+  </tr>
+
+
+
+
+   <tr>
+    <td>F/M Ratio</td>
+    <td>kg/kgd</td>
+    <td><input type="text" id="IFASFMRatio2" readonly /></td>
+  </tr>
+
+    <tr>
+    <td>Temp</td>
+    <td>°C</td>
+    <td><input type="text" id="IFASiv1txtTemp2" readonly /></td>
+  </tr>
+
+
+     <tr>
+    <td>IFAS Suspended SRT</td>
+    <td>d</td>
+    <td><input type="text" id="IFASSRTas2" readonly /></td>
+  </tr>
+
+   <tr>
+    <td>Aeration Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="IFASVaer2" readonly /></td>
+  </tr>
+
+   <tr>
+    <td>HRT</td>
+    <td>d<sup>3</sup></td>
+    <td><input type="text" id="IFASHRT2" readonly /></td>
+  </tr>
+
+
+  <tr>
+    <td>MLSS</td>
+    <td>g/m<sup>3</sup></td>
+    <td><input type="text" id="IFASMLSSAeration2" readonly /></td>
+  </tr>
+
+
+  
+  <tr>
+    <td>Clarifier Surface Area</td>
+    <td>m<sup>2</sup></td>
+    <td><input type="text" id="IFASClarifierAreaRequired2" readonly /></td>
+  </tr>
+     
+
+  <tr>
+    <td>Oxygen Transfer rate</td>
+    <td>kg/O₂d </td>
+    <td><input type="text" id="IFASivOTR2" readonly /></td>
+  </tr>
+
+
+
+
+
+    <tr>
+    <td>DO set point BOD Removal</td>
+    <td>mg/L</td>
+    <td><input type="text" id="IFASiv1txtDO2" readonly /></td>
+  </tr>
+
+      <tr>
+    <td>Water level  BOD Removal</td>
+    <td>m</td>
+    <td><input type="text" id="IFASiv1txtLD2" readonly /></td>
+  </tr>
+ 
+
+     <tr>
+    <td>Oxygen Transfer Efficiency</td>
+    <td>%</td>
+    <td><input type="text" id="IFASiv1txtE2" readonly /></td>
+  </tr>
+
+   <tr>
+    <td>Air Requirement</td>
+    <td>m³/min</td>
+    <td><input type="text" id="IFASiv1txtAF2" readonly /></td>
+  </tr>
+
+
+  
+
+        <tr>
+    <td>Sludge Wasting </td>
+    <td>m³/d</td>
+    <td><input type="text" id="IFAStxtSludgeflowrate2" readonly /></td>
+  </tr>
+
+
+  
+  
+          </tbody>
+        </table>
+ <button class="print-button" onclick="printReport()">Print Report</button>
+
+
+
+
+     
+
+    
+
+ 
+
+
+    </div>
+
+    
+    <!-- Tank Drawing Section -->
+    <div class="section" style="flex: 1 1 100%;">
+        <h2>Rectangular Tank Isometric Drawing</h2>
+        <div class="input-section">
+        <div class="input-group">
+            <label for="length">Length (m):</label>
+            <input type="number" id="length" min="1" value="35">
+        </div>
+        <div class="input-group">
+            <label for="width">Width (m):</label>
+            <input type="number" id="width" min="1" value="25">
+        </div>
+        <div class="input-group">
+            <label for="depth">Depth (m):</label>
+            <input type="number" id="depth" min="1" value="6">
+        </div>
+        <div class="volume-display">
+            <label>Volume:</label>
+            <div id="volume">5,250</div>
+            <span>(m³)</span>
+        </div>
+        <button id="draw-btn">Draw Tank</button>
+        </div>
+        <div class="canvas-container">
+        <canvas id="tankCanvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="IFAS.js"></script>
+<script src="drawIFAS.js"></script>
+</body>
+</html>

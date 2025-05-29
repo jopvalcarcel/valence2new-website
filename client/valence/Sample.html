@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SBR Calculator</title>
+  <link rel="stylesheet" href="SBR.css">
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <div class="toggle-container">
+      <label class="switch-with-labels">
+        <input type="checkbox" id="toggleSwitch" onchange="toggleOption()">
+        <span class="slider-with-labels">
+          <span class="option-label option-a">6 h</span>
+          <span class="option-label option-b">8 h</span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>SBR Calculator</h1>
+
+    <div class="container">
+      <!-- [All your existing sections...] -->
+      <div class="container">
+        <!-- SBR Parameters -->
+        <div class="section">
+          <h3>SBR Parameters</h3>
+          <label>Flowrate (m³/d)<input type="number" id="txtFlowrate2" /></label>
+          <label>Fill Ratio (--)<input type="number" id="txtFillratio" /></label>
+          <label>Filling Time (h)<input type="number" id="txttf" readonly/></label>
+          <label>Aeration Time (h)<input type="number" id="txtta" readonly/></label>
+          <label>Settling Time (h)<input type="number" id="txtts" readonly/></label>
+          <label>Decanting Time (h)<input type="number" id="txttd" readonly/></label>
+          <label>Total Cycle Time (h)<input type="number" id="txttc" readonly/></label>
+        </div>
+  
+        <!-- SBR Tank Dimension -->
+        <div class="section">
+          <h3>Tank Dimension</h3>
+          <label>Total Cycles perday<input type="number" id="txttotcyclesperday" readonly></label>
+          <label>No. of SBR (qty)<input type="number" id="txtSBRqty" readonly></label>
+          <label>Flow per cycle(m3)<input type="number" id="txtflowpercycle" readonly></label>
+          <label>Tank Volume per SBR(m3)<input type="number" id="txtSBRVolume" readonly></label>
+          <label>Total SBR Volume<input type="number" id="txtSBRVolumeTotal" readonly></label>
+        </div>
+  
+        <!-- Influent Parameters -->
+        <div class="section">
+          <h3>Influent Parameters</h3>
+          <label>Flowrate per SBR (m3/d)<input type="number" id="txtFlowratepertank" readonly></label>
+          <label>Flowrate per cycle/Volume decanted (m3/cycle)<input type="number" id="txtflowrateperfill" readonly></label>
+          <label>Fill Ratio (--)<input type="number" id="txtfillratiotest" readonly></label>
+          <label>Tank Volume (m3)<input type="number" id="txtTotalVolumetest" readonly></label>
+          <label>Temperature (°C)<input type="number" id="txtTemp"></label>
+          <label>influent alkalinity (mg/L as CaCO3)<input type="number" id="txtInfAlk"></label>
+          <label>bCOD/BOD ratio<input type="number" id="bCODBODratio"></label>
+          <label>BOD (mg/L)<input type="number" id="txtSBRBOD"></label>
+          <label>bCOD (mg/L)<input type="number" id="txtSBRbCOD"></label>
+          <label>rbCOD (mg/L)<input type="number" id="txtrbCOD"></label>
+          <label>TKN (mg/L)<input type="number" id="txtTKNin"></label>
+          <label>nbVSS (mg/L)<input type="number" id="txtSBRnbVSS"></label>
+          <label>iTSS (mg/L)<input type="number" id="txtSBRiTSS"></label>
+  
+        </div>
+  
+        <!-- Effluent Parameters -->
+        <div class="section">
+          <h3>Effluent Parameters</h3>
+  
+          <label>Res Alk (mg/L)<input type="number" id="txtResAlk"></label>
+          <label>BOD Out (mg/L)<input type="number" id="BODOut"></label>
+          <label>NH4-N Out (mg/L)<input type="number" id="txtSBRNH4NOUT"></label>
+          <label>NO3N (g/m3)<input type="number" id="txtNO3Nconcentrationatendofaertankfull" readonly></label>
+        </div>
+  
+  
+  
+  
+  
+  
+  
+        <!-- Biological Parameter -->
+        <div class="section">
+          <h3>Biological Parameters</h3>
+          <label>SRT (mg/L)<input type="number" id="txtSBRSRT"></label>
+          <label>Aeration time / Total cycle <input type="number" id="txttatc" readonly></label>
+          <label>YH<input type="number" id="txtYH" readonly></label>
+          <label>bH<input type="number" id="txtbH" readonly></label>
+          <label>Yn<input type="number" id="txtYn" readonly></label>
+          <label>bn,average<input type="number" id="txtbnave" readonly></label>
+          <label>baerobic<input type="number" id="txtbnaerobic" readonly></label>
+          <label>banoxic<input type="number" id="txtbnanoxic" readonly></label>
+          <label>fd<input type="number" id="txtfd" readonly></label>
+          <label>Xn<input type="number" id="txtSBRxn" readonly></label>
+          <label>umax<input type="number" id="txtNH4Numax" readonly></label>
+          <label>KNH4-N<input type="number" id="txtKNH4N" readonly></label>
+          <label>KO2<input type="number" id="txtKNH4NO2" readonly></label>
+        </div>
+  
+        <!-- Ammonia Removal -->
+        <div class="section">
+          <h3>Ammonia Removal Check, Half-Capacity</h3>
+          <label>Heterotrohs(kg/d)<input type="number" id="txtHBkgd" readonly></label>
+          <label>Cell Decay(kg/d)<input type="number" id="txtCDkg" readonly></label>
+          <label>Nitrifier Biomass(kg/d)<input type="number" id="txtNBkg" readonly></label>
+          <label>PX,BIO (kg/d)<input type="number" id="txtPXBIO" readonly></label>
+          <label>NOX,iterated(g/m3)<input type="number" id="txtSBRNOXactual" readonly></label>
+          <label>PX,VSS(kg/d)<input type="number" id="txtPXVSS" readonly></label>
+          <label>PX,TSS(kg/d)<input type="number" id="txtPXTSS" readonly></label>
+          <label>Oxizable NH4N (g) <input type="number" id="txtoxizableN" readonly></label>
+          <label> NH4N(g)<input type="number" id="txtNremainingbeforefill" readonly></label>
+          <label> NH4N Initial conc. (mg/L)<input type="number" id="txtNinitialconcentration" readonly></label>
+          <label> Required Aeration(hrs) <input type="number" id="txtNH4Ntimereq" readonly></label>
+        </div>
+  
+        <!-- Nitrate Removal -->
+        <div class="section">
+          <h3>Nitrate Removal Check</h3>
+          <label>NOX per cycle (g/fill)<input type="number" id="txtNOXproducedpercycle" readonly></label>
+          <label>volume after decant(m3)<input type="number" id="txtvolumeafterdecanttest" readonly></label>
+          <label>NO3N present (g)<input type="number" id="txtNO3Npresentafterdecant" readonly></label>
+          <label>Biomass present (g/m3)<input type="number" id="txtBiomassConcentration" readonly></label>
+          <label>Biomass amount (m3)<input type="number" id="txtamountofbiomass" readonly></label>
+          <label>Rate filling (m3/d)<input type="number" id="txtratefilling" readonly></label>
+          <label>Food to massRatio(g/d)<input type="number" id="txtfoodtomassratio" readonly></label>
+          <label> fraction rbCOD(--)<input type="number" id="txtfractionrbCOD" readonly></label>
+          <label> b0 <input type="number" id="txtbetazero" readonly></label>
+          <label> b1 <input type="number" id="txtbetaone" readonly></label>
+          <label> SDNR (20degC) <input type="number" id="txtSDNRS" readonly></label>
+          <label> SDNR,T (20degC) <input type="number" id="txtSDNR" readonly></label>
+          <label> NOX Removal Capacity<input type="number" id="txtNO3NRemovalCapacity" readonly></label>
+        </div>
+  
+  
+  
+  
+        <!-- Air Parameters -->
+        <div class="section">
+          <h3>Aeration Parameters</h3>
+          <label>AOTR (kg/h)<input type="number" id="SBR1txtOUR"readonly></label>
+          <label>Elevation (m)<input type="number" id="SBR1txtelev"></label>
+          <label>Temperature (°C)<input type="number" id="SBR1txtTemp"></label>
+          <label>Pa/Pb Relative Pressure at Elevation<input type="number" id="SBR1txtRP"></label>
+          <label>Water Depth (m)<input type="number" id="SBR1txtLD"></label>
+          <label>Diffuser height (m)<input type="number" id="SBR1txtDDfromBottom"></label>
+          <label>Diffuser Depth(m)<input type="number" id="SBR1txtDD"readonly></label>
+          <label>Mid Depth Correction Factor<input type="number" id="SBR1txtde"></label>
+          <label>Oxygen Conc. at Standard<input type="number" id="SBR1txtOCS"></label>
+          <label>Oxygen Conc. at Temperature<input type="number" id="SBR1txtOCT"></label>
+          <label>Oxygen Conc. at diff.Depth<input type="number" id="SBR1txtOCSd"></label>
+          <label>α<input type="number" id="SBR1txta"></label>
+          <label>β<input type="number" id="SBR1txtb"></label>
+          <label>Fouling Factor<input type="number" id="SBR1txtf"></label>
+          <label>Operating DO (mg/L)<input type="number" id="SBR1txtDO"></label>
+          <label>SOTR (kg/hr)<input type="number" id="SBR1txtSOTR"readonly></label>
+          <label>Density of Air (kg/m3)<input type="number" id="SBR1txtDA"></label>
+          <label>Concentration of Air (kg/m3)<input type="number" id="SBR1txtO2"></label>
+          <label>OTE% per level<input type="number" id="SBR1OTEpersubmerged"></label>
+          <label>Clean Water Transfer, E<input type="number" id="SBR1txtE"readonly></label>
+          <label>Air Flowrate (m3/min) per SBR<input type="number" id="SBR1txtAF"readonly></label>
+          <label>Air Flowrate (m3/min) Total<input type="number" id="SBR1txtAFTotal"readonly></label>
+        </div>
+  
+  
+        
+  
+       <!-- Air Requirements -->
+       <div class="section">
+        <h3>Air Requirements</h3>
+        <label>OTR (kg/O2d) per SBT Tank<input type="number" id="ivOTR"readonly></label>
+        <label>O2 for BOD (kg/d) per Tank<input type="number" id="SBROTRBOD"readonly></label>
+        <label>O2 for NH4N (kg/d) per Tank<input type="number" id="SBROTRNOX"readonly></label>
+        <label>OTR (kg/O2d) Total<input type="number" id="ivOTRTotal"readonly></label>
+        <label>Total Air Requirement (m3/min)<input type="number" id="ivtxtAFTOT"readonly></label>
+  
+      </div>
+  
+     
+       <!-- Alkalinity Requirements -->
+       <div class="section">
+        <h3>Alkalinity Requirements</h3>
+        <label>Allanity Dosing(g/m3 as CaCO3)<input type="number" id="txtUsedAlk"readonly></label>
+        <label>Alkalinity to be Added (kg/d)<input type="number" id="txttoaddAlk"readonly></label>
+        <label>NaHCO3 to be Added (kg/d)<input type="number" id="txtNaHCO3tobeadded"readonly></label>
+  
+  
+      </div>
+  
+  
+  
+  
+  
+        <!-- Solids Parameters -->
+        <div class="section">
+          <h3>Solids Parameters</h3>
+          <label>Solids Content (%)<input type="number" id="txtSolidsContent"></label>
+          <label>SG Sludge (kg/m³)<input type="number" id="txtSGSludgeperm3Sludge"></label>
+          <label>Sludge Flowrate (m³/d)<input type="number" id="txtSludgeflowrate"readonly></label>
+        </div>
+  
+       
+  
+      <!-- Draw SBR Tank Section - Correctly placed at the same level as other sections -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h2>Rectangular Tank Isometric Drawing</h2>
+        <div class="input-section">
+          <div class="input-group">
+            <label for="length">Length:</label>
+            <input type="number" id="length" min="1" value="100">
+          </div>
+          <div class="input-group">
+            <label for="width">Width:</label>
+            <input type="number" id="width" min="1" value="60">
+          </div>
+          <div class="input-group">
+            <label for="depth">Depth:</label>
+            <input type="number" id="depth" min="1" value="40">
+          </div>
+          <div class="volume-display">
+            <label>Volume:</label>
+            <div id="volume">240,000</div>
+            <span>units³</span>
+          </div>
+          <button id="draw-btn">Draw Tank</button>
+        </div>
+        
+        <div class="canvas-container">
+          <canvas id="tankCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Simulation Section -->
+      <div class="section" style="flex: 1 1 100%;">
+        <div class="sbr-simulator">
+          <div class="simulation-container">
+            <h2>SBR Process Simulator</h2>
+            <div class="controls">
+              <button id="startButton" class="control-button">Start</button>
+              <button id="resetButton" class="control-button">Reset</button>
+              <button id="speedButton" class="control-button">Speed Up 2x</button>
+            </div>
+            <div class="status-display">
+              <div class="status-item">
+                <strong>Time</strong>
+                <span id="timeElapsed">0.00</span> hours
+              </div>
+              <div class="status-item">
+                <strong>Volume</strong>
+                <span id="waterVolume">0.00</span> m³
+              </div>
+              <div class="status-item">
+                <strong>Depth</strong>
+                <span id="waterDepth">0.00</span> m
+              </div>
+              <div class="status-item">
+                <strong>Phase</strong>
+                <span id="phaseStatus" class="phase-fill">FILL</span>
+              </div>
+            </div>
+            <div class="tank-display">
+              <div id="waterLevelIndicator"></div>
+              <div id="depthMarker" class="depth-marker">3.00m</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="sbrChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h2>Calculation Results</h2>
+        <div id="results" class="results-container">
+          <!-- Dynamic content will go here -->
+        </div>
+        <div class="result-fields">
+          <label>Comments:
+            <textarea id="txtCommentRemovalofNitrate" readonly></textarea>
+          </label>
+          <label>Aeration Time Status:
+            <textarea id="txterationtimecheck" readonly></textarea>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="SBR.js"></script>
+  <script src="simSBR.js"></script>
+  <script src="drawSBRtank.js"></script>
+</body>
+</html>

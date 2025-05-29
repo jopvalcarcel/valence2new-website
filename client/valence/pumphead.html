@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valence Pro Calculator</title>
+  <link rel="stylesheet" href="pumphead.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    /* Removed incorrect style tag content that referenced CSS file */
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+      
+
+  <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  </ul> <!-- Added missing closing tag for ul -->
+  </div>
+
+<!-- Main Content -->
+<div class="main">
+    <h1>Pump Head</h1>
+
+    <div class="container">
+        <!--EQ Tank -->
+        <div class="section">
+            <h3>Friction Loss in Pipe</h3>
+            <label>Pipe Diameter (m)<input type="number" id="txtPumpPipeDiameter" readonly></label>
+            <label>Density (kg/m³)<input type="number" id="txtDensity"></label>
+            <label>Kinematic Viscosity (Pa·s)<input type="number" id="txtkinematicviscosity"></label>
+            <label>Reynolds Number<input type="number" id="txtPumpPipeReynoldsNumber" readonly></label>
+            <label>Fanning friction factor<input type="number" id="txtPumpPipefff"></label>
+            <label>Total Length (m)<input type="number" id="txtPumpPipeTotalLenghtArea"></label>
+            <label>ε, roughness<input type="number" id="txtroughness"></label>
+            <label>ε/D<input type="number" id="txtroughnessoverdiameter"></label>
+        </div>
+
+        <div class="section">
+            <h3>Pump Capacity</h3>
+            <label>Capacity (m³/min)<input type="number" id="txtPumpFlowrate"></label>
+            <label>Capacity (m³/s)<input type="number" id="txtPumpFlowratepers" readonly></label>
+            <label>Capacity (m³/h)<input type="number" id="txtPumpFlowrateperhour" readonly></label>
+            <label>Capacity (m³/d)<input type="number" id="txtPumpFlowrateperday" readonly></label>
+            <label>Velocity (m/s)<input type="number" id="txtPumpVelocity"></label>
+            <label>Pipe Area (m²)<input type="number" id="txtPumpcomputedArea" readonly></label>
+            <label>Pipe Size (DN)<input type="text" id="txtPumpPipeDN" readonly></label>   
+            <label>Total head (m)<input type="number" id="TotalHead" readonly></label>
+            <label>Pump efficiency (%)<input type="number" id="pumpefficiency"></label>
+            <label>Power (kW)<input type="number" id="pumppowerwithefficiency"></label>
+            <label>Hours operation (h)<input type="number" id="pumphoursoperation"></label>
+    
+        </div>
+
+        <div class="section">
+            <h3>Input Fittings</h3>
+            <label>Elbow 45 (no)<input type="number" id="elbow45"></label>
+            <label>Elbow 90 (no)<input type="number" id="elbow90"></label>
+            <label>Tee (no)<input type="number" id="Tee"></label>
+            <label>Return Bend (no)<input type="number" id="ReturnBend"></label>
+            <label>Coupling (no)<input type="number" id="Coupling"></label>
+            <label>Union (no)<input type="number" id="Union"></label>   
+            <label>Gate Valve Wide open (no)<input type="number" id="GateWideOpen"></label>
+            <label>Globe Valve Wide open (no)<input type="number" id="GateHalfOpen"></label>
+            <label>Globe Valve Half open (no)<input type="number" id="GlobeWideOpen"></label>
+            <label>Gate Valve Wide open (no)<input type="number" id="GlobeHalfOpen"></label>
+            <label>Gate Valve Half open (no)<input type="number" id="GlobeHalfOpen"></label>
+            <label>Angle Valve Wide open (no)<input type="number" id="AngleValveWideOpenCheckValve"></label>
+            <label>Ball Valve open (no)<input type="number" id="TBallValve"></label>
+            <label>Swing Valve (no)<input type="number" id="SwingValve"></label>
+            <label>Water meter (no)<input type="number" id="WaterMeter"></label>
+        </div>
+
+        <div class="section">
+            <h3>Pump Head Breakdowns</h3>
+            <label>1. Friction loss straight pipe (m)<input type="number" id="txtHeadStraightPipe" readonly></label>
+            <label>2. Contraction (m)<input type="number" id="txtHeadContraction" readonly></label>
+            <label>3. Friction Loss through fittings (m)<input type="number" id="txtHeadFittings" readonly></label>
+            <label>4. Expansion (m)<input type="number" id="txtHeadExpansion" readonly></label>
+            <label>5. Elevation difference (m)<input type="number" id="ElevationChange" readonly></label>
+            <label>Total Head loss (m)<input type="number" id="totalCalculatedHeadLoss" readonly></label>
+        </div>
+
+
+
+
+      <!-- Aeration Parameters -->
+      <div class="section">
+        <h3>Fanning Friction Factor</h3>
+        <img src="fff.jpg" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+
+<!-- Report Section (hidden by default) -->
+
+<div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .equipment-info-item input {
+      width: 100px; /* Set a smaller, consistent width for all input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-row">
+      <div class="project-info-item">
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName">
+      </div>
+      <div class="project-info-item">
+        <label for="projectNumber">Project Number:</label>
+        <input type="text" id="projectNumber">
+      </div>
+    </div>
+    <div class="project-info-row">
+      <div class="project-info-item">
+        <label for="projectDate">Date:</label>
+        <input type="date" id="projectDate">
+      </div>
+      <div class="project-info-item">
+        <label for="projectVersion">Version Number:</label>
+        <input type="text" id="projectVersion" value="1.0">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Equipment Information Section -->
+  <div class="equipment-info">
+    <h3>Equipment Information</h3>
+    <div class="equipment-info-row">
+      <div class="equipment-info-item">
+        <label for="brandName">Brand Name:</label>
+        <input type="text" id="brandName">
+      </div>
+      <div class="equipment-info-item">
+        <label for="modelName">Model Name:</label>
+        <input type="text" id="modelName">
+      </div>
+      <div class="equipment-info-item">
+        <label for="pumpType">Pump Type:</label>
+        <input type="text" id="pumpType">
+      </div>
+      <div class="equipment-info-item">
+        <label for="duty">Duty:</label>
+        <input type="text" id="duty">
+      </div>
+      <div class="equipment-info-item">
+        <label for="standby">Standby:</label>
+        <input type="text" id="standby">
+      </div>
+      <div class="equipment-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+         <div class="equipment-info-item">
+        <label for="pumpName">Pump Name:</label>
+        <input type="text" id="pumpName">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pump Specifications Table -->
+  <h3>Pump Specifications</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Actual Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pump Capacity</td>
+        <td>m<sup>3</sup>/min</td>
+        <td><input type="text" id="txtPumpFlowrate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Pump Head</td>
+        <td>m</td>
+        <td><input type="text" id="TotalHead2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Running Hours</td>
+        <td>hrs</td>
+        <td><input type="text" id="pumphoursoperation2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+    </div>
+  </div>
+
+  <script src="pumphead.js"></script>
+  <script src="drawEQTank.js"></script>
+
+</body>
+</html>

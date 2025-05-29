@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input, .input-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.input-group.diffuser-type {
+    grid-column: span 2;
+}
+
+.input-group.tank-dimensions {
+    grid-column: span 1;
+}
+
+.input-group.diffuser-dimensions {
+    grid-column: span 1;
+}
+
+button {
+    grid-column: span 2;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.results-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#tankVisualization {
+    border: 2px solid #333;
+    background-color: #e6f7ff;
+    position: relative;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+.diffuser {
+    position: absolute;
+    background-color: rgba(0, 150, 255, 0.5);
+    border: 2px solid #0077cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.diffuser.circular {
+    border-radius: 50%;
+}
+
+.diffuser.tubular {
+    border-radius: 0;
+}
+
+#results {
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .input-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-group.diffuser-type,
+    .input-group.tank-dimensions,
+    .input-group.diffuser-dimensions,
+    button {
+        grid-column: span 1;
+    }
+}

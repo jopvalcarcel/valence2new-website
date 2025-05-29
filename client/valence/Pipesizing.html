@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="Aerationfast.css">
+  <link rel="stylesheet" href="numberofdiffusers.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+  
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="Dashboard.html">
+          <i class='bx bx-home-alt icon'></i>
+          <span class="text nav-text">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Blower Calculation</h1>
+
+    <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Blower Aeration Piping</h3>
+        <label>Air Flowrate (m³/min)<input type="number" id="txtpipingflowratecmmin"></label>
+      
+      </div>
+
+<!-- Pipe Sizing -->
+<div class="section">
+  <h3>Aeration Piping</h3>
+  <div style="display: flex; gap: 10px; margin-bottom: 15px; width: 100%; overflow-x: auto;">
+    <!-- Pipe Size Column -->
+    <div style="display: flex; flex-direction: column; gap: 5px; min-width: 100px;">
+      <h4 style="margin: 0 0 3px 0; text-align: center; font-size: 0.9em;">Pipe Size (mm)</h4>
+      <input type="text" id="txtoption1Pipesize1" readonly 
+             style="width: 100%; padding: 2px; height: 24px;
+                    background-color: #333; 
+                    color: white; 
+                    border: 1px solid #555;
+                    border-radius: 3px;
+                    font-size: 0.85em; text-align: center;">
+      <input type="text" id="txtoption1Pipesize2" readonly 
+             style="width: 100%; padding: 2px; height: 24px;
+                    background-color: #333; 
+                    color: white; 
+                    border: 1px solid #555;
+                    border-radius: 3px;
+                    font-size: 0.85em; text-align: center;">
+      <input type="text" id="txtoption1Pipesize3" readonly 
+             style="width: 100%; padding: 2px; height: 24px;
+                    background-color: #333; 
+                    color: white; 
+                    border: 1px solid #555;
+                    border-radius: 3px;
+                    font-size: 0.85em; text-align: center;">
+    </div>
+
+    <!-- Pipe Area Column -->
+    <div style="display: flex; flex-direction: column; gap: 5px; min-width: 90px;">
+      <h4 style="margin: 0 0 3px 0; text-align: center; font-size: 0.9em;">Pipe Area (m²)</h4>
+      <input type="number" id="txtoption1Area1" readonly 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtoption1Area2" readonly 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtoption1Area3" readonly 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+    </div>
+
+    <!-- Required Velocity Column -->
+    <div style="display: flex; flex-direction: column; gap: 5px; min-width: 90px;">
+      <h4 style="margin: 0 0 3px 0; text-align: center; font-size: 0.9em;">Req'd Vel. (m/s)</h4>
+      <input type="number" id="txtpipingvelocity" 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtpipingvelocity2" 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtpipingvelocity3"
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+    </div>
+
+    <!-- Actual Velocity Column -->
+    <div style="display: flex; flex-direction: column; gap: 5px; min-width: 90px;">
+      <h4 style="margin: 0 0 3px 0; text-align: center; font-size: 0.9em;">Act'l Vel. (m/s)</h4>
+      <input type="number" id="txtoption1Actualvelocity1" readonly 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtoption1Actualvelocity2" readonly 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtoption1Actualvelocity3" readonly 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+    </div>
+
+    <!-- No. of Branches Column -->
+    <div style="display: flex; flex-direction: column; gap: 5px; min-width: 90px;">
+      <h4 style="margin: 0 0 3px 0; text-align: center; font-size: 0.9em;">No. of Branches</h4>
+      <input type="number" id="txtpipe1segment"
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtpipe2segment" 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+      <input type="number" id="txtpipe3segment" 
+             style="width: 100%; padding: 2px; height: 24px; font-size: 0.85em; text-align: center;">
+    </div>
+
+    
+  </div>
+    <img src="pipe sizes.png"  style="max-width: 100%; height: auto;">
+</div>
+
+        <!-- Aeration Parameters -->
+      <div class="section">
+        <h3>Number of Diffusers</h3>
+        <label>Diffuser Specification (L/min/Qty) <input type="number" id="txtDiffuserSpecification"></label>
+        <label>No. of Diffusers as circular (qty)<input type="number" id="txtnoofDiffuser"readonly></label>
+        <label>Diameter per Diffuser (m) <input type="number" id="txtDiameterperdiffuser"></label>
+        <label>Area of one diffuser (m2) <input type="number" id="Areaofonediffuser"readonly></label>
+        <label>Width of Aeration Tank (m)<input type="number" id="widthAerationTank"></label>
+        <label>Lenght of Aeration tank (m)<input type="number" id="LenghtAerationTank"></label>
+        <label>No. of Tanks (qty) <input type="number" id="noaerationtank" readonly></label>
+        <label>Total Area of diffusers (m2) <input type="number" id="AreaofTotaldiffusers"readonly></label>
+        <label>Area of reactor (m2) <input type="number" id="Areareactor"readonly></label>
+
+      </div>
+
+
+
+
+
+
+
+
+
+      <!-- Aeration Header Illustration -->
+      <div class="section">
+        <h3>Aeration Header Illustration</h3>
+        <img src="Aeration Header.jpg" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+      <!-- Number of Diffusers (Integrated Diffuser Layout Calculator) -->
+      <div class="section diffuser-layout">
+        <h3>Diffuser Layout Calculator</h3>
+        <div class="input-section">
+          <div class="input-group diffuser-type">
+            <label for="diffuserShape">Diffuser Shape:</label>
+            <select id="diffuserShape">
+              <option value="circular">Circular</option>
+              <option value="tubular">Tubular</option>
+            </select>
+          </div>
+          
+          <div class="input-group tank-dimensions">
+            <label for="tankLength">Tank Length (m):</label>
+            <input type="number" id="tankLength" min="0.1" value="1">
+          </div>
+
+          <div class="input-group tank-dimensions">
+            <label for="tankWidth">Tank Width (m):</label>
+            <input type="number" id="tankWidth" min="0.1" value="0.5">
+          </div>
+          
+          <div class="input-group diffuser-circular diffuser-dimensions">
+            <label for="diffuserDiameter">Diffuser Diameter (mm):</label>
+            <input type="number" id="diffuserDiameter" min="1" value="100">
+          </div>
+          
+          <div class="input-group diffuser-tubular diffuser-dimensions" style="display: none;">
+            <label for="diffuserLength">Diffuser Length (mm):</label>
+            <input type="number" id="diffuserLength" min="1" value="100">
+          </div>
+          
+          <div class="input-group diffuser-tubular diffuser-dimensions" style="display: none;">
+            <label for="diffuserWidth">Diffuser Width (mm):</label>
+            <input type="number" id="diffuserWidth" min="1" value="50">
+          </div>
+          
+          <div class="input-group">
+            <label for="diffuserCount">Number of Diffusers:</label>
+            <input type="number" id="diffuserCount" min="1" value="10">
+          </div>
+          
+          <div class="input-group">
+            <label for="spacing">Spacing Between Diffusers (mm):</label>
+            <input type="number" id="spacing" min="0" value="50">
+          </div>
+          
+          <button id="calculateBtn">Calculate Layout</button>
+        </div>
+        
+        <div class="results-section">
+          <div id="tankVisualization"></div>
+          <div id="results"></div>
+        </div>
+      </div>
+    </div>
+<!-- Report Section -->
+     <div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .diffuser-info-item input {
+      width: 150px; /* Consistent, smaller width for input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-item">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName">
+    </div>
+    <div class="project-info-item">
+      <label for="projectNumber">Project Number:</label>
+      <input type="text" id="projectNumber">
+    </div>
+    <div class="project-info-item">
+      <label for="projectDate">Date:</label>
+      <input type="date" id="projectDate">
+    </div>
+    <div class="project-info-item">
+      <label for="projectVersion">Version Number:</label>
+      <input type="text" id="projectVersion" value="1.0">
+    </div>
+  </div>
+  
+  <!-- Diffuser Information Section -->
+  <div class="diffuser-info">
+    <h3>Diffuser Information</h3>
+    <div class="diffuser-info-row">
+      <div class="diffuser-info-item">
+        <label for="diffuserName">Diffuser Name:</label>
+        <input type="text" id="diffuserName">
+      </div>
+      <div class="diffuser-info-item">
+        <label for="diffuserType">Diffuser Type:</label>
+        <input type="text" id="diffuserType">
+      </div>
+      <div class="diffuser-info-item">
+        <label for="diffuserBrand">Diffuser Brand:</label>
+        <input type="text" id="diffuserBrand">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Aeration Header and Diffuser Specifications -->
+  <h3>Aeration Header and Diffuser Specifications</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total Airflow Flowrate</td>
+        <td>m<sup>3</sup>/min</td>
+        <td><input type="text" id="txtpipingflowratecmmin2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Pipe Size per Blower</td>
+        <td>DN</td>
+        <td><input type="text" id="txtoption1Pipesize12" readonly /></td>
+      </tr>
+      <tr>
+        <td>Pipe Size Common Header</td>
+        <td>DN</td>
+        <td><input type="text" id="txtoption1Pipesize22" readonly /></td>
+      </tr>
+      <tr>
+        <td>Pipe Size Split from Common Header</td>
+        <td>DN</td>
+        <td><input type="text" id="txtoption1Pipesize32" readonly /></td>
+      </tr>
+      <tr>
+        <td>No. of Aeration Tanks</td>
+        <td>-</td>
+        <td><input type="text" id="noaerationtank2" readonly /></td>
+      </tr>
+      <tr>
+        <td>No. of Diffusers per Aeration Tank</td>
+        <td>no.</td>
+        <td><input type="text" id="txtnoofDiffuser2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+    
+  </div>
+
+  <script src="Pipesizing.js"></script>
+  <script src="numberofdiffusers.js"></script>
+</body>
+</html>

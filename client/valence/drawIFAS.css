@@ -1,0 +1,115 @@
+/*start of draw tank Volume Display Styles - Matches Parent Theme */
+.volume-display {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-left: 15px;
+    min-width: 140px;
+    border-left: 4px solid #4CAF50;
+}
+
+.volume-display label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: normal;
+}
+
+.volume-display #volume {
+    font-size: 18px;
+    font-weight: bold;
+    color: #003366;
+    margin: 4px 0;
+}
+
+.volume-display span {
+    font-size: 11px;
+    color: #666;
+    display: block;
+}
+
+/* Input Section Adjustments */
+.input-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 6px;
+    font-weight: normal;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Button Styles to Match Parent */
+#draw-btn {
+    padding: 10px 20px;
+    background: #0066cc;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    height: fit-content;
+    margin-left: auto;
+}
+
+#draw-btn:hover {
+    background: #3385ff;
+}
+
+/* Canvas Container */
+.canvas-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+canvas {
+    width: 100%;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .input-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .volume-display {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    
+    #draw-btn {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+/*End of draw Tank*/

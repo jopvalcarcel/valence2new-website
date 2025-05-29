@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primary Sedimentation Tank Calculator</title>
+  <link rel="stylesheet" href="PrimaryClarifier.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+ 
+ 
+   <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  </div>
+ 
+ 
+ 
+ 
+ 
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Primary Sedimentation Tank</h1>
+
+    <div class="container">
+    <!-- Input Sections -->
+<div class="section">
+    <h3>Influent Parameters</h3>
+    <label>BOD<sub>in</sub> (mg/L)<input type="number" id="BODin"></label>
+    <label>TSS<sub>in</sub> (mg/L)<input type="number" id="TSSin"></label>
+</div>
+
+<div class="section">
+    <h3>Effluent Parameters</h3>
+    <label>BOD<sub>out</sub> (mg/L)<input type="number" id="BODout" readonly></label>
+    <label>TSS<sub>out</sub> (mg/L)<input type="number" id="TSSout" readonly></label>
+</div>
+
+<div class="section">
+    <h3>Sludge Parameters</h3>
+    <label>TSS<sub>out</sub> (kg/d)<input type="number" id="DSkgd" readonly></label>
+    <label>Sludge Dryness (%)<input type="number" id="Dryness"></label>
+    <label>Sludge (kg/d)<input type="number" id="sludgekgd" readonly></label>
+    <label>Density (kg/m³)<input type="number" id="DensitySludge"></label>
+    <label>Sludge (m³/d)<input type="number" id="Sludgeflowrate" readonly></label>
+</div>
+
+<div class="section">
+    <h3>Tank Parameters</h3>
+    <label>Average Flowrate (m³/d)<input type="number" id="txtpsqa"></label>
+    <label>Peak flowrate (m³/d)<input type="number" id="txtpsqp" readonly></label>
+    <label>Peak factor (--)<input type="number" id="txtpspkfctor"></label>
+    <label>Overflow rate at average flow (m³/m²/d)<input type="number" id="txtpsORa"></label>
+    <label>Surface Area at Average Flow (m²)<input type="number" id="txtpsSA" readonly></label>
+    <label>Tank Quantity (no.)<input type="number" id="txttnkqty"></label>
+    <label>Surface Area per Tank (m²/tank)<input type="number" id="ActualtxtpsSA" readonly></label>
+    <label>Tank width (m)<input type="number" id="txtpsW"></label>
+    <label>Necessary Tank Length (m)<input type="number" id="txtpsSTL" readonly></label>
+    <label>Actual Tank Length (m)<input type="number" id="ActualtxtpsSTL"></label>
+    <label>Water Level (m)<input type="number" id="txtpsWL"></label>
+    <label>Free Board (m)<input type="number" id="txtPSFB"></label>
+    <label>Tank Depth (m)<input type="number" id="txtpsTD" readonly></label>
+    <label>Tank Volume per tank (m³)<input type="number" id="txtpsTVper" readonly></label>
+    <label>Tank Total Volume (m³)<input type="number" id="txtpsTV" readonly></label>
+    <label>Detention time at average flow (hr)<input type="number" id="txtpsaveDT" readonly></label>
+    <label>Detention time at peak flow (hr)<input type="number" id="txtpspeakDT" readonly></label>
+    <label>Overflow rate at peak flow (m³/m²d)<input type="number" id="txtpsORp" readonly></label>
+</div>
+
+<div class="section">
+    <h3>Settling Parameters</h3>
+    <label>Cohesion Constant:<input type="number" id="k"></label>
+    <label>Specific Gravity: <input type="number" id="s"></label>
+    <label>Acceleration due to Gravity:<input type="number" id="g"></label>
+    <label>Diameter of Particles (m):<input type="number" id="d"></label>
+    <label>Darcy-Weisbach friction factor<input type="number" id="f"></label>
+    <label>Scour Velocity (m/s) Peak Flow<input type="number" id="vs" readonly></label>
+    <label>Horizontal Velocity (m/s) Peak Flow<input type="number" id="vp" readonly></label>
+    <label>BOD Removal a: <input type="number" id="txtBODa"></label>
+    <label>BOD Removal b: <input type="number" id="txtBODb"></label>
+    <label>TSS Removal a: <input type="number" id="txtTSSa"></label>
+    <label>TSS Removal b: <input type="number" id="txtTSSb"></label>
+    <input type="hidden" id="txtTankDimensions" />
+</div>
+
+<div class="section">
+    <h3>Removal Efficiency</h3>
+    <label>BOD Removal at ave. flow (%)<input type="number" id="txtBODremovalav" readonly></label>
+    <label>TSS Removal ave. flow (%)<input type="number" id="txtTSSremovalav" readonly></label>
+    <label>BOD Removal peak flow (%)<input type="number" id="txtBODremovalpk" readonly></label>
+    <label>TSS Removal peak flow (%)<input type="number" id="txtTSSremovalpk" readonly></label>
+</div>
+
+<div class="section">
+    <h3>Diagram</h3>
+    <img src="PrimaryClarifier.png" alt="Primary Clarifier Diagram" style="max-width: 100%; height: auto;">
+</div>
+
+
+       <!-- Rectangular Tank Isometric Drawing Section -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h1>Tank Isometric Drawing</h1>
+        
+        <div class="tank-type-selector">
+            <button id="rectangular-btn" class="tank-type-btn active">Rectangular Tank</button>
+            <button id="cylindrical-btn" class="tank-type-btn">Cylindrical Tank</button>
+        </div>
+        
+        <div class="input-section">
+            <div id="rectangular-inputs">
+                <div class="input-group">
+                    <label for="length">Length:</label>
+                    <input type="number" id="length" min="1" value="100">
+                </div>
+                <div class="input-group">
+                    <label for="width">Width:</label>
+                    <input type="number" id="width" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="depth">Depth:</label>
+                    <input type="number" id="depth" min="1" value="40">
+                </div>
+            </div>
+            
+            <div id="cylindrical-inputs" style="display: none;">
+                <div class="input-group">
+                    <label for="diameter">Diameter:</label>
+                    <input type="number" id="diameter" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="cyl-depth">Depth:</label>
+                    <input type="number" id="cyl-depth" min="1" value="40">
+                </div>
+            </div>
+            
+            <div class="calculation-displays">
+                <div class="area-display">
+                    <label>Area:</label>
+                    <div id="area">6,000</div>
+                    <span>units²</span>
+                </div>
+                <div class="volume-display">
+                    <label>Volume:</label>
+                    <div id="volume">240,000</div>
+                    <span>units³</span>
+                </div>
+            </div>
+            <button id="draw-btn">Draw Tank</button>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="tankCanvas"></canvas>
+        </div>
+    </div>
+
+      <!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+        <h3>Primary Sedimentation Tank Parameters</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Average Flowrate</td>
+              <td>m<sup>3</sup>/d</td>
+              <td><input type="text" id="txtpsqa2" readonly /></td>
+            </tr>
+            <tr>
+              <td>Peak Flowrate</td>
+              <td>m<sup>3</sup>/d</td>
+              <td><input type="text" id="txtpsqp2" readonly /></td>
+            </tr>
+                     <tr>
+              <td>Overflow Loading Rate at Ave. Flow</td>
+              <td>m<sup>3</sup>/<sup>2</sup>tank</td>
+              <td><input type="text" id="txtpsORa2" readonly /></td>
+            </tr>
+            <tr>
+              <td>Total Surface area</td>
+              <td>m<sup>2</sup></td>
+              <td><input type="text" id="txtpsSA2" readonly /></td>
+            </tr>
+            <tr>
+              <td>No. of Tanks</td>
+              <td>No.</td>
+              <td><input type="text" id="txttnkqty2" readonly /></td>
+            </tr>
+         
+            <tr>
+              <td>Area per Tank</td>
+              <td>m<sup>2</sup>/tank</td>
+              <td><input type="text" id="ActualtxtpsSA2" readonly /></td>
+            </tr>
+            <tr>
+              <td>BODin</td>
+              <td>mg/L</td>
+              <td><input type="text" id="BODin2" readonly /></td>
+            </tr>
+            <tr>
+              <td>TSSin</td>
+              <td>mg/L</td>
+              <td><input type="text" id="TSSin2" readonly /></td>
+            </tr>
+                <tr>
+              <td>BODout</td>
+              <td>mg/L</td>
+              <td><input type="text" id="BODout2" readonly /></td>
+            </tr>
+            <tr>
+              <td>TSSout</td>
+              <td>mg/L</td>
+              <td><input type="text" id="TSSout2" readonly /></td>
+            </tr>
+             <tr>
+             <td>Tank Dimensions per tank</td>
+              <td>L×W×D (m)</td>
+            <td><input type="text" id="txtTankDimensions2" readonly /></td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <button class="print-button" onclick="printReport()">Print Report</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="PrimaryClarifier.js"></script>
+  <script src="drawPClarifier.js"></script>
+</body>
+</html>

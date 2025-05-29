@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tank and Pump Calculator</title>
+  <link rel="stylesheet" href="pumpchamber.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button id="reset-btn">Reset</button>
+    <button id="example-btn">Example</button>
+    <button id="calculate-btn">Calculate</button>
+    <button id="generate-report-btn">Generate Report</button>
+    <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  
+  
+  
+  
+  
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Pump Chamber Calculator</h1>
+
+    <div class="container">
+      <!-- Flowrate Parameters -->
+      <div class="section">
+        <h3>Flowrate</h3>
+        <label>Avg Flow (m³/d)<input type="number" id="txtAvFlowratecmd" /></label>
+        <label>(m³/h)<input type="number" id="txtAvFlowratecmh" readonly /></label>
+        <label>(m³/min)<input type="number" id="txtAvFlowratecmmin" readonly /></label>
+        <label>Peak Flow (m³/d)<input type="number" id="txtPkFlowratecmd"/></label>
+        <label>(m³/h)<input type="number" id="txtPkFlowratecmh" readonly /></label>
+        <label>(m³/min)<input type="number" id="txtPkFlowratecmmin" readonly /></label>
+        <label>Chosen Flowrate(m³/min)<input type="number" id="chosenpumpflowrate"></label>
+        <label>Starts per Hour<input type="number" id="txtStartsperhour"></label> 
+        <label>Cycle Time(min)<input type="number" id="cycletime" readonly /></label>
+        <label>Pump ON(sec)<input type="number" id="txtpumpON" readonly /></label>
+        <label>Pump OFF(sec)<input type="number" id="txtpumpOFF" readonly /></label>
+      </div>
+      
+
+      <!-- Tank Size -->
+      <div class="section">
+        <h3>Tank Size</h3>
+        <label>Min Volume (m³)<input type="number" id="txtMinTankVolume" readonly /></label>
+        <label>Detention Time<input type="number" id="txtdetentiontimels"></label>
+        <label>Max Volume (m³)<input type="number" id="txtMaxTankVolume"readonly></label>
+        <label>Chosen Volume (m³)<input type="number" id="txtChosenTankVolume"></label>
+        <label>Actual Diameter (m)<input type="number" id="txtActualDiameter"></label>
+        <label>Tank Area (m²)<input type="number" id="txtTankarea"readonly></label>
+        <label>Water Level (m)<input type="number" id="txtWL"readonly></label>
+        <label>Free Board (m)<input type="number" id="txtFBls"></label>
+        <label>Tank Depth (m)<input type="number" id="txttotalTankDepth"readonly></label>
+        <label>Total Tank Volume (m3)<input type="number" id="txttotalTankVolume"readonly></label>
+      </div>
+
+      <!-- Hatch Size -->
+      <div class="section">
+        <h3>Hatch Size</h3>
+        <label>Width of Pump(m)<input type="number" id="txtWidthofPump" /></label>
+        <label>Length of Pump(m)<input type="number" id="txtLenghtofPump"></label>
+        <label>Number of Pumps(m)<input type="number" id="txtNumberofPumps"></label>
+        <label>Distance between Pumps(m)<input type="number" id="txtDistancebetweenpump"></label>
+        <label>Recommended Hatch Length(m)<input type="number" id="txtRecommendedHatchLength"readonly></label>
+        <label>Recommended Hatch Width(m)<input type="number" id="txtRecommendedHatchwidth"readonly></label>
+        <label>Pump to Wall Distance(m)<input type="number" id="txtPumptowalldistance"></label>
+        <label>Diameter Based on Length(m)<input type="number" id="txtDiameterbasedonlength"readonly></label>
+        <img src="Pump Chamber 2.jpg" alt="Pump Chamber">
+      </div>
+
+
+      <div class="form-container">
+        <div class="form-title">Circle and Pump Layout Parameters</div>
+        <div class="input-grid">
+          <div class="input-group">
+            <label for="circle-diameter">Circle Diameter</label>
+            <input type="number" id="circle-diameter" value="1.3" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="rect-length">Hatch Length</label>
+            <input type="number" id="rect-length" value="0.9" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="rect-width">Hatch Width</label>
+            <input type="number" id="rect-width" value="0.6" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="pump-length">Pump Length</label>
+            <input type="number" id="pump-length" value="0.3" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="pump-width">Pump Width</label>
+            <input type="number" id="pump-width" value="0.3" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="num-pumps">Number of Pumps</label>
+            <input type="number" id="num-pumps" value="2">
+          </div>
+        </div>
+        <div class="output-section">
+          <div class="output-title">Calculated Distances</div>
+          <div class="input-grid">
+            <div class="input-group">
+              <label for="pump-spacing">Pump Spacing</label>
+              <input type="text" id="pump-spacing" readonly>
+            </div>
+            <div class="input-group">
+              <label for="pump-to-edge">Pump to Circle Edge</label>
+              <input type="text" id="pump-to-edge" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="button-container">
+          <button id="draw-plan-btn">Draw Plan</button>
+        </div>
+        <canvas id="planCanvas"></canvas>
+      </div>
+
+      <!-- Water Level Calculation -->
+      <div class="section">
+        <h3>Water Level</h3>
+        <label>HHL Allowance(m)<input type="number" id="txtHHLallowance" ></label>
+        <label>HL Allowance(m)<input type="number" id="txtHLallowance" ></label>
+        <label>High High Level(m)<input type="number" id="txtHighHighlevel"readonly></label>
+        <label>High Level(m)<input type="number" id="txtHighlevel"readonly></label>
+        <label>Low Level(m)<input type="number" id="txtLowlevel"readonly></label>
+        <label>Low Low level (m)<input type="number" id="txtLowLowlevel"readonly></label>
+        <img src="Pump Chamber.jpg" alt="Pump Chamber 2">
+      </div>
+
+      <!-- Low Low Level -->
+      <div class="section">
+        <h3>Low Low Level</h3>
+        <label>Water Velocity (m/s)<input type="number" id="txtWatervelocity"></label>
+        <label>Suction Pump Area (m²)<input type="number" id="txtsuctionpumparea"readonly></label>
+        <label>Suction Diameter (m)<input type="number" id="txtsuctionpumpsizeinternal"readonly></label>
+        <label>Froude Number<input type="number" id="txtFD"readonly></label>
+      </div>
+
+      <!-- Tank Visualization -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h1>Tank Isometric Drawing</h1>
+
+        <div class="input-section">
+            <div id="cylindrical-inputs">
+                <div class="input-group">
+                    <label for="diameter">Diameter:</label>
+                    <input type="number" id="diameter" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="cyl-depth">Depth:</label>
+                    <input type="number" id="cyl-depth" min="1" value="40">
+                </div>
+            </div>
+
+            <div class="calculation-displays">
+                <div class="area-display">
+                    <label>Area:</label>
+                    <div id="area">6,000</div>
+                    <span>units²</span>
+                </div>
+                <div class="volume-display">
+                    <label>Volume:</label>
+                    <div id="volume">240,000</div>
+                    <span>units³</span>
+                </div>
+            </div>
+            <button id="draw-tank-btn">Draw Tank</button>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="tankCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+          <h1>Design Report</h1>
+          
+          <div class="project-info">
+            <div class="project-info-item">
+              <label for="projectName">Project Name:</label>
+              <input type="text" id="projectName">
+            </div>
+            <div class="project-info-item">
+              <label for="projectNumber">Project Number:</label>
+              <input type="text" id="projectNumber">
+            </div>
+            <div class="project-info-item">
+              <label for="projectDate">Date:</label>
+              <input type="date" id="projectDate">
+            </div>
+            <div class="project-info-item">
+              <label for="projectVersion">Version Number:</label>
+              <input type="text" id="projectVersion" value="1.0">
+            </div>
+
+            <div class="project-info-item">
+  <label for="brandName">Brand Name:</label>
+  <input type="text" id="brandName">
+</div>
+<div class="project-info-item">
+  <label for="modelName">Model Name:</label>
+  <input type="text" id="modelName">
+</div>
+          </div>
+          
+          <h3>Pump Chamber Specifications</h3>
+          <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Unit</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Average Flowrate</td>
+                <td>m<sup>3</sup>/d</td>
+                <td><input type="text" id="txtAvFlowratecmd2" readonly /></td>
+              </tr>
+              <tr>
+                <td>Peak Flowrate</td>
+                <td>m<sup>3</sup>/d</td>
+                <td><input type="text" id="txtPkFlowratecmd2" readonly /></td>
+              </tr>
+              <tr>
+                <td>Total Pump Flowrates</td>
+                <td>m<sup>3</sup>/min</td>
+                <td><input type="text" id="chosenpumpflowrate2" readonly /></td>
+              </tr>
+              <tr>
+                <td>Time on</td>
+                <td>min</td>
+                <td><input type="text" id="txtpumpON2" readonly /></td>
+              </tr>
+              <tr>
+                <td>Time off</td>
+                <td>min</td>
+                <td><input type="text" id="txtpumpOFF2" readonly /></td>
+              </tr>
+              <tr>
+                <td>Tank Dimensions per tank</td>
+                <td>Dia(m)×H(m)</td>
+                <td><input type="text" id="txtTankDimensions2" readonly /></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="print-button" id="print-report-btn">Print Report</button>
+      </div>
+
+      <!-- Pump Chamber Simulator -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h1>Pump Chamber Simulator</h1>
+        <div class="simulator-container">
+          <div class="simulator-controls">
+            <label>Inflow Rate (m³/day): <input type="number" id="inflow" value="480" readonly></label>
+            <label>Outflow Rate (m³/day when pumping): <input type="number" id="outflow" value="960" readonly></label>
+            <label>Chamber Diameter (meters): <input type="number" id="diameter" value="2"></label>
+            <label>Initial Water Level (meters): <input type="number" id="initialLevel" value="0" min="0" max="10" step="0.1"></label>
+            <label>Pump ON Time (seconds): <input type="number" id="pumpOnTime" value="10"></label>
+            <label>Pump OFF Time (seconds): <input type="number" id="pumpOffTime" value="10"></label>
+
+            <button id="start-sim-btn">Start Simulation</button>
+            <button id="stop-sim-btn">Stop Simulation</button>
+            <button id="reset-sim-btn">Reset</button>
+            <button id="speed-btn">Speed: Normal (1x)</button>
+          </div>
+
+          <div class="simulator-status">
+            <p><strong>Time Elapsed:</strong> <span id="timeElapsed">0</span> s</p>
+            <p><strong>Water Volume:</strong> <span id="waterVolume">0.00</span> m³</p>
+            <p><strong>Water Depth:</strong> <span id="waterDepth">0.00</span> m</p>
+            <p><strong>Pump Status:</strong> <span id="pumpStatus" class="status-off">OFF</span></p>
+          </div>
+
+          <div class="chamber">
+            <div class="markers">
+              <div class="marker" style="bottom: 10%;"><span>1m</span></div>
+              <div class="marker" style="bottom: 20%;"><span>2m</span></div>
+              <div class="marker" style="bottom: 30%;"><span>3m</span></div>
+              <div class="marker" style="bottom: 40%;"><span>4m</span></div>
+              <div class="marker" style="bottom: 50%;"><span>5m</span></div>
+              <div class="marker" style="bottom: 60%;"><span>6m</span></div>
+              <div class="marker" style="bottom: 70%;"><span>7m</span></div>
+              <div class="marker" style="bottom: 80%;"><span>8m</span></div>
+              <div class="marker" style="bottom: 90%;"><span>9m</span></div>
+            </div>
+            <div class="water" id="water"></div>
+          </div>
+
+          <div class="graph-container">
+            <canvas id="waterLevelChart"></canvas>
+            <div class="chart-label x-axis">Time (minutes)</div>
+            <div class="chart-label y-axis">Water Level (meters)</div>
+          </div>
+        </div>
+      </div>
+
+    <h2>Results:</h2>
+    <div id="results"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="simpumpchamber.js"></script>
+  <script src="pumpchamber.js"></script>
+
+</body>
+</html>

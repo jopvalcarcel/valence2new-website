@@ -1,0 +1,103 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.circle-container {
+  position: relative;
+  width: 800px;  /* Increased from 600px */
+  height: 800px; /* Increased from 600px */
+}
+
+.circle-button {
+  position: absolute;
+  width: 180px;  /* Increased from 140px */
+  height: 180px; /* Increased from 140px */
+  border-radius: 50%;
+  border: none;
+  background-color: #4a6fa5;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem; /* Restored original size */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  text-decoration: none;
+  text-align: center;
+  padding: 15px; /* Increased padding */
+  line-height: 1.3; /* Better text spacing */
+  word-wrap: break-word; /* Ensure long words break properly */
+}
+
+/* Updated circular positioning for much larger circles */
+#sbr  { top: 90px;  left: 400px; }  /* Top center */
+#mbr  { top: 250px; left: 650px; }  /* Top right */
+#mbbr { top: 550px; left: 525px; }  /* Bottom right */
+#mle  { top: 550px; left: 275px; }  /* Bottom left */
+#ifas { top: 250px; left: 150px;  }  /* Top left */
+
+/* Hover effects */
+#sbr:hover  { background-color: #ff6b6b; transform: translate(-50%, -50%) scale(1.1); }
+#mbr:hover  { background-color: #48dbfb; transform: translate(-50%, -50%) scale(1.1); }
+#mbbr:hover { background-color: #1dd1a1; transform: translate(-50%, -50%) scale(1.1); }
+#mle:hover  { background-color: #feca57; transform: translate(-50%, -50%) scale(1.1); }
+#ifas:hover { background-color: #5f27cd; transform: translate(-50%, -50%) scale(1.1); }
+
+.commentary-box {
+  width: 500px; /* Increased from 400px */
+  min-height: 120px; /* Increased from 100px */
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 20px; /* Added some space */
+}
+
+.description {
+  margin-top: 15px;
+  font-size: 1.1rem; /* Slightly larger */
+  color: #333;
+  min-height: 70px; /* Increased from 60px */
+}
+
+/* Dashboard Button Styles */
+.dashboard-button {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 60px; /* Slightly larger */
+    height: 60px; /* Slightly larger */
+    border-radius: 50%;
+    background-color: #4a89dc;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 28px; /* Larger icon */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.dashboard-button:hover {
+    background-color: #3b7dd8;
+    transform: scale(1.1);
+}

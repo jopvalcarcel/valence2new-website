@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="Dashboard.css" />
+
+  <!-- Boxicons CSS -->
+  <link
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+  />
+
+  <title>Dashboard Sidebar Menu | Dark-Light Mode</title>
+</head>
+<body>
+  <nav class="sidebar close">
+    <header>
+      <div class="image-text">
+        <span class="image">
+          <img src="logo.png" alt="logo" />
+        </span>
+        <div class="text header-text">
+          <span class="name">Valence</span>
+          <span class="profession">Waste Water Design</span>
+        </div>
+      </div>
+      <i class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+      <div class="menu">
+        <ul class="menu-links">
+          <li class="search-box search-box-container">
+            <i class="bx bx-search"></i>
+            <input type="text" placeholder="Search..." />
+          </li>
+
+          <!-- Search results injected here -->
+          <li class="search-results-container">
+            <div class="search-results"></div>
+          </li>
+
+          <li class="nav-link">
+            <a href="#">
+              <i class="bx bx-home-alt icon"></i>
+              <span class="text nav-text">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="designcondition.html">
+              <i class="bx bx-test-tube icon"></i>
+              <span class="text nav-text">Influent Parameters</span>
+            </a>
+          </li>
+
+          <li class="nav-link">
+            <a href="pumpchamber.html">
+              <i class="bx bx-cylinder icon"></i>
+              <span class="text nav-text">Pump Chamber</span>
+            </a>
+          </li>
+
+          <!-- Primary Treatment Dropdown -->
+          <li class="nav-link has-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="bx bx-filter-alt icon"></i>
+              <span class="text nav-text">Primary treatment</span>
+              <i class="bx bx-chevron-down dropdown-icon placeholder"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="barscreening.html" class="dropdown-link">Bar Screening</a></li>
+              <li><a href="oilandgrease.html" class="dropdown-link">Oil and Grease</a></li>
+              <li><a href="gritremoval.html" class="dropdown-link">Grit Removal</a></li>
+              <li><a href="EQ.html" class="dropdown-link">Equalization Tank</a></li>
+              <li><a href="PrimaryClarifier.html" class="dropdown-link">Primary Clarifier</a></li>
+              <li><a href="DAF.html" class="dropdown-link">DAF</a></li>
+            </ul>
+          </li>
+
+          <!-- Biological -->
+          <li class="nav-link has-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="bx bx-bug icon"></i>
+              <span class="text nav-text">Biological</span>
+              <i class="bx bx-chevron-down dropdown-icon placeholder"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="MLE.html" class="dropdown-link">Modified Ludzack-Ettinger</a></li>
+              <li><a href="SBR.html" class="dropdown-link">SBR</a></li>
+               <li><a href="1MBBR.html" class="dropdown-link">MBBR 1 stage</a></li>
+              <li><a href="4MBBR.html" class="dropdown-link">MBBR An-Ox-Ox</a></li>
+              <li><a href="MBR.html" class="dropdown-link">MBR</a></li>
+              <li><a href="IFAS.html" class="dropdown-link">IFAS</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-link">
+            <a href="Aerationfast.html">
+              <i class="bx bx-wind icon"></i>
+              <span class="text nav-text">Air requirements</span>
+            </a>
+          </li>
+
+          <!-- Fluid Transfer -->
+          <li class="nav-link has-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="bx bx-transfer icon"></i>
+              <span class="text nav-text">Fluid Transfer</span>
+              <i class="bx bx-chevron-down dropdown-icon placeholder"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="pumphead.html" class="dropdown-link">Pump Sizing</a></li>
+              <li><a href="Aerationfast.html" class="dropdown-link">Air Requirement</a></li>
+              <li><a href="blowerhead.html" class="dropdown-link">Blower Pressure</a></li>
+              <li><a href="pipesizing.html" class="dropdown-link">Air Piping and Diffuser</a></li>
+              <li><a href="odorcontrol.html" class="dropdown-link">Odor Control</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-link">
+            <a href="CCT.html">
+              <i class="bx bx-first-aid icon"></i>
+              <span class="text nav-text">Chlorine Contact</span>
+            </a>
+          </li>
+
+          <!-- Sludge Treatment -->
+          <li class="nav-link has-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="bx bx-cloud icon"></i>
+              <span class="text nav-text">Sludge Treatment</span>
+              <i class="bx bx-chevron-down dropdown-icon placeholder"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="aerobicdigester.html" class="dropdown-link">Aerobic Digester</a></li>
+              <li><a href="dewatering.html" class="dropdown-link">Dewatering</a></li>
+            </ul>
+          </li>
+
+          <!-- Chemical Dosing -->
+          <li class="nav-link has-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="bx bx-bone icon"></i>
+              <span class="text nav-text">Chemical Dosing</span>
+              <i class="bx bx-chevron-down dropdown-icon placeholder"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="Chlorinedosing.html" class="dropdown-link">Chlorine Dosing</a></li>
+              <li><a href="Phosphateremoval.html" class="dropdown-link">Phosphate Removal</a></li>
+            </ul>
+          </li>
+
+          <!-- Figures -->
+          <li class="nav-link has-dropdown">
+            <a href="#" class="dropdown-toggle">
+              <i class="bx bx-layout icon"></i>
+              <span class="text nav-text">Figures</span>
+              <i class="bx bx-chevron-down dropdown-icon placeholder"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="pfd.html" class="dropdown-link">Process Flow Diagram</a></li>
+              <li><a href="Layout.html" class="dropdown-link">Layout</a></li>
+              <li><a href="drawshipping.html" class="dropdown-link">Tank Isometric</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bottom-content">
+        <ul class="menu-links">
+         <li>
+  <a href="index.php">
+    <i class="bx bx-log-out icon"></i>
+    <span class="text nav-text">Logout</span>
+  </a>
+</li>
+          <li class="mode">
+            <div class="moon-sun">
+              <i class="bx bx-moon icon moon"></i>
+              <i class="bx bx-sun icon sun"></i>
+            </div>
+            <span class="mode-text text">Dark Mode</span>
+            <div class="toggle-switch">
+              <span class="switch"></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="home">
+    <div class="text">Dashboard</div>
+  </section>
+
+  <script src="Dashboard.js"></script>
+</body>
+</html>

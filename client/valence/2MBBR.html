@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SBR Calculator</title>
+  <link rel="stylesheet" href="1MBBR.css">
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>MBBR 2 Stage</h1>
+
+    <div class="container">
+      <!-- Stage 1 Influent Parameters -->
+      <div class="section">
+        <h3>Stage 1 Influent Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="iFlowrate" /></label>
+        <label>Temperature (°C)<input type="number" id="iTemp" /></label>
+        <label>BOD (mg/L)<input type="number" id="iBODin" /></label>
+        <label>nbVSS (mg/L)<input type="number" id="iNBVSS" /></label>
+        <label>Alkalinity (h)<input type="number" id="iAlkalinityin" /></label>
+        <label>NH4N (mg/L)<input type="number" id="iNH4Nin" /></label>
+        <label>NO3N (mg/L)<input type="number" id="iNO3Nin" /></label>
+        <label>TSS (mg/L)<input type="number" id="iTSSin" /></label>
+        <label>VSS (mg/L)<input type="number" id="iVSSin" /></label>
+        <label>TKN (mg/L)<input type="number" id="iTKN" /></label>
+        <label>bCOD/BOD (h)<input type="number" id="ibCODBOD" readonly/></label>
+        <label>DBOD/TKN (h)<input type="number" id="iBODTKN" readonly/></label>
+      </div>
+
+      <!-- Stage 1 Effluent / Stage 2 Influent -->
+      <div class="section">
+        <h3>Stage 1 Effluent / Stage 2 Influent</h3>
+        <label>BOD (mg/L) after 1st stage<input type="number" id="iBODeff1" readonly></label>
+        <label>BOD (mg/L) for 2nd stage<input type="number" id="iBODin2" readonly></label>
+      </div>
+
+      <!-- Stage 2 Parameters -->
+      <div class="section">
+        <h3>Stage 2 Parameters</h3>
+        <label>Applied BOD Removal Flux(g/m2d) SALR<input type="number" id="iSALR2" readonly></label>
+        <label>Media Area (m2)<input type="number" id="i2Mediaarea" readonly></label>
+        <label>Media Volume (m2)<input type="number" id="i2Mediavolume" readonly></label>
+        <label>Applied BOD Removal Flux(g/m2d) SARR<input type="number" id="iSARR2" readonly></label>
+        <label>BOD Removal(%)<input type="number" id="iBODremoval2"></label>
+        <label>Plastic Biofilm Media Specific Surface Area(m2/m3)<input type="number" id="iSSA2"></label>
+        <label>Media fill Volume (%)<input type="number" id="iMediaFillVol2"></label>
+        <label>Media Void (%)<input type="number" id="i2mediavoid"></label>
+        <label>Media Duisplaced Volume (m3)<input type="number" id="i2Mediadisplacedvolume"readonly></label>
+        <label>Tank Volume(m3)<input type="number" id="i2tankvol"readonly></label>
+        <label>HRT (hrs)<input type="number" id="iHRTstage2"readonly></label>
+      </div>
+
+      <!-- Mass Balance -->
+      <div class="section">
+        <h3>Mass Balance</h3>
+        <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px;">
+          <div style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="is1BODLoading">(1) BOD (kg/d)</label>
+            <input type="number" id="is1BODLoading" readonly>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="is2BODLoading">(2) BOD2 (kg/d)</label>
+            <input type="number" id="is2BODLoading" readonly>
+          </div>
+        </div>
+        <img src="1MBBR.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+      <!-- Stage 1 MBBR Parameters -->
+      <div class="section">
+        <h3>Stage 1 MBBR Biological Parameters</h3>
+        <label>Applied BOD Removal Flux(g/m2d) SALR<input type="number" id="iSALR" readonly></label>
+        <label>Media Area (m2)<input type="number" id="i1Mediaarea" readonly></label>
+        <label>Media Volume (m2)<input type="number" id="i1Mediavolume" readonly></label>
+        <label>Applied BOD Removal Flux(g/m2d) SARR<input type="number" id="iSARR" readonly></label>
+        <label>BOD Removal(%)<input type="number" id="iBODremoval"></label>
+        <label>Plastic Biofilm Media Specific Surface Area(m2/m3)<input type="number" id="iSSA"></label>
+        <label>Media fill Volume (%)<input type="number" id="iMediaFillVol"></label>
+        <label>Media Void (%)<input type="number" id="i1mediavoid"></label>
+        <label>Media Duisplaced Volume (m3)<input type="number" id="i1Mediadisplacedvolume"readonly></label>
+        <label>Tank Volume(m3)<input type="number" id="i1tankvol"readonly></label>
+        <label>HRT (hrs)<input type="number" id="iHRTstage1"readonly></label>
+        <img src="Removal Rates.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+      <!-- Biological Parameter -->
+      <div class="section">
+        <h3>Biological Parameters</h3>
+        <label>SRT (d)<input type="number" id="iSRT"></label>
+        <label>bh(--) <input type="number" id="ibh" readonly></label>
+        <label>bn(--)<input type="number" id="ibn" readonly></label>
+        <label>fd(--)<input type="number" id="ifd" readonly></label>
+        <label>YH(--)<input type="number" id="iYH" readonly></label>
+        <label>YN(--)<input type="number" id="iYn" readonly></label>
+        <label>PX,BIO(kg/d)<input type="number" id="ipxbio" readonly></label>
+        <label>HETEROTROPHS(kg/d)<input type="number" id="ipxbioHET" readonly></label>
+        <label>PX,VSS(Kg/d)<input type="number" id="ipxvss" readonly></label>
+        <label>PX,TSS(Kg/d)<input type="number" id="ipxtss" readonly></label>
+      </div>
+
+      <!-- Air Parameters -->
+      <div class="section">
+        <h3>Aeration Parameters</h3>
+        <label>AOTR (kg/h)<input type="number" id="i1txtOUR"readonly></label>
+        <label>Elevation (m)<input type="number" id="i1txtelev"></label>
+        <label>Temperature (°C)<input type="number" id="i1txtTemp"></label>
+        <label>Pa/Pb Relative Pressure at Elevation<input type="number" id="i1txtRP"></label>
+        <label>Water Depth (m)<input type="number" id="i1txtLD"></label>
+        <label>Diffuser height (m)<input type="number" id="i1txtDDfromBottom"></label>
+        <label>Diffuser Depth(m)<input type="number" id="i1txtDD"readonly></label>
+        <label>Mid Depth Correction Factor<input type="number" id="i1txtde"></label>
+        <label>Oxygen Conc. at Standard<input type="number" id="i1txtOCS"></label>
+        <label>Oxygen Conc. at Temperature<input type="number" id="i1txtOCT"></label>
+        <label>Oxygen Conc. at diff.Depth<input type="number" id="i1txtOCSd"></label>
+        <label>α<input type="number" id="i1txta"></label>
+        <label>β<input type="number" id="i1txtb"></label>
+        <label>Fouling Factor<input type="number" id="i1txtf"></label>
+        <label>Operating DO (mg/L)<input type="number" id="i1txtDO"></label>
+        <label>SOTR (kg/hr)<input type="number" id="i1txtSOTR"readonly></label>
+        <label>Density of Air (kg/m3)<input type="number" id="i1txtDA"></label>
+        <label>Concentration of Air (kg/m3)<input type="number" id="i1txtO2"></label>
+        <label>OTE% per level(%/m)<input type="number" id="i1OTEpersubmerged"></label>
+        <label>Clean Water Transfer, %<input type="number" id="i1txtE"readonly></label>
+      </div>
+
+      <!-- Air Requirements -->
+      <div class="section">
+        <h3>Air Requirements</h3>
+        <label>OTR (kg/O2d) Total<input type="number" id="iOTRBOD"readonly></label>
+        <label>Total Air Requirement (m3/min)<input type="number" id="i1txtAF"readonly></label>
+      </div>
+
+      <!-- Solids Parameters -->
+      <div class="section">
+        <h3>Solids Parameters</h3>
+        <label>Solids Content (%)<input type="number" id="itxtSolidsContent"></label>
+        <label>SG Sludge (kg/m³)<input type="number" id="itxtSGSludgeperm3Sludge"></label>
+        <label>Sludge Flowrate (m³/d)<input type="number" id="itxtSludgeflowrate"readonly></label>
+      </div>
+
+      <!-- Clarifier Sizing -->
+      <div class="section">
+        <h3>Clarifier Sizing</h3>
+        <label>Surface Loading Rate (m3/m2d)<input type="number" id="iSLR"></label>
+        <label>Clarifier Area (m2)<input type="number" id="iClarifiersize"readonly></label>
+      </div>
+
+      <!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+        <h3>MBR Tank Design Report</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td>Average Flowrate</td>
+            <td>m<sup>3</sup>/d</td>
+            <td><input type="text" id="txtFlowrate2" readonly /></td>
+          </tr>
+          <tr>
+            <td>BODin</td>
+            <td>mg/L</td>
+            <td><input type="text" id="BODin2" readonly /></td>
+          </tr>
+          <tr>
+            <td>TKNin</td>
+            <td>mg/L</td>
+            <td><input type="text" id="TKN2" readonly /></td>
+          </tr>
+          <tr>
+            <td>BODout</td>
+            <td>mg/L</td>
+            <td><input type="text" id="BODOut2" readonly /></td>
+          </tr>
+          <tr>
+            <td>NH4Nout</td>
+            <td>mg/L</td>
+            <td><input type="text" id="MBRNH4Neff2" readonly /></td>
+          </tr>
+          <tr>
+            <td>NO3Nout</td>
+            <td>mg/L</td>
+            <td><input type="text" id="Nitrateeff2" readonly /></td>
+          </tr>
+          <tr>
+            <td>Volume PreDN Tank</td>
+            <td>m<sup>3</sup></td>
+            <td><input type="text" id="AnoxicTankVolume2" readonly /></td>
+          </tr>
+          <tr>
+            <td>Pre-aeration Tank</td>
+            <td>m<sup>3</sup></td>
+            <td><input type="text" id="PreaerationNecVol2" readonly /></td>
+          </tr>
+          <tr>
+            <td>MBR Tank</td>
+            <td>m<sup>3</sup></td>
+            <td><input type="text" id="MembraneVolume2" readonly /></td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="print-button" onclick="printReport()">Print Report</button>
+
+        <!-- Draw SBR Tank Section -->
+        <div class="section" style="flex: 1 1 100%;">
+          <h2>Rectangular Tank Isometric Drawing</h2>
+          <div class="input-section">
+            <div class="input-group">
+              <label for="length">Length(m):</label>
+              <input type="number" id="length" min="1" value="35">
+            </div>
+            <div class="input-group">
+              <label for="width">Width(m):</label>
+              <input type="number" id="width" min="1" value="25">
+            </div>
+            <div class="input-group">
+              <label for="depth">Depth:</label>
+              <input type="number" id="depth" min="1" value="6">
+            </div>
+            <div class="volume-display">
+              <label>Volume:</label>
+              <div id="volume">240,000</div>
+              <span>(m³)</span>
+            </div>
+            <button id="draw-btn">Draw Tank</button>
+          </div>
+          
+          <div class="canvas-container">
+            <canvas id="tankCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="2MBBR.js"></script>
+</body>
+</html>

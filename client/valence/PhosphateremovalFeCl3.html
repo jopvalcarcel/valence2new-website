@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Calculator</title>
+  <link rel="stylesheet" href="PhosphateremovalFeCl3.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+  
+  
+  
+    <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  
+  
+  
+  
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>FeCl₃ Dosing for Phosphorus Removal</h1>
+
+
+
+
+         <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Option 1: PACl Dosing</h3>
+        <label>Flowrater (m3/d)<input type="number" id="txtPAClQ"></label>
+        <label>Total Phosphorus Influent (mg/l)<input type="number" id="txtPAClTP"  readonly></label>
+        <label>Soluble Influent Phosphate (mg/l)<input type="number" id="txtPAClSPin"></label>
+        <label>Soluble Phosphate Residual (mg/l)<input type="number" id="txtPAClSPres"></label>
+        <label>Removal Efficiency (%)<input type="number" id="txtPAClEfficiency"readonly></label>
+        <label>CAl Consumption (mg/L)<input type="number" id="txtCalconsumption" readonly></label>
+        <label>Total Phosphorus conc. after dosin (mg/L)<input type="number" id="txtPACTPef"readonly></label>
+        <label>PACl unit consumption (mL/m3)<input type="number" id="txtPAClunitconsumption" readonly></label>
+        <label>PACl dosing ratio (--)<input type="number" id="txtPACldosingRatio" ></label>
+        <label>PACl Dosing (L/d)<input type="number" id="txtPACldosinLperd" readonly></label>
+        <label>PACl Dosing (L/hr)<input type="number" id="txtPACldosinLperhr" readonly></label>
+        <label>PACl Dosing (kg/d)<input type="number" id="txtPACldosinLkgd" readonly></label>
+        <label>Detention timed(d)<input type="number" id="txtPACldetentiontime" ></label>
+        <label>volume per Tank (m3)<input type="number" id="txtPAClvolumerpertank" readonly></label>
+        
+      </div>
+
+
+      <div class="section">
+        <h3>Option 2: FeCl3 Dosing</h3>
+        <label>Flowrate (m3/d)<input type="number" id="Txtflowrate7"></label>
+        <label>total Phosphorus influent (mg/l)<input type="number" id="txtTPin"  readonly></label>
+        <label>soluble Phosphate influent (mg/l)<input type="number" id="txtCPin"></label>
+        <label>Soluble Phosphate Residual (mg/l)<input type="number" id="txtCPres"></label>
+        <label>Metal to Soluble Phosphate ratio(Please Check Figure 1)<input type="number" id="txtMP"></label>
+         <label>Fe(III) dose conc.(mg/L)<input type="number" id="txtdr"readonly></label>
+        <label>TP conc. after dosing (mg/L)<input type="number" id="txtTPef"readonly></label>
+        <label>Fe(III) dose (kg/d)<input type="number" id="txtkgd" readonly></label>
+        <label>% Fe in FeCl3 (%)<input type="number" id="txtpcnt"></label>
+        <label>FeCl3 dose  (kg/d)<input type="number" id="txtkdsol" readonly></label>
+        <label>FeCl3 in Solution (%)<input type="number" id="txtpcntsoln" ></label>
+        <label>Density of Solution (L/kg)<input type="number" id="txtdensity"></label>
+        <label>Chemical Flowrate (L/d)<input type="number" id="txtLd" readonly></label>
+        <label>Chemical Flowrater (L/hr)<input type="number" id="txtLhr" readonly></label>
+        <label>Storage days (d)<input type="number" id="stdays" ></label>
+        <label>Storage tank (m3)<input type="number" id="txtstv" readonly></label>
+
+        
+      </div>
+
+        <div class="section">
+        <h3>Figure 1. Soluble Phosphorus Removal by Aluminum and Iron Addition,(Adapted from Szabo et al., 2008)</h3>
+        <img src="FeCl3dosing.jpg" alt="Primary Clarifier Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+
+
+
+    </div>
+
+    <!-- Report Section -->
+<!-- Report Section (hidden by default) -->
+
+<div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .equipment-info-item input {
+      width: 100px; /* Set a smaller, consistent width for all input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-row">
+      <div class="project-info-item">
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName">
+      </div>
+      <div class="project-info-item">
+        <label for="projectNumber">Project Number:</label>
+        <input type="text" id="projectNumber">
+      </div>
+    </div>
+    <div class="project-info-row">
+      <div class="project-info-item">
+        <label for="projectDate">Date:</label>
+        <input type="date" id="projectDate">
+      </div>
+      <div class="project-info-item">
+        <label for="projectVersion">Version Number:</label>
+        <input type="text" id="projectVersion" value="1.0">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Equipment Information Section -->
+ <div class="chemical-pump-info">
+    <h3>Chemical Dosing Pump Information</h3>
+    <div class="chemical-pump-info-row">
+      <div class="chemical-pump-info-item">
+        <label for="pumpName">Pump Name:</label>
+        <input type="text" id="pumpName">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="pumpType">Pump Type:</label>
+        <input type="text" id="pumpType">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="model">Model:</label>
+        <input type="text" id="model">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="duty">Duty:</label>
+        <input type="text" id="duty">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="standby">Standby:</label>
+        <input type="text" id="standby">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pump Specifications Table -->
+   <h3>FeCl₃ Dosing for Phosphate Removal</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Flowrate</td>
+        <td>m<sup>3</sup>/d</td>
+        <td><input type="text" id="txtPAClQ2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Total Phosphorus Influent</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPAClTP2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Soluble Influent Orthophosphate</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPAClSPin2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Residual Phosphate</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPAClSPres2" readonly /></td>
+      </tr>
+      <tr>
+
+        <td>Coagulant Dosing Ratio ( FeCl₃)</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtdr2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Chemical Dosing Rate ( FeCl₃)</td>
+        <td>L/hr</td>
+        <td><input type="text" id="txtLhr2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Detention Time (FeCl₃)</td>
+        <td>d</td>
+        <td><input type="text" id="stdays2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Storage Volume (FeCl₃)</td>
+        <td>m<sup>3</sup></td>
+        <td><input type="text" id="txtstv2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+  </div>
+
+  </div>
+
+  <script src="PhosphateremovalFeCl3.js"></script>
+</body>
+</html>

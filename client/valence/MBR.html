@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="MBR.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+  
+      <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>MBR Stage with Preanoxic Tank</h1>
+
+    <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="txtFlowrate"></label>
+        <label>BOD (mg/L)<input type="number" id="BODin"></label>
+        <label>cBOD (mg/L)<input type="number" id="txtbCODin"></label>
+        <label>TKN (mg/L)<input type="number" id="TKN"></label>
+        <label>NH4N (mg/L)<input type="number" id="MBRNH4Ninf"></label>
+        <label>nbVSS (mg/L)<input type="number" id="nbVSS"></label>
+        <label>iTSS(TSS-VSS) (mg/L)<input type="number" id="iTSS"></label>
+        <label>Temperature (°C)<input type="number" id="TEMP"></label>
+        <label>bCOD/BOD ratio<input type="number" id="bCODBODratio" value="1.6"></label>
+      </div>
+
+      <!-- Effluent -->
+      <div class="section">
+        <h3>Effluent</h3>
+        <label>BOD out (mg/L)<input type="number" id="BODOut" readonly></label>
+        <label>NH4N out (mg/L)<input type="number" id="MBRNH4Neff" readonly></label>
+        <label>NO3N out (mg/L)<input type="number" id="Nitrateeff" readonly></label>
+      </div>
+
+      <!-- rbCOD -->
+      <div class="section">
+        <h3>rbCOD</h3>
+        <label>rbCOD (mg/L)<input type="number" id="rbCOD"></label>
+        <label>COD (mg/L)<input type="number" id="COD"></label>
+        <label>percent rbCOD (%)<input type="number" id="percentrbCOD" readonly></label>
+      </div>
+
+      <!-- Anoxic Tank -->
+      <div class="section">
+        <h3>preDN Tank - Tank Sizing</h3>
+        <label>Tank Vol. to Vpre and Vm (%)<input type="number" id="percentanoxictankvolume"></label>
+        <label>Anoxic Tank Volume (m³)<input type="number" id="AnoxicTankVolume" readonly></label>
+        <label>HRT (hrs)<input type="number" id="PreDNHRT" readonly></label>
+      </div>
+
+      <!-- Pre DN Tank l -->
+      <div class="section">
+        <h3>preDN Tank - Biological</h3>
+        <label>Effluent Nitrate, Ne (mg/L)<input type="number" id="Ne" readonly></label>
+        <label>NOX feed to Anoxic (g/d)<input type="number" id="NOXfeed" readonly></label>
+        <label>Food Mass Ratio (g/gd)<input type="number" id="FMb" readonly></label>
+        <label>b0<input type="number" id="bo" readonly></label>
+        <label>b1<input type="number" id="b1" readonly></label>
+        <label>SDNR20 (g/gd)<input type="number" id="SDNR" readonly></label>
+        <label>SDNRT (g/gd)<input type="number" id="SDNRT" readonly></label>
+        <label>SDNRadj (g/gd)<input type="number" id="SDNRadj" readonly></label>
+        <label>Overall SDNR (g/gd)<input type="number" id="SDNRoverall" readonly></label>
+        <label>MLSS (g/m³)<input type="number" id="Xpreanox" readonly></label>
+        <label>MLVSS (g/m³)<input type="number" id="XMLVSSpreanox" readonly></label>
+        <label>NOX Removal (g/d)<input type="number" id="NOXremoval" readonly></label>
+
+
+      </div>
+
+      <!-- PreAeration Tank -->
+      <div class="section">
+        <h3>preAeration Tank</h3>
+        <label>Necessary Volume (m³)<input type="number" id="PreaerationNecVol" readonly></label>
+        <label>HRT (hrs)<input type="number" id="PreaerHRT" readonly></label>
+      </div>
+
+      <!-- Biological Parameters -->
+      <div class="section">
+        <h3>preAeration Tank - Biological Parameters</h3>
+        <label>Px,bio (kg/d)<input type="number" id="pxbio" readonly></label>
+        <label>Heterotrophs (kg/d)<input type="number" id="txtHBkgd" readonly></label>
+        <label>Decay (kg/d)<input type="number" id="txtCDkgd" readonly></label>
+        <label>AOB (kg/d)<input type="number" id="txtNBkgd" readonly></label>
+        <label>Px,vss (kg/d)<input type="number" id="pxvss" readonly></label>
+        <label>Px,tss (kg/d)<input type="number" id="pxtss" readonly></label>
+        <label>SRT (d)<input type="number" id="txtSRT"></label>
+        <label>Reflux Ratio (-)<input type="number" id="reflux"></label>
+        <label>MLSS (g/m³)<input type="number" id="Xpreaer" readonly></label>
+        <label>MLVSS (g/m³)<input type="number" id="XMLVSSpreaer" readonly></label>
+        <label>YH (-)<input type="number" id="txtYH" value="0.45"></label>
+        <label>bH (g/gd)<input type="number" id="txtbH" readonly></label>
+        <label>fd (-)<input type="number" id="txtfd" value="0.15"></label>
+        <label>bn (g/gd)<input type="number" id="txtbn" readonly></label>
+        <label>Yn (-)<input type="number" id="txtYN" value="0.15"></label>
+        <label>Xpreaer,b(g/m³) (-)<input type="number" id="Xpreaerb" readonly></label>
+        <label>fraction xb (-)<input type="number" id="fractionxb" readonly></label>
+        <label>NOX (mg/L)<input type="number" id="NOx" readonly></label>
+
+        
+      
+      </div>
+
+      <!-- MBR Tank Sizing -->
+      <div class="section">
+        <h3>MBR - Tank Sizing</h3>
+        <label>Flux (L/m²h)<input type="number" id="flux"></label>
+        <label>Area (m²)<input type="number" id="MembraneArea" readonly></label>
+        <label>Membrane Tank to Membrane Area Ratio (m³/m²)<input type="number" id="Membraneseparationtankratio"></label>
+        <label>MLSS (g/m³)<input type="number" id="Xmbr"></label>
+        <label>Necessary Volume (m³)<input type="number" id="MembraneVolume" readonly></label>
+        <label>HRT (hrs)<input type="number" id="MemHRT" readonly></label>
+      </div>
+
+      <!-- Aeration Parameters -->
+      <div class="section">
+        <h3>Pre Aeration Parameters</h3>
+        <label>AOTR (kg/h)<input type="number" id="iv1txtOUR" readonly></label>
+        <label>Site Elevation (m)<input type="number" id="iv1txtelev"></label>
+        <label>Temperature (degC)<input type="number" id="iv1txtTemp"></label>
+        <label>Pa, Relative Pressure at elevation<input type="number" id="iv1txtRP"></label>
+        <label>Water Depth (m)<input type="number" id="iv1txtLD"></label>
+        <label>Diffuser height (m)<input type="number" id="iv1txtDDfromBottom"></label>
+        <label>Diffuser Depth (m)<input type="number" id="iv1txtDD" readonly></label>
+        <label>Mid Depth Correction Factor<input type="number" id="iv1txtde"></label>
+        <label>Oxygen Conc. at Standard<input type="number" id="iv1txtOCS"></label>
+        <label>Oxygen Conc. at Temperature<input type="number" id="iv1txtOCT"></label>
+        <label>Oxygen Conc. at diff.Depth<input type="number" id="iv1txtOCSd" readonly></label>
+        <label>α<input type="number" id="iv1txta"></label>
+        <label>β<input type="number" id="iv1txtb"></label>
+        <label>Fouling Factor<input type="number" id="iv1txtf"></label>
+        <label>Operating DO (mg/L)<input type="number" id="iv1txtDO"></label>
+        <label>SOTR (kg/hr)<input type="number" id="iv1txtSOTR" readonly></label>
+        <label>Density of Air (kg/m3)<input type="number" id="iv1txtDA"></label>
+.        <label>Concentration of O2 (kg/m³)<input type="number" id="iv1txtO2"></label>
+        <label>OTE% per level (%/m)<input type="number" id="iv1OTEpersubmerged"></label>
+        <label>Clean Water Transfer (%)<input type="number" id="iv1txtE" readonly></label>
+        <label>Air Flow Required (m³/min)<input type="number" id="iv1txtAF" readonly></label> 
+      </div>
+
+      <!-- Aeration Parameters -->
+      <div class="section">
+        <h3> MBR Aeration Parameters</h3>
+        <label>AOTR (kg/h)<input type="number" id="iv2txtOUR" readonly></label>
+        <label>Site Elevation (m)<input type="number" id="iv2txtelev"></label>
+        <label>Temperature (degC)<input type="number" id="iv2txtTemp"></label>
+        <label>Pa, Relative Pressure at elevation<input type="number" id="iv2txtRP"></label>
+        <label>Water Depth (m)<input type="number" id="iv2txtLD"></label>
+        <label>Diffuser height (m)<input type="number" id="iv2txtDDfromBottom"></label>
+        <label>Diffuser Depth (m)<input type="number" id="iv2txtDD" readonly></label>
+        <label>Mid Depth Correction Factor<input type="number" id="iv2txtde"></label>
+        <label>Oxygen Conc. at Standard<input type="number" id="iv2txtOCS"></label>
+        <label>Oxygen Conc. at Temperature<input type="number" id="iv2txtOCT"></label>
+        <label>Oxygen Conc. at diff.Depth<input type="number" id="iv2txtOCSd" readonly></label>
+        <label>α<input type="number" id="iv2txta"></label>
+        <label>β<input type="number" id="iv2txtb"></label>
+        <label>Fouling Factor<input type="number" id="iv2txtf"></label>
+        <label>Operating DO (mg/L)<input type="number" id="iv2txtDO"></label>
+        <label>SOTR (kg/hr)<input type="number" id="iv2txtSOTR" readonly></label>
+        <label>Density of Air (kg/m³)<input type="number" id="iv2txtDA"></label>
+        <label>Concentration of O2 (kg/m³)<input type="number" id="iv2txtO2"></label>
+        <label>OTE% per level (%/m)<input type="number" id="iv2OTEpersubmerged"></label>
+        <label>Clean Water Transfer (%)<input type="number" id="iv2txtE" readonly></label>
+        <label>Air Flow Required (m³/min)<input type="number" id="iv2txtAF" readonly></label>
+      </div>
+
+      <!-- Air Requirements -->
+      <div class="section">
+        <h3>Total Air Requirements</h3>
+        <label>OTR (kg O₂/d) Total<input type="number" id="ivOTR" readonly></label>
+        <label>OTR (kg O₂/d-BOD)<input type="number" id="ivOTRBOD" readonly></label>
+        <label>OTR (kg O₂/d-NH4N)<input type="number" id="ivOTRNH4N" readonly></label>
+        <label>OTR (kg O₂/d-Gained)<input type="number" id="ivOTRCredit" readonly></label>
+        <label>Total Aeration Requirement (kg/hr)<input type="number" id="Ro" readonly></label>
+        <label>Preaer Tank (%)<input type="number" id="PercentPreaer"></label>
+        <label>Membrane Tank (%)<input type="number" id="PercentMembrane" readonly></label>
+        <label>Preaer. (kg/hr)<input type="number" id="RoPreAer1" readonly></label>
+        <label>Membr. (kg/hr)<input type="number" id="RoMemb" readonly></label>
+        <label>Total Air Requirement (m³/min)<input type="number" id="ivtxtAFTOT" readonly></label>
+        <label>Air Requirement-BOD (m³/min)<input type="number" id="iv1airreq" readonly></label>
+        <label>Air Requirement-NH4N (m³/min)<input type="number" id="iv2airreq" readonly></label>
+      </div>
+ <div class="section">
+        <h3>Tank Illustration</h3>
+        <img src="MBR.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+      
+
+      <!-- Solids Parameters -->
+      <div class="section">
+        <h3>Solids Parameters</h3>
+        <label>Solids Content (%)<input type="number" id="txtSolidsContent"></label>
+        <label>SG Sludge (kg/m³)<input type="number" id="txtSGSludgeperm3Sludge"></label>
+        <label>Sludge Flowrate (m³/d)<input type="number" id="txtSludgeflowrate" readonly></label>
+      </div>
+
+      <!-- Alkalinity Dosing -->
+      <div class="section">
+        <h3>Alkalinity Sizing</h3>
+        <label>Residual Alkalinity (mg/L)<input type="number" id="ResAlkalinity"></label>
+        <label>Influent Alkalinity (mg/L)<input type="number" id="InfAlkalinity"></label>
+        <label>Alkalinity Used (mg/L)<input type="number" id="AlkalinityUsed" readonly></label>
+        <label>Alkalinity Produced (mg/L)<input type="number" id="AlkalinityProduced" readonly></label>
+        <label>Alkalinity to be Added (mg/L)<input type="number" id="AlkalinitytobeAdded" readonly></label>
+        <label>Mass to be Added (kg/d)<input type="number" id="MassAlkalinity" readonly></label>
+      </div>
+
+      <!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+          <!-- MBBR Membrane Information Section -->
+  <div class="mbbr-membrane-info">
+    <h3>Membrane Information</h3>
+    <div class="mbbr-membrane-info-row">
+      <div class="mbbr-membrane-info-item">
+        <label for="membraneBrand">Membrane Brand:</label>
+        <input type="text" id="membraneBrand">
+      </div>
+      <div class="mbbr-membrane-info-item">
+        <label for="membraneModel">Membrane Model:</label>
+        <input type="text" id="membraneModel">
+      </div>
+    </div>
+  </div>
+  
+
+        <h3>MBR Tank Design Report</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+         <td>Average Flowrate</td>
+    <td>m<sup>3</sup>/d</td>
+    <td><input type="text" id="txtFlowrate2" readonly /></td>
+  </tr>
+  <tr>
+    <td>BODin</td>
+    <td>mg/L</td>
+    <td><input type="text" id="BODin2" readonly /></td>
+  </tr>
+  <tr>
+    <td>TKNin</td>
+    <td>mg/L</td>
+    <td><input type="text" id="TKN2" readonly /></td>
+  </tr>
+
+  <tr>
+    <td>BODout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="BODOut2" readonly /></td>
+  </tr>
+  <tr>
+    <td>NH4Nout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="MBRNH4Neff2" readonly /></td>
+  </tr>
+  <tr>
+    <td>NO3Nout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="Ne2" readonly /></td>
+  </tr>
+
+  <tr>
+    <td>Reflux Ratio</td>
+    <td>--</td>
+    <td><input type="text" id="reflux2" readonly /></td>
+  </tr>
+
+  <tr>
+    <td>Volume PreDN Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="AnoxicTankVolume2" readonly /></td>
+  </tr>
+  <tr>
+    <td>Pre-aeration Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="PreaerationNecVol2" readonly /></td>
+  </tr>
+  <tr>
+    <td>MBR Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="MembraneVolume2" readonly /></td>
+  </tr>
+
+   <tr>
+    <td>HRT</td>
+    <td>hrs</td>
+    <td><input type="text" id="MemHRT2" readonly /></td>
+  </tr>
+
+     <tr>
+    <td>Flux</td>
+    <td>(L/m²h)</td>
+    <td><input type="text" id="flux2" readonly /></td>
+  </tr>
+     
+     <tr>
+    <td>MLSS</td>
+    <td>g/m<sup>3</sup></td>
+    <td><input type="text" id="Xmbr2" readonly /></td>
+  </tr>
+  
+
+      <tr>
+    <td>Water Level</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="iv1txtLD2" readonly /></td>
+  </tr>
+  
+     <tr>
+    <td>Oxygen Transfer Rate</td>
+    <td>kg/h</td>
+    <td><input type="text" id="iv1txtOUR2" readonly /></td>
+  </tr>
+
+   <tr>
+    <td>Oxygen Transfer Efficiency</td>
+    <td>%</td>
+    <td><input type="text" id="iv1txtE2" readonly /></td>
+  </tr>
+
+
+     <tr>
+    <td>Air Flow Required</td>
+    <td>m<sup>3</sup>/min</td>
+    <td><input type="text" id="iv1txtAF2" readonly /></td>
+  </tr>
+
+
+
+          </tbody>
+        </table>
+ <button class="print-button" onclick="printReport()">Print Report</button>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+      <!-- Tank Drawing Section -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h2>Rectangular Tank Isometric Drawing</h2>
+        <div class="input-section">
+          <div class="input-group">
+            <label for="length">Length (m):</label>
+            <input type="number" id="length" min="1" value="35">
+          </div>
+          <div class="input-group">
+            <label for="width">Width (m):</label>
+            <input type="number" id="width" min="1" value="25">
+          </div>
+          <div class="input-group">
+            <label for="depth">Depth (m):</label>
+            <input type="number" id="depth" min="1" value="6">
+          </div>
+          <div class="volume-display">
+            <label>Volume:</label>
+            <div id="volume">5,250</div>
+            <span>(m³)</span>
+          </div>
+          <button id="draw-btn">Draw Tank</button>
+        </div>
+        <div class="canvas-container">
+          <canvas id="tankCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="MBR.js"></script>
+</body>
+</html>

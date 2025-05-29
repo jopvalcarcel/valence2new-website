@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Circle with Concentric Rectangle and Pumps</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-group label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .input-group input {
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .input-group input[readonly] {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    #draw-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #draw-btn:hover {
+      background-color: #005fa3;
+    }
+
+    canvas {
+      width: 100%;
+      height: 500px;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 20px;
+      background: white;
+    }
+
+    .output-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .output-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <div class="form-title">Circle and Pump Layout Parameters</div>
+    <div class="input-grid">
+      <div class="input-group">
+        <label for="circle-diameter">Circle Diameter</label>
+        <input type="number" id="circle-diameter" value="1.3" step="0.1">
+      </div>
+      <div class="input-group">
+        <label for="rect-length">Hatch Length</label>
+        <input type="number" id="rect-length" value="0.9" step="0.1">
+      </div>
+      <div class="input-group">
+        <label for="rect-width">Hatch Width</label>
+        <input type="number" id="rect-width" value="0.6" step="0.1">
+      </div>
+      <div class="input-group">
+        <label for="pump-length">Pump Length</label>
+        <input type="number" id="pump-length" value="0.3" step="0.1">
+      </div>
+      <div class="input-group">
+        <label for="pump-width">Pump Width</label>
+        <input type="number" id="pump-width" value="0.3" step="0.1">
+      </div>
+      <div class="input-group">
+        <label for="num-pumps">Number of Pumps</label>
+        <input type="number" id="num-pumps" value="2">
+      </div>
+    </div>
+    <div class="output-section">
+      <div class="output-title">Calculated Distances</div>
+      <div class="input-grid">
+        <div class="input-group">
+          <label for="pump-spacing">Pump Spacing</label>
+          <input type="text" id="pump-spacing" readonly>
+        </div>
+        <div class="input-group">
+          <label for="pump-to-edge">Pump to Circle Edge</label>
+          <input type="text" id="pump-to-edge" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <button id="draw-btn">Draw</button>
+    </div>
+    <canvas id="planCanvas"></canvas>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('planCanvas');
+      const ctx = canvas.getContext('2d');
+      const drawBtn = document.getElementById('draw-btn');
+      const pumpSpacingInput = document.getElementById('pump-spacing');
+      const pumpToEdgeInput = document.getElementById('pump-to-edge');
+
+      function resizeCanvas() {
+        const container = document.querySelector('.form-container');
+        canvas.width = container.clientWidth - 40; // Account for padding
+        canvas.height = 500;
+      }
+
+      function drawPlan() {
+        const diameter = parseFloat(document.getElementById('circle-diameter').value) || 1.3;
+        const rectLength = parseFloat(document.getElementById('rect-length').value) || 0.9;
+        const rectWidth = parseFloat(document.getElementById('rect-width').value) || 0.6;
+        const pumpLength = parseFloat(document.getElementById('pump-length').value) || 0.3;
+        const pumpWidth = parseFloat(document.getElementById('pump-width').value) || 0.3;
+        const numPumps = parseInt(document.getElementById('num-pumps').value) || 2;
+
+        // Calculate distances
+        const spacing = numPumps > 1 ? (rectLength - numPumps * pumpLength) / (numPumps + 1) : 0;
+        const pumpToEdge = (diameter - rectLength) / 2;
+
+        // Update readonly inputs
+        pumpSpacingInput.value = numPumps > 1 ? spacing.toFixed(2) : 'N/A';
+        pumpToEdgeInput.value = pumpToEdge.toFixed(2);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Calculate scale to fit entire circle with padding
+        const padding = 50;
+        const scale = Math.min(
+          (canvas.width - padding * 2) / diameter,
+          (canvas.height - padding * 2) / diameter
+        );
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = (diameter / 2) * scale;
+
+        // Draw Grid
+        const gridStep = 0.1 * scale;
+        ctx.beginPath();
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 0.5;
+        for (let x = centerX - radius; x <= centerX + radius; x += gridStep) {
+          ctx.moveTo(x, centerY - radius);
+          ctx.lineTo(x, centerY + radius);
+        }
+        for (let y = centerY - radius; y <= centerY + radius; y += gridStep) {
+          ctx.moveTo(centerX - radius, y);
+          ctx.lineTo(centerX + radius, y);
+        }
+        ctx.stroke();
+
+        // Draw Axes
+        ctx.beginPath();
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.moveTo(centerX - radius, centerY);
+        ctx.lineTo(centerX + radius, centerY);
+        ctx.moveTo(centerX, centerY - radius);
+        ctx.lineTo(centerX, centerY + radius);
+        ctx.stroke();
+
+        // Draw Axis Labels
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '#000000';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        for (let x = -diameter / 2; x <= diameter / 2; x += 0.1) {
+          const canvasX = centerX + x * scale;
+          ctx.fillText(x.toFixed(1), canvasX, centerY + 5);
+        }
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (let y = -diameter / 2; y <= diameter / 2; y += 0.1) {
+          const canvasY = centerY - y * scale;
+          ctx.fillText(y.toFixed(1), centerX - 5, canvasY);
+        }
+
+        // Draw Circle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = '#0077cc';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw Rectangle
+        const rectScaledLength = rectLength * scale;
+        const rectScaledWidth = rectWidth * scale;
+        const rectLeft = centerX - rectScaledLength / 2;
+        const rectTop = centerY - rectScaledWidth / 2;
+        ctx.beginPath();
+        ctx.rect(rectLeft, rectTop, rectScaledLength, rectScaledWidth);
+        ctx.strokeStyle = '#cc3300';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw Pumps
+        const pumpScaledLength = pumpLength * scale;
+        const pumpScaledWidth = pumpWidth * scale;
+        const spacingScaled = spacing * scale;
+
+        for (let i = 0; i < numPumps; i++) {
+          const pumpX = rectLeft + spacingScaled * (i + 1) + pumpScaledLength * i;
+          const pumpY = centerY - pumpScaledWidth / 2;
+          ctx.beginPath();
+          ctx.rect(pumpX, pumpY, pumpScaledLength, pumpScaledWidth);
+          ctx.fillStyle = 'rgba(0, 150, 0, 0.5)';
+          ctx.fill();
+          ctx.strokeStyle = '#006600';
+          ctx.stroke();
+        }
+      }
+
+      drawBtn.addEventListener('click', () => {
+        resizeCanvas();
+        drawPlan();
+      });
+
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        drawPlan();
+      });
+
+      // Initial draw
+      resizeCanvas();
+      drawPlan();
+    });
+  </script>
+</body>
+</html>

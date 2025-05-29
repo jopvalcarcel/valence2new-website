@@ -1,0 +1,427 @@
+/* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* ==== Colors ==== */
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #695CFE;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+
+    /* ==== Transitions ==== */
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
+body {
+    height: 100vh;
+    background: var(--body-color);
+    transition: var(--tran-05);
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding: 10px 14px;
+    background: var(--sidebar-color);
+    transition: var(--tran-03);
+    white-space: nowrap;
+    opacity: 1;
+    z-index: 100;
+}
+
+.sidebar.close {
+    width: 88px;
+}
+
+/* ===== Reusable CSS ===== */
+.sidebar .text {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: var(--tran-03);
+    white-space: nowrap;
+}
+
+.sidebar.close .text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar .image {
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar li {
+    height: 50px;
+    margin-top: 10px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar li .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    font-size: 20px;
+}
+
+.sidebar li .icon,
+.sidebar li .text {
+    color: var(--text-color);
+    transition: var(--tran-03);
+}
+
+.sidebar header {
+    position: relative;
+}
+
+.sidebar .image-text img {
+    width: 40px;
+    border-radius: 6px;
+}
+
+.sidebar header .image-text {
+    display: flex;
+    align-items: center;
+}
+
+header .image-text .header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-text .name {
+    font-weight: 600;
+}
+
+.header-text .profession {
+    margin-top: -2px;
+}
+
+.sidebar header .toggle {
+    position: absolute;
+    top: 50%;
+    right: -25px;
+    transform: translateY(-50%) rotate(0deg);
+    height: 25px;
+    width: 25px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--sidebar-color);
+    font-size: 22px;
+    cursor: pointer;
+    transition: var(--tran-03);
+    z-index: 100;
+}
+
+.sidebar.close header .toggle {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+body.dark .sidebar header .toggle {
+    color: var(--text-color);
+}
+
+.sidebar .menu {
+    margin-top: 35px;
+}
+
+.sidebar .search-box {
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    transition: var(--tran-05);
+}
+
+.search-box input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary-color-light);
+    padding: 0 15px 0 10px;
+    transition: var(--tran-03);
+}
+
+.sidebar li a {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: var(--tran-04);
+}
+
+.sidebar li a:hover {
+    background: var(--primary-color);
+}
+
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text {
+    color: var(--sidebar-color);
+}
+
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text {
+    color: var(--text-color);
+}
+
+.sidebar .menu-bar {
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-bar .mode {
+    position: relative;
+    border-radius: 6px;
+    background: var(--primary-color-light);
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-bar .mode .moon-sun {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.menu-bar .mode i {
+    position: absolute;
+    font-size: 20px;
+    transition: var(--tran-03);
+}
+
+.menu-bar .mode i.sun {
+    opacity: 0;
+}
+
+body.dark .menu-bar .mode i.sun {
+    opacity: 1;
+}
+
+body.dark .menu-bar .mode i.moon {
+    opacity: 0;
+}
+
+.menu-bar .mode .toggle-switch {
+    position: absolute;
+    right: 20px;
+    height: 100%;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.toggle-switch .switch {
+    position: relative;
+    height: 24px;
+    width: 48px;
+    border-radius: 25px;
+    background: var(--toggle-color);
+    transition: var(--tran-05);
+}
+
+.switch::before {
+    content: '';
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    background: var(--sidebar-color);
+    transition: var(--tran-03);
+}
+
+body.dark .switch::before {
+    left: calc(100% - 22px);
+}
+
+body.dark {
+    --body-color: #18191A;
+    --sidebar-color: #242526;
+    --primary-color: #3A3B3C;
+    --primary-color-light: #3A3B3C;
+    --toggle-color: #FFF;
+    --text-color: #CCC;
+}
+
+body.dark .sidebar li a:hover {
+    background: var(--primary-color);
+}
+
+/* Additional improvements for closed sidebar */
+.sidebar.close .image-text .header-text,
+.sidebar.close .search-box input {
+    display: none;
+}
+
+.sidebar.close .nav-text {
+    display: none;
+}
+
+.home {
+    position: relative;
+    height: 100vh;
+    left: 250px;
+    width: calc(100% - 250px);
+    background: var(--body-color);
+    transition: var(--tran-05);
+}
+
+.home .text {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 8px 40px;
+}
+
+.sidebar.close ~ .home {
+    left: 88px;
+    width: calc(100% - 88px);
+}
+
+/* Dropdown Styles */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: relative;
+    left: 0;
+    width: 100%;
+    background: var(--primary-color-light);
+    border-radius: 6px;
+    padding: 5px 0;
+    margin-top: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.has-dropdown.open .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    height: 40px;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.dropdown-link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 15px;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: var(--tran-03);
+}
+
+.dropdown-link:hover {
+    background: var(--primary-color);
+    color: var(--sidebar-color);
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0; /* Set gap to 0 to avoid indentation */
+    width: 100%; /* Ensure full width */
+    padding: 0 0 0 0; /* Remove any unexpected padding */
+}
+
+.dropdown-icon {
+    transition: var(--tran-03);
+    font-size: 18px;
+}
+
+.sidebar.close .dropdown-menu {
+    display: none !important;
+}
+
+/* Hide the dropdown icon completely */
+.nav-link.has-dropdown .dropdown-icon:not(.placeholder) {
+    display: none;
+}
+
+/* Keep the placeholder for layout */
+.nav-link.has-dropdown .dropdown-icon.placeholder {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-link.has-dropdown .nav-text {
+    padding-left: 0;
+}
+
+.sidebar.close .nav-link.has-dropdown .icon {
+    pointer-events: auto;
+}
+
+
+.search-results-container {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--sidebar-bg, #fff); /* Match your sidebar background */
+    border: 1px solid #ccc;
+    z-index: 1000;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.result-item {
+    padding: 10px;
+    cursor: pointer;
+    color: var(--text-color, #000); /* Adjust to match your theme */
+}
+
+.result-item:hover {
+    background-color: #eee;
+}

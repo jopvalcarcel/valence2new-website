@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="CCT.css">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+  
+    <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Chlorine Contact Tank</h1>
+
+    <div class="container">
+      <!-- Influent Parameters -->
+      <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Steady Flowrate (m³/d)<input type="number" id="txtflowrate6"></label>
+        <label>No. of Parallel Tanks (mg/L)<input type="number" id="txtdsnfqty"></label>
+        <label>Retention time (min)<input type="number" id="txtrt6"></label>
+        <label>Peak factor (min)<input type="number" id="txtpk"></label>
+        <label>Flow Width (m)<input type="number" id="txtw6"></label>
+        <label>Water Level (m)<input type="number" id="txtwl6"></label>
+        <label>Viscosity at Temp (m)<input type="number" id="txtvisc"></label>
+      </div>
+
+      <!-- Desired Parameters -->
+      <div class="section">
+        <h3>Desired</h3>
+        <label>Flow Path Lenght (L)<input type="number" id="txtl6"readonly></label>
+        <label>Velocity at open channel (m/s)<input type="number" id="txtv"readonly></label>
+        <label>Hydraulic Radius (m/s)<input type="number" id="txtR"readonly></label>
+        <label>Reynolds Number (m/s)<input type="number" id="txtnr"readonly></label>
+        <label>Coeffecient of Dispersion (m/s)<input type="number" id="txtcd"readonly></label>
+        <label>Dispersion Number (m/s)<input type="number" id="txtdn"readonly></label>
+      </div>
+
+      <!-- Actual Parameters -->
+      <div class="section">
+        <h3>Actual</h3>
+        <label>Flow Path Lenght (L)<input type="number" id="txtl6a"></label>
+        <label>Velocity at open channel (m/s)<input type="number" id="txtva"readonly></label>
+        <label>Hydraulic Radius (m/s)<input type="number" id="txtRa"readonly></label>
+        <label>Reynolds Number (m/s)<input type="number" id="txtnra"readonly></label>
+        <label>Coeffecient of Dispersion (m/s)<input type="number" id="txtcda"readonly></label>
+        <label>Dispersion Number (m/s)<input type="number" id="txtdna"readonly></label>
+      </div>
+
+      <!-- Tank Configuration -->
+      <div class="section">
+        <h3>Tank Configuration</h3>
+        <label>Width Partition<input type="number" id="txtwb"></label>
+        <label>no. of Turns <input type="number" id="txtnt"></label>
+        <label>Overall width, OW, m<input type="number" id="txttw"readonly></label>
+        <label>Overall Length, OL, m<input type="number" id="txttl" readonly></label>
+        <label>Length of Partition (m³)<input type="number" id="txtcctLP"readonly></label>
+        <label>total volume (m³) <input type="number" id="txtvolume6"readonly></label>
+      </div>
+
+      <!-- Visualization Section -->
+      <div class="section">
+        <h3>Tank Visualization</h3>
+        <div style="margin-bottom: 15px;">
+          <label style="display: inline-block; width: 150px;">Flow Width (m):</label>
+          <input type="number" id="visPathwidth" value="2" step="0.1" min="0.5" style="width: 80px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: inline-block; width: 150px;">Number of Turnw:</label>
+          <input type="number" id="visPartitions" value="5" min="1" step="1" style="width: 80px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: inline-block; width: 150px;">Partition Width (m):</label>
+          <input type="number" id="visPartitionwidth" value="0.5" step="0.1" min="0.1" style="width: 80px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: inline-block; width: 150px;">Flow Path Length (m):</label>
+          <input type="number" id="visTotalflowpath" value="30" step="1" min="5" style="width: 80px;">
+        </div>
+        <button onclick="drawTank()" style="padding: 8px 15px; margin-bottom: 15px;">Update Visualization</button>
+        <canvas id="tankCanvas" width="600" height="350" style="border: 1px solid #ddd; max-width: 100%;"></canvas>
+      </div>
+
+      <!-- Diagram Sections -->
+      <div class="section">
+        <h3>Tank Illustration</h3>
+        <img src="CCT1.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+      <div class="section">
+        <h3>Tank Illustration</h3>
+        <img src="CCT2.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+<!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+        <h3>Chlorine contact Tank Specifications</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Average Flowrate</td>
+              <td>m<sup>3</sup>/d</td>
+              <td><input type="text" id="txtflowrate7" readonly /></td>
+            </tr>
+            <tr>
+              <td>No. of tanks</td>
+              <td>qty.</td>
+              <td><input type="text" id="txtdsnfqty2" readonly /></td>
+            </tr>
+                     <tr>
+              <td>Water Level</td>
+              <td>m</td>
+              <td><input type="text" id="txtwl7" readonly /></td>
+            </tr>
+            <td>retention time</td>
+              <td>hr</td>
+              <td><input type="text" id="txtrt7" readonly /></td>
+            </tr>
+            
+             <td>Tank Dimensions per tank</td>
+              <td>L×W×Water initialLevel (m)</td>
+            <td><input type="text" id="txtTankDimensions2" readonly /></td>
+            </tr>
+          </tbody>
+        </table>
+ <button class="print-button" onclick="printReport()">Print Report</button>
+
+    </div>
+  </div>
+
+
+
+<script src="CCT.js"></script>
+</body>
+</html>

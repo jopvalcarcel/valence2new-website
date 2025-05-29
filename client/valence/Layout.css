@@ -1,0 +1,269 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.controls {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.plan-view-container {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+}
+
+.plan-view {
+    position: relative;
+    background-color: #e9e9e9;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#clearAll {
+    background-color: #f44336;
+}
+
+#clearAll:hover {
+    background-color: #d32f2f;
+}
+
+.stats {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.stats p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.tank {
+    position: absolute;
+    background-color: rgba(66, 134, 244, 0.7);
+    border: 1px solid #4286f4;
+    cursor: move;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    user-select: none;
+}
+
+.tank:hover {
+    background-color: rgba(66, 134, 244, 0.9);
+}
+
+.tank-label {
+    pointer-events: none;
+    text-align: center;
+}
+
+.tank.circle {
+    border-radius: 50%;
+}
+
+#rectangleDimensions, #circleDimensions {
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+#editLabelInput {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+.tank-label {
+    pointer-events: none;
+    text-align: center;
+    font-weight: bold;
+    word-break: break-word;
+    padding: 5px;
+}
+
+.tank:hover .tank-label {
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+/* Add this to your existing styles */
+#savePdf {
+    background-color: #2196F3;
+}
+
+#savePdf:hover {
+    background-color: #0b7dda;
+}
+
+.tank.selected {
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 10px #FFD700;
+}
+
+#copyTank {
+    background-color: #FF9800;
+}
+
+#copyTank:hover {
+    background-color: #e68a00;
+}
+
+#pasteTank {
+    background-color: #4CAF50;
+}
+
+#pasteTank:hover {
+    background-color: #45a049;
+}
+
+#deleteTank {
+    background-color: #f44336;
+}
+
+#deleteTank:hover {
+    background-color: #d32f2f;
+}
+
+.selection-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    display: none;
+}
+
+.tank.selected .selection-indicator {
+    display: block;
+}
+
+/* Add this to your existing styles */
+.tank {
+    transform-origin: center;
+    transition: transform 0.2s ease;
+}
+
+.rotation-handle {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #FFD700;
+    border-radius: 50%;
+    bottom: -7px;
+    right: -7px;
+    cursor: pointer;
+    display: none;
+}
+
+.tank.selected .rotation-handle {
+    display: block;
+}
+
+/* Add this to your Layout.css */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .plan-view, .plan-view * {
+        visibility: visible;
+    }
+    .plan-view {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    .controls {
+        display: none;
+    }
+}
+
+button {
+    margin-top: 5px;
+    padding: 8px 12px;
+}

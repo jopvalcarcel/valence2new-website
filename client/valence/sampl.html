@@ -1,0 +1,148 @@
+<!-- Report Section (hidden by default) -->
+
+<div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .equipment-info-item input {
+      width: 100px; /* Set a smaller, consistent width for all input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-row">
+      <div class="project-info-item">
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName">
+      </div>
+      <div class="project-info-item">
+        <label for="projectNumber">Project Number:</label>
+        <input type="text" id="projectNumber">
+      </div>
+    </div>
+    <div class="project-info-row">
+      <div class="project-info-item">
+        <label for="projectDate">Date:</label>
+        <input type="date" id="projectDate">
+      </div>
+      <div class="project-info-item">
+        <label for="projectVersion">Version Number:</label>
+        <input type="text" id="projectVersion" value="1.0">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Equipment Information Section -->
+ <div class="chemical-pump-info">
+    <h3>Chemical Dosing Pump Information</h3>
+    <div class="chemical-pump-info-row">
+      <div class="chemical-pump-info-item">
+        <label for="pumpName">Pump Name:</label>
+        <input type="text" id="pumpName">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="pumpType">Pump Type:</label>
+        <input type="text" id="pumpType">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="model">Model:</label>
+        <input type="text" id="model">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="duty">Duty:</label>
+        <input type="text" id="duty">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="standby">Standby:</label>
+        <input type="text" id="standby">
+      </div>
+      <div class="chemical-pump-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pump Specifications Table -->
+   <h3>Coagulant Dosing for Phosphate Removal</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Flowrate</td>
+        <td>m<sup>3</sup>/d</td>
+        <td><input type="text" id="txtPAClQ2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Total Phosphorus Influent</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPAClTP2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Soluble Influent Orthophosphate</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPAClSPin2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Residual Phosphate</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPAClSPres2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Coagulant Dosing Ratio (Option 1: PACl)</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtPACldosingRatio2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Chemical Dosing Rate (Option 1: PACl)</td>
+        <td>L/hr</td>
+        <td><input type="text" id="txtPACldosinLperhr2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Detention Time (Option 1: PACl)</td>
+        <td>d</td>
+        <td><input type="text" id="txtPACldetentiontime2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Storage Volume (Option 1: PACl)</td>
+        <td>m<sup>3</sup></td>
+        <td><input type="text" id="txtPAClvolumerpertank2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Coagulant Dosing Ratio (Option 2: FeCl3)</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtdr2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Chemical Dosing Rate (Option 2: FeCl3)</td>
+        <td>L/hr</td>
+        <td><input type="text" id="txtLhr2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Detention Time (Option 2: FeCl3)</td>
+        <td>d</td>
+        <td><input type="text" id="stdays2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Storage Volume (Option 2: FeCl3)</td>
+        <td>m<sup>3</sup></td>
+        <td><input type="text" id="txtstv2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+  </div>
+    </div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffuser Layout Calculator</title>
+    <link rel="stylesheet" href="numberofdiffusers.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Diffusers in Rectangular Tank</h1>
+        
+        <div class="input-section">
+            <div class="input-group diffuser-type">
+                <label for="diffuserType">Diffuser Type:</label>
+                <select id="diffuserType">
+                    <option value="circular">Circular</option>
+                    <option value="tubular">Tubular</option>
+                </select>
+            </div>
+            
+            <div class="input-group tank-dimensions">
+                <label for="tankLength">Tank Length (m):</label>
+                <input type="number" id="tankLength" min="0.1" value="1">
+            </div>
+
+            <div class="input-group tank-dimensions">
+                <label for="tankWidth">Tank Width (m):</label>
+                <input type="number" id="tankWidth" min="0.1" value="0.5">
+            </div>
+            
+            <div class="input-group diffuser-circular diffuser-dimensions">
+                <label for="diffuserDiameter">Diffuser Diameter (mm):</label>
+                <input type="number" id="diffuserDiameter" min="1" value="100">
+            </div>
+            
+            <div class="input-group diffuser-tubular diffuser-dimensions" style="display: none;">
+                <label for="diffuserLength">Diffuser Length (mm):</label>
+                <input type="number" id="diffuserLength" min="1" value="100">
+            </div>
+            
+            <div class="input-group diffuser-tubular diffuser-dimensions" style="display: none;">
+                <label for="diffuserWidth">Diffuser Width (mm):</label>
+                <input type="number" id="diffuserWidth" min="1" value="50">
+            </div>
+            
+            <div class="input-group">
+                <label for="diffuserCount">Number of Diffusers:</label>
+                <input type="number" id="diffuserCount" min="1" value="10">
+            </div>
+            
+            <div class="input-group">
+                <label for="spacing">Spacing Between Diffusers (mm):</label>
+                <input type="number" id="spacing" min="0" value="50">
+            </div>
+            
+            <button id="calculateBtn">Calculate Layout</button>
+        </div>
+        
+        <div class="results-section">
+            <div id="tankVisualization"></div>
+            <div id="results"></div>
+        </div>
+    </div>
+    
+    <script src="numberofdiffusers.js"></script>
+</body>
+</html>

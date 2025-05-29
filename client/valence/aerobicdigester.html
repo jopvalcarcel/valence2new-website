@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valence Pro Calculator</title>
+  <link rel="stylesheet" href="aerobicdigester.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    /* Removed incorrect style tag content that referenced CSS file */
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+      
+
+  <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  </ul> <!-- Added missing closing tag for ul -->
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Aerobic Digester</h1>
+
+    <div class="container">
+      <!--EQ Tank -->
+      <div class="section">
+        <h3>A. Wastesludge from reactor or clarifier</h3>
+        <label>I. Solids rate (kg DS/day)<input type="number" id="txtkgDSday"></label>
+        <label>I.a.Solids Content% (gDS/h Sludge)*100% <input type="number" id="txtSolidsContent"readonly></label>
+        <label>I.b. S.G. Sludge (g Sludge /L Sludge) <input type="number" id="txtSGSludgeperm3Sludge"readonly></label>
+        <label>2. Sludge flowrate(m3/d) <input type="number" id="txtSludgeflowrate" readonly /></label>
+         
+        <h3>B. Sludge from Coagulant (if any)</h3>
+        <label>1. Coagulant (kg DS/day)<input type="number" id="txtcoagulantdsperday"></label>
+        <label>1a. Solids content% (g DS/ gsludge)*100<input type="number" id="txtSolidsContentcoagulant"readonly></label>
+        <label>1b. S.G. Sludge (g Sludge /L Sludge) <input type="number" id="txtSGSludgcoageperm3Sludgecoag"readonly></label>
+        <label>Sludge Flowrater from Coagulant (m³/d) <input type="number" id="txtCoagulantSludgeflowrate"readonly></label>
+        
+        
+        <h3>C. Total Sludge </h3>
+        <label>Total Sludge Produced  (d)<input type="number" id="txtTotalSludgeflowrate" readonly></label>
+     
+      </div>
+
+
+        <div class="section">
+        <h3> Digester Dimension </h3>
+        <label>Retention time or SRT (d)<input type="number" id="txtSHTRetentiontime" ></label>
+        <label>Necessary Volume (m³)<input type="number" id="txtSHTNecessaryVolume" readonly></label>
+        <label>Water level (m)<input type="number" id="txtSHTWL" ></label>
+        <label>Free Board (m)<input type="number" id="txtSHTFB"></label>
+        <label>Tank Depth (m)<input type="number" id="txtSHTTD" readonly></label>
+        <label>Width (m)<input type="number" id="txtSHTW"></label>
+        <label>Necessary Tank Lenght (m)<input type="number" id="txtSHTL" readonly></label>
+        <label>Actual Tank Lenght (m)<input type="number" id="txtSHTActualL"></label>
+        <label>Actual Volume (m³)<input type="number" id="txtSHTActualVolume" readonly></label>
+      </div>
+
+     <div class="section">
+        <h3> Volatile Suspended Solids % reduction </h3>
+        <label>SRT Sludge  (d)<input type="number" id="txtADSRT" readonly></label>
+        <label>Temp (°C)<input type="number" id="txtADCelsius" readonly></label>
+         <label>degreedays(°C)<input type="number" id="txtADSRTCelsius" readonly></label>
+       
+        <label>VSS Reduction (%), check graph<input type="number" id="txtADperecentVSSreduced"></label>
+      </div>
+
+      <!-- Aeration Parameters -->
+      <div class="section">
+        <h3>VSS Reduction Graph</h3>
+        <img src="VSSreduction.jpg" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+          <div class="section">
+        <h3> Air Requirement </h3>
+        <label>Solids loading rate  (kg DS/day)<input type="number" id="txtADTSSperday"></label>
+        <label>VSS/TSS Ratio<input type="number" id="txtADVSSTSSRatio" readonly></label>
+        <label>Total Mass of VSS (kg/d)<input type="number" id="txtADVSSperday" readonly></label>
+        <label> VSS Removed per (kg/d)<input type="number" id="txtVSSReducedperday" readonly></label>
+
+        <label>O2 requirement (kg/d)<input type="number" id="txtADO2Requirement"readonly></label>
+        <label>O2 Transfer Efficiency (%)<input type="number" id="txtADAirTransefficiency"readonly></label>
+        <label>Digester Volume (m³)<input type="number" id="txtADvolume" readonly></label>
+        <label>Air Requirement (m³/min)<input type="number" id="txtADAirRequirement" readonly></label>
+
+
+      </div>
+
+
+      <!-- Aeration Parameters -->
+      <div class="section">
+        <h3>Aerobic Digester</h3>
+        <img src="Aerobicdigester.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+
+      <!-- Rectangular Tank Isometric Drawing Section -->
+      <div class="section">
+        <h2>Rectangular Tank Isometric Drawing</h2>
+        <div class="input-section">
+          <div class="input-group">
+            <label for="length">Length:</label>
+            <input type="number" id="length" min="1" value="100">
+          </div>
+          <div class="input-group">
+            <label for="width">Width:</label>
+            <input type="number" id="width" min="1" value="60">
+          </div>
+          <div class="input-group">
+            <label for="depth">Depth:</label>
+            <input type="number" id="depth" min="1" value="40">
+          </div>
+          <div class="volume-display">
+            <label>Volume:</label>
+            <div id="volume">240,000</div>
+            <span>m³</span>
+          </div>
+          <button id="draw-btn">Draw Tank</button>
+        </div>
+        
+        <div class="canvas-container">
+          <canvas id="tankCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Report Section (hidden by default) -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+        <h3>Aerobic Digester Tank Parameters</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Actual Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+             <td>Solids Rate from Biological Treatment </td>
+              <td>kg/d</td>
+              <td><input type="text" id="txtkgDSday2" readonly /></td>
+            </tr>
+            <tr>
+                <td>Solids Rate from Coagulant </td>
+              <td>kg/d</td>
+              <td><input type="text" id="txtcoagulantdsperday2" readonly /></td>
+            </tr>
+            <tr>
+                <td>Total Sludge flowrate </td>
+              <td>m<sup>3</sup>/d</td>
+              <td><input type="text" id="txtTotalSludgeflowrate2" readonly /></td>
+            </tr>
+            <tr>
+       <td>Solids Retention time </td>
+              <td>m</td>
+              <td><input type="text" id="txtSHTRetentiontime2" readonly /></td>
+            </tr>
+            <tr>
+               <td>Temperature </td>
+              <td>°C</td>
+              <td><input type="text" id="txtADCelsius2" readonly /></td>
+            </tr>
+            <tr>
+          <td>VSS loading</td>
+              <td>kg/d</td>
+              <td><input type="text" id="txtADVSSperday2" readonly /></td>
+            </tr>
+            <tr>
+              <td>VSS reduction</td>
+              <td>%</td>
+              <td><input type="text" id="txtADperecentVSSreduced2" readonly /></td>
+            </tr>
+             <tr>
+              <td>Volume tank</td>
+              <td>m<sup>3</sup></td>
+              <td><input type="text" id="txtADvolume2" readonly /></td>
+            </tr>
+
+            <tr>
+             <td>Air Requirement per tank </td>
+             <td>m<sup>3</sup>/min</td>
+              <td><input type="text" id="txtADAirRequirement2" readonly /></td>
+            </tr>
+
+            <tr>
+             <td>Dimension </td>
+             <td>L×W×WL (m)</td>
+              <td><input type="text" id="txtTankDimensions2" readonly /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        
+        <button class="print-button" onclick="printReport()">Print Report</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="aerobicdigester.js"></script>
+  <script src="drawEQTank.js"></script>
+
+</body>
+</html>

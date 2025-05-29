@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="gritremoval.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+     <button onclick="generateReport()">Generate Report</button>
+  
+  
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="Dashboard.html">
+          <i class='bx bx-home-alt icon'></i>
+          <span class="text nav-text">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Grit Removal</h1>
+
+    <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Grit Removal</h3>
+        <label>Average Flowrate (m³/d)<input type="number" id="txtavecmd"></label>
+        <label>Average Flowrate (m³/s)<input type="number" id="txtavecms"></label>
+        <label>Peak Flowrate (mg/l)<input type="number" id="txtgritpkf" ></label>
+        <label>Peak factor (mg/l)<input type="number" id="txtpkcmd" ></label>
+        <label>Peak Flowrate (mg/l)<input type="number" id="txtpkcms" ></label>
+        <label>Detention time at peak flow (min)<input type="number" id="txtgritdt"readonly></label>
+        <label>Grit Chamber Volume (m³/d) <input type="number" id="txtgritvol" ></label>
+        <label>Water level (d) <input type="number" id="txtgritlvl"></label>
+        <label>Free Board (m³)<input type="number" id="txtgrittankFB" readonly></label>
+        <label>Tank Depth (m)<input type="number" id="txtgrittanklvl" ></label>
+         <label>Width to Depth Ratio (--)<input type="number" id="txtgritWD" ></label>
+        <label>Width  (m)<input type="number" id="txtgritW" ></label>
+        <label>Necessary Length (m)<input type="number" id="txtgritNecLength" ></label>
+        <label>Actual Lenght (m)<input type="number" id="txtgritActLength" readonly></label>
+        <label>No. of Tanks, duty (no.)<input type="number" id="txtGritTanks" readonly></label>
+        <label>No. of Tanks, Standby (no.)<input type="number" id="txtGritTanksstandby" ></label>
+        <label>Actual Volume (m³)<input type="number" id="txtActVol" readonly></label>
+        <label>Detention time at Average flow (d)<input type="number" id="txtGritActDet" readonly></label>
+        <label>Air Requirement per length (m³/min m)<input type="number" id="txtGritAirReqperL" readonly></label>
+        <label>Air Requirement per Girt Chamber (m³/min)<input type="number" id="txtGritAirReq" readonly></label>
+        <label>Air Requirement Total (m3/min)<input type="number" id="txtGritAirReqTot" readonly></label>
+         <label>Volume of Grit Flow per flow (m³/m³)<input type="number" id="txtvolumeofgritperm3" readonly></label>
+         <label>Volume of Grit Flow per flow (m³/d)<input type="number" id="txtVolumeofGritsperday" readonly></label>
+
+
+      </div>
+          <!-- Diagram Sections -->
+      <div class="section">
+        <h3>Tank Illustration</h3>
+        <img src="gritchamber.jpg" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+            <!-- Rectangular Tank Isometric Drawing Section -->
+      <div class="section">
+        <h2>Rectangular Tank Isometric Drawing</h2>
+        <div class="input-section">
+          <div class="input-group">
+            <label for="length">Length:</label>
+            <input type="number" id="length" min="1" value="100">
+          </div>
+          <div class="input-group">
+            <label for="width">Width:</label>
+            <input type="number" id="width" min="1" value="60">
+          </div>
+          <div class="input-group">
+            <label for="depth">Depth:</label>
+            <input type="number" id="depth" min="1" value="40">
+          </div>
+          <div class="volume-display">
+            <label>Volume:</label>
+            <div id="volume">240,000</div>
+            <span>m³</span>
+          </div>
+          <button id="draw-btn">Draw Tank</button>
+        </div>
+   
+        <div class="canvas-container">
+          <canvas id="tankCanvas"></canvas>
+        </div>
+
+
+
+
+
+  </div>
+
+    </div>
+  
+
+    
+
+<!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+        <h3>Grit Chamber Parameters</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Average Flowrate</td>
+              <td>m<sup>3</sup>/d</td>
+              <td><input type="text" id="txtavecmd2" readonly /></td>
+            </tr>
+            <tr>
+              <td>Peak Flowrate</td>
+                 <td>m<sup>3</sup>/d</td>
+              <td><input type="text" id="txtpkcmd2" readonly /></td>
+            </tr>
+                <tr>
+              <td>No. of Duty</td>
+              <td>no.</td>
+              <td><input type="text" id="txtGritTanks2" readonly /></td>
+            </tr>
+            <td>No. Standby</td>
+              <td>no.</td>
+              <td><input type="text" id="txtGritTanksstandby2" readonly /></td>
+            </tr>
+                 <td>Dimension</td>
+              <td>L x W x Waterlevel</td>
+              <td><input type="text" id="txtTankDimensions2" readonly /></td>
+            </tr>
+            
+             <td>Air Requirement per Grit chamber</td>
+              <td>m<sup>3</sup>/min</td>
+            <td><input type="text" id="txtGritAirReq2" readonly /></td>
+            </tr>
+          </tbody>
+        </table>
+ <button class="print-button" onclick="printReport()">Print Report</button>
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <script src="gritremoval.js"></script>
+  <script src="drawgritchamber.js"></script>
+</body>
+</html>

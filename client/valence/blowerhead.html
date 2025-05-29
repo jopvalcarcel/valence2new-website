@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blower Head Calculator</title>
+  <link rel="stylesheet" href="blowerhead.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+      
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="Dashboard.html">
+          <i class='bx bx-home-alt icon'></i>
+          <span class="text nav-text">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Blower Pressure Requirement</h1>
+
+    <div class="container">
+      <!-- System Condition Section -->
+      <div class="section">
+        <h3>System Condition</h3>
+        <label>Air Requirement (ft³/min)<input type="number" id="scfm"></label>
+        <label>Water level (m)<input type="number" id="Waterlevelforpsig"></label>
+        <label>Static Pressure (PSIG)<input type="number" id="waterlevelPSIG" readonly></label>
+        <label>Required Pressure after friction (PSIA)<input type="number" id="waterlevelPSIA" readonly></label>
+        <label>Friction loss (PSIG)<input type="number" id="frictionlossPSIG" readonly></label>
+        <label>Mean System (PSIG)<input type="number" id="Meansystem" readonly></label>
+        <label>Pipe ID (in)<input type="number" id="PipeID"></label>  
+        <label>Temp Rise (°F)<input type="number" id="TempRise"></label>
+        <label>Temp Rise (°C)<input type="number" id="TempRiseCelsius" readonly></label>
+        <label>Ambient temp (°F)<input type="number" id="AmbTemp"></label>
+        <label>Ambient temp (°C)<input type="number" id="AmbTempCelsius" readonly></label>
+
+      </div>
+
+      <!-- Aeration Piping Section -->
+      <div class="section">
+        <h3>Aeration Piping</h3>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; width: 100%; overflow-x: auto; align-items: flex-start;">
+          
+          <style>
+            .column {
+              display: flex;
+              flex-direction: column;
+              min-width: 150px;
+              gap: 8px;
+            }
+            .column h4 {
+              margin: 0;
+              text-align: center;
+              font-size: 1em;
+              height: 32px;
+              line-height: 32px;
+            }
+            .column input,
+            .column .label-box {
+              width: 100%;
+              padding: 4px;
+              height: 32px;
+              font-size: 0.9em;
+              text-align: center;
+              box-sizing: border-box;
+            }
+            .label-column {
+              min-width: 200px;
+            }
+            .label-box {
+              line-height: 28px;
+              text-align: left;
+              padding-left: 5px;
+            }
+          </style>
+
+          <!-- Row Labels Column -->
+          <div class="column label-column">
+            <h4>Row</h4>
+            <div class="label-box">Gate Valve, Full</div>
+            <div class="label-box">Butterfly Valve, Full</div>
+            <div class="label-box">Check valve, Full</div>
+            <div class="label-box">90° Standard Elbow</div>
+            <div class="label-box">90° Long Radius Elbow</div>
+            <div class="label-box">45° Standard Elbow</div>
+            <div class="label-box">Transition in Size</div>
+            <div class="label-box">Tee, flow through run</div>
+            <div class="label-box">Tee flow through branch</div>
+            <div class="label-box">Silencer</div>
+            <div class="label-box">Length of Pipe</div>
+            <div class="label-box">TOTAL</div>
+            <div class="label-box">Req'd Discharge Pressure (PSIG)</div>
+          </div>
+
+          <!-- Equivalent Feet Column -->
+          <div class="column" style="min-width: 120px;">
+            <h4>Equivalent feet (ft)</h4>
+            <input type="number" id="EquivLengthGateValve" readonly>
+            <input type="number" id="EquivLengthButterflyValve" readonly>
+            <input type="number" id="EquivLengthCheckValve" readonly>
+            <input type="number" id="EquivLengthStandard90Elbow" readonly>
+            <input type="number" id="EquivLengthLongRadius90Elbow" readonly>
+            <input type="number" id="EquivLengthLongStandard45Elbow" readonly>
+            <input type="number" id="EquivLengthTransitioninSize" readonly>
+            <input type="number" id="EquivLengthFlowthroughRun" readonly>
+            <input type="number" id="EquivLengthFlowthrougBranch" readonly>
+            <input type="number" id="EquivSilencer">
+          </div>
+
+          <!-- Number of Fittings Column -->
+          <div class="column">
+            <h4>No. of fittings</h4>
+            <input type="number" id="GateValveno">
+            <input type="number" id="ButterflyValveno">
+            <input type="number" id="CheckValveno">
+            <input type="number" id="Standard90Elbowno">
+            <input type="number" id="LongRadius90Elbowno">
+            <input type="number" id="LongStandard45Elbowno">
+            <input type="number" id="TransitioninSizeno">
+            <input type="number" id="FlowthroughRunno">
+            <input type="number" id="FlowthrougBranchno">
+            <input type="number" id="Silencerno">
+          </div>
+
+          <!-- Total Equivalent Length Column -->
+          <div class="column">
+            <h4>Equivalent length, feet total</h4>
+            <input type="number" id="TotGateValve" readonly>
+            <input type="number" id="TotButterflyValve" readonly>
+            <input type="number" id="TotCheckValve" readonly>
+            <input type="number" id="TotStandard90Elbow" readonly>
+            <input type="number" id="TotLongRadius90Elbow" readonly>
+            <input type="number" id="TotLongStandard45Elbow" readonly>
+            <input type="number" id="TotTransitioninSize" readonly>
+            <input type="number" id="TotFlowthroughRun" readonly>
+            <input type="number" id="TotFlowthrougBranch" readonly>
+            <input type="number" id="TotSilencer" readonly>
+            <input type="number" id="LenghtofPipe">
+            <input type="number" id="TOTAL" readonly>
+            <input type="number" id="Blowerdischargepressure" readonly>
+          </div>
+        </div>
+      </div>
+
+     <!-- Report Section (hidden by default) -->
+      <div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .blower-info-item input {
+      width: 150px; /* Consistent, smaller width for input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-item">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName">
+    </div>
+    <div class="project-info-item">
+      <label for="projectNumber">Project Number:</label>
+      <input type="text" id="projectNumber">
+    </div>
+    <div class="project-info-item">
+      <label for="projectDate">Date:</label>
+      <input type="date" id="projectDate">
+    </div>
+    <div class="project-info-item">
+      <label for="projectVersion">Version Number:</label>
+      <input type="text" id="projectVersion" value="1.0">
+    </div>
+  </div>
+  
+  <!-- Blower Information Section -->
+  <div class="blower-info">
+    <h3>Blower Information</h3>
+    <div class="blower-info-row">
+      <div class="blower-info-item">
+        <label for="blowerName">Blower Name:</label>
+        <input type="text" id="blowerName">
+      </div>
+      <div class="blower-info-item">
+        <label for="brandName">Brand Name:</label>
+        <input type="text" id="brandName">
+      </div>
+      <div class="blower-info-item">
+        <label for="modelName">Model Name:</label>
+        <input type="text" id="modelName">
+      </div>
+      <div class="blower-info-item">
+        <label for="duty">Duty:</label>
+        <input type="text" id="duty">
+      </div>
+      <div class="blower-info-item">
+        <label for="standby">Standby:</label>
+        <input type="text" id="standby">
+      </div>
+      <div class="blower-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Blower Specifications Table -->
+  <h3>Blower Specifications</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Actual Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Blower Capacity</td>
+        <td>m<sup>3</sup>/min</td>
+        <td><input type="text" id="scfm2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Pressure</td>
+        <td>PSIG</td>
+        <td><input type="text" id="Blowerdischargepressure2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+    </div>
+  </div>
+
+  <script src="blowerhead.js"></script>
+
+
+</body>
+</html>

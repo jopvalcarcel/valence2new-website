@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="Aerationfast.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+  
+  
+  
+    <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  
+  
+  
+  
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Blower Calculation</h1>
+
+
+
+
+         <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="txtFBFlowrate"></label>
+        <label>BOD (mg/L)<input type="number" id="txtFBBODin"></label>
+        <label>NH4N (mg/L)<input type="number" id="txtNH4Nin"></label>
+        
+      </div>
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Effluent Parameters</h3>
+        <label>BOD (mg/L)<input type="number" id="txtBODout"></label>
+        <label>NH4N (mg/L)<input type="number" id="txtNH4Nout"></label>
+        
+      </div>
+      <!-- BOD Removal -->
+      <div class="section">
+        <h3>Option 1: Fast Blower Calculation</h3>
+        <label>Water Level (mg/L)<input type="number" id="txtFBWL" ></label>
+        <label>Diffuser Height from bottom (m)<input type="number" id="txtFBDDH" ></label>
+        <label>Depth Depth (m)<input type="number" id="txtDDWL" readonly></label>
+        <h3>BOD Removal</h3>
+        <label>AOTR/BOD (mg/L)<input type="number" id="txtFBAOTRBOD" readonly></label>
+        <label>AOTR(kg/d)<input type="number" id="txtFBAOTR" readonly></label>
+        <label>SOTR (kg/d)<input type="number" id="txtFBSOTR" readonly></label>
+        <label>SOTR (kg/min)<input type="number" id="txtFBSOTRmin" readonly></label>
+        <label>OTE/Foot submergence <input type="number" id="txtFBOTESub" readonly></label>
+        <label>OTE <input type="number" id="txtFBOTE" readonly></label>
+        <label>SCFM(m3/min) <input type="number" id="txtFBSCFMBOD" readonly></label>
+        <h3>NH4N Removal</h3>
+        <label>AOTR/NH4N <input type="number" id="txtFBAOTRNH4NRATIO" readonly></label>
+        <label>AOTR(kg/d) <input type="number" id="txtFBAOTRNH4N" readonly></label>
+        <label>SOTR(kg/d) <input type="number" id="txtFBSOTRNH4N" readonly></label>
+        <label>SOTR(kg/min) <input type="number" id="txtFBSOTRNH4Nmin" readonly></label>
+        <label>OTE/Foot Submergence <input type="number" id="txtFBOTESubNH4N" readonly></label>
+        <label>OTE <input type="number" id="txtFBOTENH4N" readonly></label>
+        <label>SCFM(m3/min) NH4N Removal<input type="number" id="txtFBSCFMNH4N" readonly></label>
+          <h3>Total</h3>
+        <label>AOTR(kg/d) <input type="number" id="txtFBTotalAOTR" readonly></label>
+        <label>AOTR(kg/h) <input type="number" id="txtFBTotalSOTR" readonly></label>
+        <label>Air Flow Required (m³/min) <input type="number" id="txtFBSCFMTOTAL" readonly></label>
+
+      </div>
+
+
+
+  
+
+      <!-- Aeration Parameters -->
+      <div class="section">
+        <h3>Option 2: Detailed Blower Calculations</h3>
+        <label>AOTR (kg/h), get value from option 1<input type="number" id="txtOUR"></label>
+        <label>Site Elevation (m)<input type="number" id="txtelev"></label>
+        <label>Temperature (degC)<input type="number" id="txtTemp"></label>
+        <label>Pa, Relative Pressure at elevation<input type="number" id="txtRP"readonly></label>
+        <label>Water Depth (m)<input type="number" id="txtLD"></label>
+        <label>Diffuser height (m)<input type="number" id="txtDDfromBottom"></label>
+        <label>Diffuser Depth (m)<input type="number" id="txtDD" readonly></label>
+        <label>Mid Depth Correction Factor<input type="number" id="txtde"></label>
+        <label>Oxygen Conc. at Standard<input type="number" id="txtOCS"readonly></label>
+        <label>Oxygen Conc. at Temperature<input type="number" id="txtOCT"></label>
+        <label>Oxygen Conc. at diff.Depth<input type="number" id="txtOCSd" readonly></label>
+        <label>α<input type="number" id="txta"></label>
+        <label>β<input type="number" id="txtb"></label>
+        <label>Fouling Factor<input type="number" id="txtf"></label>
+        <label>Operating DO (mg/L)<input type="number" id="txtDO"></label>
+        <label>SOTR (kg/hr)<input type="number" id="txtSOTR" readonly></label>
+        <label>Density of Air (kg/m3)<input type="number" id="txtDA"></label>
+.        <label>Concentration of O₂ (kg/m³)<input type="number" id="txtO2"readonly></label>
+        <label>Efficiency, Fine Diffuser  (%)<input type="number" id="ECoarseDiffuser"readonly></label>
+        <label>Efficiency, Coarse Diffuser (%)<input type="number" id="EFineDiffuser"readonly></label>
+        <label>Chosen Clean Water Transfer (%)<input type="number" id="txtE" ></label>
+        <label>Air Flow Required (m³/min)<input type="number" id="txtAF" readonly></label> 
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+  <script src="Aerationfast.js"></script>
+</body>
+</html>

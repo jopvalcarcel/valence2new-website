@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rectangular Tank Isometric Drawing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f3f6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #003366;
+    }
+
+    .container-guide {
+      background: #e8f0fe;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      border-left: 4px solid #1976D2;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .container-guide h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #003366;
+      font-weight: 600;
+    }
+
+    .container-guide p,
+    .container-guide li {
+      font-size: 14px;
+      color: #444;
+    }
+
+    .container-guide ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .container-guide li {
+      margin-bottom: 6px;
+    }
+
+    .container-guide li strong {
+      color: #003366;
+    }
+
+    .input-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    .tank-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      align-items: end;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .input-group input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #0066cc;
+      outline: none;
+    }
+
+    .volume-display, .area-display {
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 8px;
+      min-width: 130px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .volume-display {
+      border-color: #4CAF50;
+    }
+
+    .area-display {
+      border-color: #2196F3;
+    }
+
+    .volume-display:hover, .area-display:hover {
+      transform: translateY(-2px);
+    }
+
+    .volume-display label,
+    .area-display label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #003366;
+    }
+
+    .metric-value span {
+      font-size: 12px;
+      color: #777;
+      margin-left: 4px;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    #draw-btn, #add-tank-btn, #remove-tank-btn, #print-pdf-btn, #add-text-btn {
+      padding: 10px 20px;
+      background: #0066cc;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s ease;
+      height: fit-content;
+    }
+
+    #draw-btn:hover, #add-tank-btn:hover, #remove-tank-btn:hover, #print-pdf-btn:hover, #add-text-btn:hover {
+      background: #3385ff;
+      transform: translateY(-2px);
+    }
+
+    #print-pdf-btn {
+      background: #28a745;
+    }
+
+    #print-pdf-btn:hover {
+      background: #34c759;
+    }
+
+    #add-tank-btn:disabled, #remove-tank-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #add-text-btn {
+      background: #ff6b00;
+    }
+
+    #add-text-btn:hover {
+      background: #ff8c00;
+    }
+
+    .canvas-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+
+    canvas {
+      width: 100%;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      cursor: default;
+    }
+
+    canvas.dragging {
+      cursor: move;
+    }
+
+    .project-info {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #2196F3;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .text-input-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+
+    .text-input-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+    }
+
+    .text-input-container input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .text-input-container button {
+      padding: 8px 16px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .text-input-container .confirm-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .text-input-container .cancel-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .input-section, .tank-group, .button-group, .project-info {
+        grid-template-columns: 1fr;
+      }
+
+      #draw-btn, #add-tank-btn, #remove-tank-btn, #print-pdf-btn, #add-text-btn {
+        width: 100%;
+      }
+
+      .container-guide {
+        padding: 12px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Rectangular Tank Isometric Drawing</h1>
+
+    <div class="project-info" id="project-info">
+      <div class="input-group">
+        <label for="project-name">Project Name:</label>
+        <input type="text" id="project-name" value="Tank Design Project">
+      </div>
+      <div class="input-group">
+        <label for="project-number">Project Number:</label>
+        <input type="text" id="project-number" value="PRJ-001">
+      </div>
+      <div class="input-group">
+        <label for="project-date">Date:</label>
+        <input type="date" id="project-date" value="2025-05-28">
+      </div>
+      <div class="input-group">
+        <label for="project-version">Version:</label>
+        <input type="text" id="project-version" value="1.0">
+      </div>
+    </div>
+
+    <div class="container-guide">
+      <h3>Shipping Container Size Guide</h3>
+      <p>Check if your tank(s) fit within standard or high cube shipping containers. For multiple tanks, sum the lengths (including 0.5 m gaps) and use the maximum width and height (tank depth).</p>
+      <ul>
+        <li><strong>20ft Standard:</strong> Length: 5.90 m, Width: 2.35 m, Height: 2.39 m</li>
+        <li><strong>20ft High Cube:</strong> Length: 5.90 m, Width: 2.35 m, Height: 2.69 m</li>
+        <li><strong>40ft Standard:</strong> Length: 12.03 m, Width: 2.35 m, Height: 2.39 m</li>
+        <li><strong>40ft High Cube:</strong> Length: 12.03 m, Width: 2.35 m, Height: 2.69 m</li>
+      </ul>
+    </div>
+
+    <div class="input-section">
+      <div class="tank-group" id="tank1">
+        <div class="input-group">
+          <label for="length1">Tank 1 Length (m):</label>
+          <input type="number" id="length1" min="1" value="6" step="0.1">
+        </div>
+        <div class="input-group">
+          <label for="width1">Tank 1 Width (m):</label>
+          <input type="number" id="width1" min="1" value="2" step="0.1">
+        </div>
+        <div class="volume-display">
+          <label>Volume</label>
+          <div class="metric-value" id="volume1">0<span> m³</span></div>
+        </div>
+        <div class="area-display">
+          <label>Area</label>
+          <div class="metric-value" id="area1">0<span> m²</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="depth">Depth (m):</label>
+        <input type="number" id="depth" min="1" value="2.5" step="0.1">
+      </div>
+      <div class="button-group">
+        <button id="add-tank-btn">Add Tank</button>
+        <button id="remove-tank-btn" disabled>Remove Tank</button>
+        <button id="draw-btn">Draw Tank</button>
+        <button id="add-text-btn">Add Text</button>
+        <button id="print-pdf-btn">Print PDF</button>
+        <div style="padding: 10px;">
+          <div style="position: fixed; bottom: 20px; left: 20px; z-index: 1000;">
+            <button onclick="window.location.href='Dashboard.html'" style="padding: 10px 20px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer;">
+              <i class="fas fa-home" style="margin-right: 8px;"></i>Home
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-container">
+      <canvas id="canvasContainer"></canvas>
+      <div class="text-input-overlay" id="text-input-overlay">
+        <div class="text-input-container">
+          <input type="text" id="custom-text-input" placeholder="Enter your text here">
+          <div>
+            <button class="confirm-btn" id="confirm-text-btn">Add Text</button>
+            <button class="cancel-btn" id="cancel-text-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const canvas = document.getElementById('canvasContainer');
+      const ctx = canvas.getContext('2d');
+      const drawBtn = document.getElementById('draw-btn');
+      const addTankBtn = document.getElementById('add-tank-btn');
+      const removeTankBtn = document.getElementById('remove-tank-btn');
+      const printPdfBtn = document.getElementById('print-pdf-btn');
+      const addTextBtn = document.getElementById('add-text-btn');
+      const inputSection = document.querySelector('.input-section');
+      const projectNameInput = document.getElementById('project-name');
+      const projectNumberInput = document.getElementById('project-number');
+      const projectDateInput = document.getElementById('project-date');
+      const projectVersionInput = document.getElementById('project-version');
+      const textInputOverlay = document.getElementById('text-input-overlay');
+      const customTextInput = document.getElementById('custom-text-input');
+      const confirmTextBtn = document.getElementById('confirm-text-btn');
+      const cancelTextBtn = document.getElementById('cancel-text-btn');
+      
+      let tankCount = 1;
+      const maxTanks = 4;
+      const tankGap = 0.5; // Gap between tanks in meters
+      let dimensionLabels = [];
+      let customTextLabels = [];
+      let selectedLabel = null;
+      let isDragging = false;
+      let isAddingText = false;
+      let textPosition = { x: 0, y: 0 };
+
+      // Set initial canvas size
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Add event listeners
+      drawBtn.addEventListener('click', drawTanks);
+      addTankBtn.addEventListener('click', addTank);
+      removeTankBtn.addEventListener('click', removeTank);
+      printPdfBtn.addEventListener('click', printCanvasToPDF);
+      addTextBtn.addEventListener('click', startAddingText);
+      confirmTextBtn.addEventListener('click', addCustomText);
+      cancelTextBtn.addEventListener('click', cancelAddingText);
+      canvas.addEventListener('mousedown', startDragging);
+      canvas.addEventListener('mousemove', dragLabel);
+      canvas.addEventListener('mouseup', stopDragging);
+      canvas.addEventListener('dblclick', editLabel);
+      canvas.addEventListener('click', handleCanvasClick);
+
+      // Add input event listeners for initial tank and project info
+      ['length1', 'width1', 'depth', 'project-name', 'project-number', 'project-date', 'project-version'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateMetrics);
+      });
+
+      // Draw tank and update metrics on initial load
+      updateMetrics();
+      drawTanks();
+
+      function resizeCanvas() {
+        const container = document.querySelector('.canvas-container');
+        canvas.width = Math.min(container.clientWidth, 1000);
+        canvas.height = Math.min(container.clientWidth * 0.6, 600);
+        drawTanks();
+      }
+
+      function addTank() {
+        if (tankCount >= maxTanks) return;
+        tankCount++;
+
+        // Create input fields and metrics displays for new tank
+        const tankDiv = document.createElement('div');
+        tankDiv.classList.add('tank-group');
+        tankDiv.id = `tank${tankCount}`;
+        tankDiv.innerHTML = `
+          <div class="input-group">
+            <label for="length${tankCount}">Tank ${tankCount} Length (m):</label>
+            <input type="number" id="length${tankCount}" min="1" value="6" step="0.1">
+          </div>
+          <div class="input-group">
+            <label for="width${tankCount}">Tank ${tankCount} Width (m):</label>
+            <input type="number" id="width${tankCount}" min="1" value="2" step="0.1">
+          </div>
+          <div class="volume-display">
+            <label>Volume</label>
+            <div class="metric-value" id="volume${tankCount}">0<span> m³</span></div>
+          </div>
+          <div class="area-display">
+            <label>Area</label>
+            <div class="metric-value" id="area${tankCount}">0<span> m²</span></div>
+          </div>
+        `;
+        inputSection.insertBefore(tankDiv, document.querySelector('.button-group'));
+
+        // Add event listeners for new inputs
+        [`length${tankCount}`, `width${tankCount}`].forEach(id => {
+          document.getElementById(id).addEventListener('input', updateMetrics);
+        });
+
+        // Update button states
+        if (tankCount === maxTanks) {
+          addTankBtn.disabled = true;
+        }
+        if (tankCount > 1) {
+          removeTankBtn.disabled = false;
+        }
+        drawBtn.textContent = `Draw Tank${tankCount > 1 ? 's' : ''}`;
+
+        updateMetrics();
+        drawTanks();
+      }
+
+      function removeTank() {
+        if (tankCount <= 1) return;
+        
+        // Remove the last tank
+        const tankDiv = document.getElementById(`tank${tankCount}`);
+        if (tankDiv) {
+          tankDiv.remove();
+        }
+        tankCount--;
+
+        // Update button states
+        if (tankCount < maxTanks) {
+          addTankBtn.disabled = false;
+        }
+        if (tankCount === 1) {
+          removeTankBtn.disabled = true;
+        }
+        drawBtn.textContent = `Draw Tank${tankCount > 1 ? 's' : ''}`;
+
+        updateMetrics();
+        drawTanks();
+      }
+
+      function calculateAndDisplayMetrics() {
+        const tanks = [];
+        for (let i = 1; i <= tankCount; i++) {
+          tanks.push({
+            length: parseFloat(document.getElementById(`length${i}`).value) || 6,
+            width: parseFloat(document.getElementById(`width${i}`).value) || 2,
+            volumeElement: document.getElementById(`volume${i}`),
+            areaElement: document.getElementById(`area${i}`)
+          });
+        }
+        const depth = parseFloat(document.getElementById('depth').value) || 2.5;
+
+        tanks.forEach(tank => {
+          const volume = tank.length * tank.width * depth;
+          const area = tank.length * tank.width;
+          tank.volumeElement.innerHTML = `${volume.toLocaleString(undefined, {maximumFractionDigits: 2})}<span> m³</span>`;
+          tank.areaElement.innerHTML = `${area.toLocaleString(undefined, {maximumFractionDigits: 2})}<span> m²</span>`;
+        });
+      }
+
+      function updateMetrics() {
+        calculateAndDisplayMetrics();
+        drawTanks();
+      }
+
+      function drawTanks() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const tanks = [];
+        let totalLength = 0;
+        for (let i = 1; i <= tankCount; i++) {
+          const tank = {
+            length: parseFloat(document.getElementById(`length${i}`).value) || 6,
+            width: parseFloat(document.getElementById(`width${i}`).value) || 2,
+            offsetX: totalLength
+          };
+          tanks.push(tank);
+          totalLength += tank.length;
+          if (i < tankCount) totalLength += tankGap; // Add gap between tanks, except after the last tank
+        }
+        const depth = parseFloat(document.getElementById('depth').value) || 2.5;
+
+        const maxDimension = Math.max(totalLength + Math.max(...tanks.map(t => t.width)), depth * 2);
+        const scale = Math.min(canvas.width, canvas.height) / (maxDimension * 1.5);
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2 + 50;
+
+        const angle = Math.PI / 6;
+        const cosAngle = Math.cos(angle);
+        const sinAngle = Math.sin(angle);
+
+        function project(x, y, z) {
+          const isoX = (x - z) * cosAngle;
+          const isoY = y + (x + z) * sinAngle;
+          return {
+            x: centerX + isoX * scale,
+            y: centerY - isoY * scale
+          };
+        }
+
+        // Draw all the tanks and dimension labels
+        dimensionLabels = [];
+
+        tanks.forEach((tank, index) => {
+          const offset = tank.offsetX - totalLength / 2;
+          const corners = [
+            project(offset - tank.length/2, -depth/2, -tank.width/2),
+            project(offset + tank.length/2, -depth/2, -tank.width/2),
+            project(offset + tank.length/2, -depth/2, tank.width/2),
+            project(offset - tank.length/2, -depth/2, tank.width/2),
+            project(offset - tank.length/2, depth/2, -tank.width/2),
+            project(offset + tank.length/2, depth/2, -tank.width/2),
+            project(offset + tank.length/2, depth/2, tank.width/2),
+            project(offset - tank.length/2, depth/2, tank.width/2)
+          ];
+
+          ctx.strokeStyle = '#333';
+          ctx.lineWidth = 2;
+
+          drawFace([corners[0], corners[1], corners[2], corners[3]]);
+          drawFace([corners[4], corners[5], corners[6], corners[7]]);
+          drawEdge(corners[0], corners[4]);
+          drawEdge(corners[1], corners[5]);
+          drawEdge(corners[2], corners[6]);
+          drawEdge(corners[3], corners[7]);
+
+          ctx.fillStyle = `rgba(100, 150, 255, ${0.3 - index * 0.05})`;
+          drawFace([corners[0], corners[1], corners[5], corners[4]], true);
+
+          ctx.fillStyle = `rgba(100, 255, 150, ${0.3 - index * 0.05})`;
+          drawFace([corners[1], corners[2], corners[6], corners[5]], true);
+
+          // Tank label
+          const tankLabelPos = project(offset, depth/2 + 15, 0);
+          dimensionLabels.push({
+            text: `Tank ${index + 1}`,
+            x: tankLabelPos.x,
+            y: tankLabelPos.y,
+            originalX: tankLabelPos.x,
+            originalY: tankLabelPos.y,
+            type: 'dimension'
+          });
+
+          // Length dimension (only for first and last tank to avoid clutter)
+          if (index === 0 || index === tanks.length - 1) {
+            const lengthLabelPos = project(offset, -depth/2 - 10, 0);
+            dimensionLabels.push({
+              text: `${tank.length.toFixed(1)} m`,
+              x: lengthLabelPos.x,
+              y: lengthLabelPos.y,
+              originalX: lengthLabelPos.x,
+              originalY: lengthLabelPos.y,
+              type: 'dimension'
+            });
+          }
+
+          // Width dimension (only for first tank to avoid clutter)
+          if (index === 0) {
+            const widthLabelPos = project(offset - tank.length/2 - 10, -depth/2, -tank.width/2 - 5);
+            dimensionLabels.push({
+              text: `${tank.width.toFixed(1)} m`,
+              x: widthLabelPos.x,
+              y: widthLabelPos.y,
+              originalX: widthLabelPos.x,
+              originalY: widthLabelPos.y,
+              type: 'dimension'
+            });
+          }
+        });
+
+        // Height dimension (only once for all tanks)
+        const depthLabelPos = project(-totalLength/2 - 15, 0, -tanks[0].width/2 - 10);
+        dimensionLabels.push({
+          text: `${depth.toFixed(1)} m`,
+          x: depthLabelPos.x,
+          y: depthLabelPos.y,
+          originalX: depthLabelPos.x,
+          originalY: depthLabelPos.y,
+          type: 'dimension'
+        });
+
+        // Draw all custom text labels
+        customTextLabels.forEach(label => {
+          dimensionLabels.push({
+            text: label.text,
+            x: label.x,
+            y: label.y,
+            originalX: label.x,
+            originalY: label.y,
+            type: 'custom'
+          });
+        });
+
+        // Draw all labels
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        dimensionLabels.forEach((label, index) => {
+          ctx.fillText(label.text, label.x, label.y);
+          // Draw a hitbox for dragging (visual feedback)
+          ctx.strokeStyle = selectedLabel === index ? '#0066cc' : 'transparent';
+          ctx.lineWidth = 1;
+          const textWidth = ctx.measureText(label.text).width;
+          ctx.strokeRect(label.x - textWidth / 2 - 5, label.y - 12, textWidth + 10, 20);
+        });
+
+        function drawFace(points, fill = false) {
+          ctx.beginPath();
+          ctx.moveTo(points[0].x, points[0].y);
+          for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+          }
+          ctx.closePath();
+          if (fill) {
+            ctx.fill();
+          }
+          ctx.stroke();
+        }
+
+        function drawEdge(p1, p2) {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+      }
+
+      function startAddingText() {
+        isAddingText = true;
+        canvas.style.cursor = 'text';
+      }
+
+      function handleCanvasClick(event) {
+        if (!isAddingText) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        textPosition = {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+        
+        textInputOverlay.style.display = 'flex';
+        customTextInput.focus();
+      }
+
+      function addCustomText() {
+        const text = customTextInput.value.trim();
+        if (text) {
+          customTextLabels.push({
+            text: text,
+            x: textPosition.x,
+            y: textPosition.y
+          });
+          drawTanks();
+        }
+        cancelAddingText();
+      }
+
+      function cancelAddingText() {
+        isAddingText = false;
+        canvas.style.cursor = 'default';
+        textInputOverlay.style.display = 'none';
+        customTextInput.value = '';
+      }
+
+      function startDragging(event) {
+        if (isAddingText) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        selectedLabel = null;
+        dimensionLabels.forEach((label, index) => {
+          const textWidth = ctx.measureText(label.text).width;
+          const hitbox = {
+            x: label.x - textWidth / 2 - 5,
+            y: label.y - 12,
+            width: textWidth + 10,
+            height: 20
+          };
+          if (
+            mouseX >= hitbox.x &&
+            mouseX <= hitbox.x + hitbox.width &&
+            mouseY >= hitbox.y &&
+            mouseY <= hitbox.y + hitbox.height
+          ) {
+            selectedLabel = index;
+            isDragging = true;
+            canvas.classList.add('dragging');
+          }
+        });
+        drawTanks();
+      }
+
+      function dragLabel(event) {
+        if (isDragging && selectedLabel !== null) {
+          const rect = canvas.getBoundingClientRect();
+          const mouseX = event.clientX - rect.left;
+          const mouseY = event.clientY - rect.top;
+          dimensionLabels[selectedLabel].x = mouseX;
+          dimensionLabels[selectedLabel].y = mouseY;
+          
+          // Update the position in customTextLabels if it's a custom text
+          if (dimensionLabels[selectedLabel].type === 'custom') {
+            const labelText = dimensionLabels[selectedLabel].text;
+            const customLabelIndex = customTextLabels.findIndex(label => label.text === labelText);
+            if (customLabelIndex !== -1) {
+              customTextLabels[customLabelIndex].x = mouseX;
+              customTextLabels[customLabelIndex].y = mouseY;
+            }
+          }
+          
+          drawTanks();
+        }
+      }
+
+      function stopDragging() {
+        isDragging = false;
+        canvas.classList.remove('dragging');
+        drawTanks();
+      }
+
+      function editLabel(event) {
+        if (isAddingText) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        dimensionLabels.forEach((label, index) => {
+          const textWidth = ctx.measureText(label.text).width;
+          const hitbox = {
+            x: label.x - textWidth / 2 - 5,
+            y: label.y - 12,
+            width: textWidth + 10,
+            height: 20
+          };
+          if (
+            mouseX >= hitbox.x &&
+            mouseX <= hitbox.x + hitbox.width &&
+            mouseY >= hitbox.y &&
+            mouseY <= hitbox.y + hitbox.height
+          ) {
+            const newText = prompt('Edit label text:', label.text);
+            if (newText !== null && newText.trim() !== '') {
+              dimensionLabels[index].text = newText.trim();
+              
+              // Update the text in customTextLabels if it's a custom text
+              if (dimensionLabels[index].type === 'custom') {
+                const customLabelIndex = customTextLabels.findIndex(l => 
+                  l.x === label.originalX && l.y === label.originalY);
+                if (customLabelIndex !== -1) {
+                  customTextLabels[customLabelIndex].text = newText.trim();
+                }
+              }
+              
+              drawTanks();
+            }
+          }
+        });
+      }
+
+      function printCanvasToPDF() {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('landscape', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Add project information as a header
+        pdf.setFontSize(12);
+        pdf.text(`Project: ${projectNameInput.value || 'Tank Design Project'}`, 10, 10);
+        pdf.text(`Project Number: ${projectNumberInput.value || 'PRJ-001'}`, 10, 20);
+        pdf.text(`Date: ${projectDateInput.value || '2025-05-28'}`, 10, 30);
+        pdf.text(`Version: ${projectVersionInput.value || '1.0'}`, 10, 40);
+
+        // Add canvas image
+        const imgData = canvas.toDataURL('image/png');
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const ratio = Math.min((pdfWidth - 20) / (canvasWidth), (pdfHeight - 60) / (canvasHeight)) * 0.9;
+        const imgWidth = canvasWidth * ratio;
+        const imgHeight = canvasHeight * ratio;
+        const imgX = (pdfWidth - imgWidth) / 2;
+        const imgY = 50; // Start below the header
+
+        pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+        pdf.autoPrint();
+        window.open(pdf.output('bloburl'), '_blank');
+      }
+    });
+  </script>
+</body>
+</html>

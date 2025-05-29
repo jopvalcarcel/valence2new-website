@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chlorine Contact Tank Design</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        .control-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 180px;
+        }
+        input {
+            width: 100px;
+            padding: 5px;
+        }
+        button {
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chlorine Contact Tank Design</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="pathwidth">Path Width:</label>
+                <input type="number" id="pathwidth" value="2" step="0.1" min="0.5">
+            </div>
+            <div class="control-group">
+                <label for="partitions">Number of Partitions:</label>
+                <input type="number" id="partitions" value="5" min="1" step="1">
+            </div>
+            <div class="control-group">
+                <label for="partitionwidth">Partition Width:</label>
+                <input type="number" id="partitionwidth" value="0.5" step="0.1" min="0.1">
+            </div>
+            <div class="control-group">
+                <label for="totalflowpath">Total Flow Path:</label>
+                <input type="number" id="totalflowpath" value="30" step="1" min="5">
+            </div>
+            <button onclick="drawTank()">Generate Design</button>
+        </div>
+        
+        <canvas id="tankCanvas" width="800" height="500"></canvas>
+    </div>
+
+    <script>
+        function drawTank() {
+            // Get input values
+            const pathwidth = parseFloat(document.getElementById('pathwidth').value);
+            const numberofpartitions = parseInt(document.getElementById('partitions').value);
+            const partitionwidth = parseFloat(document.getElementById('partitionwidth').value);
+            const totalflowpath = parseFloat(document.getElementById('totalflowpath').value);
+            
+            // Calculate overall dimensions
+            const OW = (pathwidth * numberofpartitions) + ((numberofpartitions - 1) * partitionwidth);
+            const OL = pathwidth + (totalflowpath / numberofpartitions);
+            
+            // Get canvas and context
+            const canvas = document.getElementById('tankCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Calculate scaling factors to fit the drawing
+            const scaleX = (canvas.width * 0.8) / OL;
+            const scaleY = (canvas.height * 0.8) / OW;
+            const scale = Math.min(scaleX, scaleY);
+            
+            // Calculate offset to center the drawing
+            const offsetX = (canvas.width - (OL * scale)) / 2;
+            const offsetY = (canvas.height - (OW * scale)) / 2;
+            
+            // Function to convert coordinates to canvas position
+            function toCanvasX(x) {
+                return offsetX + x * scale;
+            }
+            
+            function toCanvasY(y) {
+                return offsetY + y * scale;
+            }
+            
+            // Draw the main tank rectangle
+            ctx.beginPath();
+            ctx.rect(toCanvasX(0), toCanvasY(0), OL * scale, OW * scale);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+            
+            // Draw partitions
+            ctx.fillStyle = 'rgba(173, 216, 230, 0.5)'; // light blue with transparency
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < numberofpartitions; i++) {
+                const yPos = i * (pathwidth + partitionwidth);
+                
+                if (i % 2 === 0) {
+                    // Start from left, leave gap on right
+                    ctx.beginPath();
+                    ctx.rect(
+                        toCanvasX(0), 
+                        toCanvasY(yPos), 
+                        (OL - pathwidth) * scale, 
+                        partitionwidth * scale
+                    );
+                } else {
+                    // Start from right (pathwidth gap on left)
+                    ctx.beginPath();
+                    ctx.rect(
+                        toCanvasX(pathwidth), 
+                        toCanvasY(yPos), 
+                        (OL - pathwidth) * scale, 
+                        partitionwidth * scale
+                    );
+                }
+                ctx.fill();
+                ctx.stroke();
+            }
+            
+            // Draw dimensions
+            ctx.fillStyle = 'black';
+            ctx.font = '14px Arial';
+            
+            // Overall length
+            ctx.fillText(`Overall Length: ${OL.toFixed(2)}`, 
+                        toCanvasX(OL/2) - 70, 
+                        toCanvasY(OW) + 25);
+            
+            // Overall width
+            ctx.save();
+            ctx.translate(toCanvasX(OL) + 20, toCanvasY(OW/2));
+            ctx.rotate(Math.PI/2);
+            ctx.fillText(`Overall Width: ${OW.toFixed(2)}`, 0, 0);
+            ctx.restore();
+        }
+        
+        // Draw the initial tank when page loads
+        window.onload = drawTank;
+    </script>
+</body>
+</html>

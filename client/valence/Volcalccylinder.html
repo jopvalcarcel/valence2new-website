@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cylindrical Tank Volume Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .calculator {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 4px;
+            display: none;
+        }
+        .visualization {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .tank-container {
+            width: 48%;
+        }
+        .tank-side-view {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            margin: 0 auto;
+            border: 2px solid #333;
+            border-radius: 100px / 150px;
+            overflow: hidden;
+            background-color: #e6f3ff;
+        }
+        .water {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(0, 120, 255, 0.5);
+            transition: height 0.5s ease;
+        }
+        .tank-dimensions {
+            width: 48%;
+        }
+        .dimension-line {
+            stroke: #333;
+            stroke-width: 2;
+        }
+        .dimension-text {
+            font-size: 14px;
+            text-anchor: middle;
+        }
+        .tank-svg {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cylindrical Tank Volume Calculator</h1>
+    
+    <div class="calculator">
+        <div class="input-group">
+            <label for="diameter">Diameter (cm):</label>
+            <input type="number" id="diameter" min="1" value="100" step="0.1">
+        </div>
+        
+        <div class="input-group">
+            <label for="length">Length (cm):</label>
+            <input type="number" id="length" min="1" value="200" step="0.1">
+        </div>
+        
+        <div class="input-group">
+            <label for="water-level">Water Level (cm):</label>
+            <input type="number" id="water-level" min="0" value="50" step="0.1">
+        </div>
+        
+        <button onclick="calculateVolume()">Calculate Volume</button>
+        
+        <div id="result" class="result">
+            <h3>Results:</h3>
+            <p>Tank Capacity: <span id="total-volume">0</span> liters</p>
+            <p>Current Water Volume: <span id="water-volume">0</span> liters</p>
+            <p>Percentage Full: <span id="percentage">0</span>%</p>
+        </div>
+        
+        <div class="visualization">
+            <div class="tank-container">
+                <h3>Side View</h3>
+                <div class="tank-side-view">
+                    <div id="water" class="water"></div>
+                </div>
+            </div>
+            
+            <div class="tank-dimensions">
+                <h3>Dimensions</h3>
+                <svg class="tank-svg" width="250" height="300" viewBox="0 0 250 300">
+                    <!-- Tank representation -->
+                    <rect x="50" y="50" width="150" height="200" fill="none" stroke="#333" stroke-width="2"/>
+                    <ellipse cx="125" cy="50" rx="75" ry="20" fill="none" stroke="#333" stroke-width="2"/>
+                    <ellipse cx="125" cy="250" rx="75" ry="20" fill="none" stroke="#333" stroke-width="2"/>
+                    
+                    <!-- Dimension lines -->
+                    <line x1="25" y1="50" x2="25" y2="250" class="dimension-line"/>
+                    <line x1="20" y1="50" x2="30" y2="50" class="dimension-line"/>
+                    <line x1="20" y1="250" x2="30" y2="250" class="dimension-line"/>
+                    <text x="15" y="150" class="dimension-text" transform="rotate(-90,15,150)">Length</text>
+                    
+                    <line x1="50" y1="270" x2="200" y2="270" class="dimension-line"/>
+                    <line x1="50" y1="265" x2="50" y2="275" class="dimension-line"/>
+                    <line x1="200" y1="265" x2="200" y2="275" class="dimension-line"/>
+                    <text x="125" y="285" class="dimension-text">Diameter</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateVolume() {
+            // Get input values
+            const diameter = parseFloat(document.getElementById('diameter').value);
+            const length = parseFloat(document.getElementById('length').value);
+            const waterLevel = parseFloat(document.getElementById('water-level').value);
+            
+            // Calculate radius
+            const radius = diameter / 2;
+            
+            // Calculate total volume (cylinder volume in cm³, then convert to liters)
+            const totalVolume = (Math.PI * Math.pow(radius, 2) * length) / 1000;
+            
+            // Calculate water volume (cylinder volume up to water level)
+            const waterVolume = (Math.PI * Math.pow(radius, 2) * Math.min(waterLevel, length)) / 1000;
+            
+            // Calculate percentage full
+            const percentage = Math.min((waterLevel / length) * 100, 100);
+            
+            // Display results
+            document.getElementById('total-volume').textContent = totalVolume.toFixed(2);
+            document.getElementById('water-volume').textContent = waterVolume.toFixed(2);
+            document.getElementById('percentage').textContent = percentage.toFixed(1);
+            document.getElementById('result').style.display = 'block';
+            
+            // Update visualization
+            updateVisualization(diameter, length, waterLevel);
+        }
+        
+        function updateVisualization(diameter, length, waterLevel) {
+            const tankHeight = 300; // pixels
+            const tankWidth = 200; // pixels
+            
+            // Calculate the water height in the visualization
+            const maxWaterHeight = tankHeight;
+            const waterHeight = Math.min((waterLevel / length) * maxWaterHeight, maxWaterHeight);
+            
+            // Update water level in side view
+            const waterElement = document.getElementById('water');
+            waterElement.style.height = `${waterHeight}px`;
+            
+            // Change water color based on fill percentage
+            const fillPercentage = Math.min(waterLevel / length, 1);
+            const blueIntensity = Math.floor(120 + (100 * fillPercentage));
+            waterElement.style.backgroundColor = `rgba(0, ${blueIntensity}, 255, 0.7)`;
+        }
+        
+        // Initialize with default values
+        window.onload = function() {
+            calculateVolume();
+            
+            // Add event listeners for real-time updates when inputs change
+            document.getElementById('diameter').addEventListener('input', calculateVolume);
+            document.getElementById('length').addEventListener('input', calculateVolume);
+            document.getElementById('water-level').addEventListener('input', calculateVolume);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wastewater Parameters Calculator</title>
+  <link rel="stylesheet" href="designcondition.css">
+   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
+</head>
+
+<body>
+  <div class="sidebar">
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+  
+    <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  </div>
+  
+  </div>
+
+  <div class="main">
+    <div class="container">
+      <!-- Flow Parameters -->
+      <div class="form-section" id="flow-parameters">
+        <h3>Flow Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="txtFlowrate" /></label>
+        <label>Peak Ratio (--) <input type="number" id="txtPeakratio" /></label>
+        <label>Peak Hour (h)<input type="number" id="txtpeakhour" /></label>
+        <label>Peak Flowrate(m³/d) <input type="number" id="txtPeakFlowrate" readonly /></label>
+      </div>
+
+      <!-- Influent Parameters -->
+      <div class="form-section" id="inputs">
+        <h3>Influent Parameters (mg/L)</h3>
+        <label>Temperature (°C)<input type="number" id="txttemperature" /></label>
+        <label>pH (--) <input type="number" id="txtph" /></label>
+        <label>Oil and Grease <input type="number" id="txtoilandgrease" /></label>
+        <label>Alkalinity <input type="number" id="txtalkalinity" /></label>
+        <label>BOD <input type="number" id="txtBOD" readonly /></label>
+        <label>sBOD <input type="number" id="txtsBOD" /></label>
+        <label>bCOD <input type="number" id="txtbCOD" readonly /></label>
+        <label>COD <input type="number" id="txtCOD" /></label>
+        <label>pCOD <input type="number" id="txtpCOD" readonly /></label>
+        <label>sCOD <input type="number" id="txtsCOD" /></label>
+        <label>rbCOD <input type="number" id="txtrbCOD" readonly /></label>
+        <label>TSS <input type="number" id="txtTSS" readonly /></label>
+        <label>VSS <input type="number" id="txtVSS" readonly /></label>
+        <label>nbVSS <input type="number" id="txtnbVSS" readonly /></label>
+        <label>iTSS <input type="number" id="txtiTSS" readonly /></label>
+        <label>TKN <input type="number" id="txtTKN" /></label>
+        <label>NH4N <input type="number" id="txtNH4N" readonly /></label>
+        <label>nbSON <input type="number" id="txtnbsON" /></label>
+        <label>Total Phosphorus <input type="number" id="txtTotalphosphorus" /></label>
+        <label>Orthophosphate <input type="number" id="txtOrthophosphate" /></label>
+        <label>Total Coliform <input type="number" id="txtTotalColiform" /></label>
+        <label>NOX <input type="number" id="txtNOX" /></label>  
+      </div>
+
+      <!-- Ratios -->
+      <div class="form-section" id="outputs">
+        <h3>Ratios</h3>
+        <label>BOD/COD Ratio <input type="number" id="txtBODCOD" /></label>
+        <label>VSS/TSS Ratio <input type="number" id="txtVSSTSS" /></label>
+        <label>NH4N/TKN Ratio <input type="number" id="txtNH4NTKN" /></label>
+        <label>SCOD/COD <input type="number" id="txtSCODCOD" readonly /></label>
+        <label>TKN/COD <input type="number" id="txtTKNCOD" readonly /></label>
+        <label>TKN/VSS <input type="number" id="txtTKNVSS" /></label>
+        <label>TP/COD <input type="number" id="txtTPCOD" readonly /></label>
+        <label>bCOD/BOD <input type="number" id="txtbCODBOD" /></label>
+        <label>frbCOD <input type="number" id="txtfrbCOD" /></label>
+        <label>fsbCOD <input type="number" id="txtfsbCOD" readonly /></label>
+        <label>fnbsCOD <input type="number" id="txtfnbsCOD" /></label>
+        <label>fnbpCOD <input type="number" id="txtfnbpCOD" /></label>
+        <label>VSScod <input type="number" id="txtVSScod" /></label>
+        <label>fN <input type="number" id="txtfN" readonly /></label>
+        <label>fNUI <input type="number" id="txtfNui" /></label>
+        <label>fNAI <input type="number" id="txtfNAI" readonly /></label>
+        <label>fNPI <input type="number" id="txtfNPI" readonly /></label>
+        <label>fNOI <input type="number" id="txtfNOI" readonly /></label>
+      </div>
+
+      <!-- Characterization Column -->
+      <div class="characterization-column">
+        <!-- COD Bio and Non-biodeg -->
+        <div class="form-section">
+          <h3>COD Bio and Non-biodeg</h3>
+          <div style="text-align: center;">
+            <div style="font-weight: bold;">COD</div>
+            <input type="number" id="txtCOD2" readonly style="text-align: center; width: 100px;" />
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <!-- bCOD branch -->
+              <div style="margin: 0 30px; text-align: center;">
+                <div style="font-weight: bold;">bCOD</div>
+                <input type="number" id="txtbCOD2" readonly style="text-align: center; width: 80px;" />
+                <div style="display: flex; justify-content: center; margin-top: 10px;">
+                  <div style="margin: 0 10px;">
+                    <div style="font-weight: bold;">rbCOD</div>
+                    <input type="number" id="txtrbCOD2" readonly style="text-align: center; width: 80px;" />
+                  </div>
+                  <div style="margin: 0 10px;">
+                    <div style="font-weight: bold;">sbCOD</div>
+                    <input type="number" id="txtsbCOD2" readonly style="text-align: center; width: 80px;" />
+                    <div style="display: flex; justify-content: center; margin-top: 10px;">
+                      <div style="margin: 0 10px;">
+                        <div style="font-weight: bold;">csbCOD</div>
+                        <input type="number" id="txtcsbCOD" readonly style="text-align: center; width: 80px;" />
+                      </div>
+                      <div style="margin: 0 10px;">
+                        <div style="font-weight: bold;">psbCOD</div>
+                        <input type="number" id="txtpsbCOD" readonly style="text-align: center; width: 80px;" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- nbCOD branch -->
+              <div style="margin: 0 30px; text-align: center;">
+                <div style="font-weight: bold;">nbCOD</div>
+                <input type="number" id="txtnbCOD" readonly style="text-align: center; width: 80px;" />
+                <div style="display: flex; justify-content: center; margin-top: 10px;">
+                  <div style="margin: 0 10px;">
+                    <div style="font-weight: bold;">nbsCOD</div>
+                    <input type="number" id="txtnbsCOD" readonly style="text-align: center; width: 80px;" />
+                  </div>
+                  <div style="margin: 0 10px;">
+                    <div style="font-weight: bold;">nbpCOD</div>
+                    <input type="number" id="txtnbpCOD" readonly style="text-align: center; width: 80px;" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COD as soluble and particulate -->
+        <div class="form-section">
+          <h3>COD as soluble and particulate</h3>
+          <div style="text-align: center;">
+            <div style="font-weight: bold;">COD</div>
+            <input type="number" id="txtCOD3" readonly style="text-align: center; width: 100px;" />
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <div style="margin: 0 20px; text-align: center;">
+                <div style="font-weight: bold;">sCOD</div>
+                <input type="number" id="txtsCOD2" readonly style="text-align: center; width: 80px;" />
+              </div>
+              <div style="margin: 0 20px; text-align: center;">
+                <div style="font-weight: bold;">pCOD</div>
+                <input type="number" id="txtpCOD2" readonly style="text-align: center; width: 80px;" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- TKN as soluble and particulate -->
+        <div class="form-section">
+          <h3>TKN as soluble and particulate</h3>
+          <div style="text-align: center;">
+            <div style="font-weight: bold;">TKN</div>
+            <input type="number" id="txtTKN2" readonly style="text-align: center; width: 80px;" />
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <div style="margin: 0 20px; text-align: center;">
+                <div style="font-weight: bold;">NH4N</div>
+                <input type="number" id="txtNai2" readonly style="text-align: center; width: 80px;" />
+              </div>
+              <div style="margin: 0 20px; text-align: center;">
+                <div style="font-weight: bold;">totalsON</div>
+                <input type="number" id="txttotalsON" readonly style="text-align: center; width: 80px;" />
+              </div>
+              <div style="margin: 0 20px; text-align: center;">
+                <div style="font-weight: bold;">pON</div>
+                <input type="number" id="txtpON" readonly style="text-align: center; width: 80px;" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+       <!-- TKN as Organic and Saline -->
+<div class="form-section">
+  <h3>TKN as Organic and Saline</h3>
+  <div style="text-align: center;">
+    <div style="font-weight: bold;">TKN</div>
+    <input type="number" id="txtTKN3" readonly style="text-align: center; width: 80px;" />
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+      <div style="margin: 0 20px; text-align: center;">
+        <div style="font-weight: bold;">NH4N</div>
+        <input type="number" id="txtNai" readonly style="text-align: center; width: 80px;" />
+      </div>
+      <div style="margin: 0 20px; text-align: center;">
+        <div style="font-weight: bold;">ON</div>
+        <input type="number" id="txtOn" readonly style="text-align: center; width: 80px;" />
+        <div style="display: flex; justify-content: center; margin-top: 10px;">
+          <div style="margin: 0 15px; text-align: center;">
+            <div style="font-weight: bold;">Nui</div>
+            <input type="number" id="txtNui" readonly style="text-align: center; width: 80px;" />
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <div style="margin: 0 10px; text-align: center;">
+                <div style="font-weight: bold;">sbON</div>
+                <input type="number" id="txtsbON" readonly style="text-align: center; width: 80px;" />
+              </div>
+              <div style="margin: 0 10px; text-align: center;">
+                <div style="font-weight: bold;">pbON</div>
+                <input type="number" id="txtpbON" readonly style="text-align: center; width: 80px;" />
+              </div>
+            </div>
+          </div>
+          <div style="margin: 0 15px; text-align: center;">
+            <div style="font-weight: bold;">nbON</div>
+            <input type="number" id="txtnbON" readonly style="text-align: center; width: 80px;" />
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <div style="margin: 0 10px; text-align: center;">
+                <div style="font-weight: bold;">Noi</div>
+                <input type="number" id="txtNoi" readonly style="text-align: center; width: 80px;" />
+              </div>
+              <div style="margin: 0 10px; text-align: center;">
+                <div style="font-weight: bold;">Npi</div>
+                <input type="number" id="txtNpi" readonly style="text-align: center; width: 80px;" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      </div> <!-- End of characterization column -->
+
+ <!-- PDF Report Section -->
+<div class="report-section" id="reportSection" style="display: none;">
+  <h1>Design Report</h1>
+  
+  <style>
+    .report-section {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .project-info-item {
+      margin-bottom: 10px;
+    }
+    .project-info-item label {
+      display: inline-block;
+      width: 150px;
+      font-weight: bold;
+    }
+    .project-info-item input {
+      max-width: 200px;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    table input {
+      max-width: 120px;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+    .print-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+
+  <div class="project-info">
+    <div class="project-info-item">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName">
+    </div>
+    <div class="project-info-item">
+      <label for="projectNumber">Project Number:</label>
+      <input type="text" id="projectNumber">
+    </div>
+    <div class="project-info-item">
+      <label for="projectDate">Date:</label>
+      <input type="date" id="projectDate">
+    </div>
+    <div class="project-info-item">
+      <label for="projectVersion">Version Number:</label>
+      <input type="text" id="projectVersion" value="1.0">
+    </div>
+  </div>
+  
+  <h3>Design Condition</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Actual Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Flow </td>
+        <td>m³/d</td>
+        <td><input type="text" id="txtFlowrate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Peak Ratio </td>
+        <td>--</td>
+        <td><input type="text" id="txtPeakratio2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Peak Hour </td>
+        <td>hours</td>
+        <td><input type="text" id="txtpeakhour2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Peak Flow </td>
+        <td>m³/d</td>
+        <td><input type="text" id="txtPeakFlowrate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Temperature </td>
+        <td>°C</td>
+        <td><input type="text" id="txttemperature2" readonly /></td>
+      </tr>
+      <tr>
+        <td>pH </td>
+        <td>--</td>
+        <td><input type="text" id="txtph2" readonly/></td>
+      </tr>
+      <tr>
+        <td>Oil and Grease </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtoilandgrease2" readonly/></td>
+      </tr>
+      <tr>
+        <td>BOD </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtBOD2" readonly/></td>
+      </tr>
+      <tr>
+        <td>COD </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtCOD9" readonly/></td>
+      </tr>
+      <tr>
+        <td>TSS </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtTKN9" readonly/></td>
+      </tr>
+      <tr>
+        <td>NH4N </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtNH4N2" readonly/></td>
+      </tr>
+      <tr>
+        <td>NO3N </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtNOX2" readonly/></td>
+      </tr>
+      <tr>
+        <td>Total Phosphorus </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtTotalphosphorus2" readonly/></td>
+      </tr>
+      <tr>
+        <td>Ortho Phosphate </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtOrthophosphate2" readonly/></td>
+      </tr>
+      <tr>
+        <td>TSS </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtTSS2" readonly/></td>
+      </tr>
+      <tr>
+        <td>VSS </td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtVSS2" readonly/></td>
+      </tr>
+      <tr>
+        <td>Total Coliform </td>
+        <td>MPN/100ml</td>
+        <td><input type="text" id="txtTotalColiform2" readonly/></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Effluent Requirements</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Actual Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>pH</td>
+        <td>--</td>
+        <td><input type="number" id="efftxtph"></td>
+      </tr>
+      <tr>
+        <td>Oil and Grease</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtoilandgrease"></td>
+      </tr>
+      <tr>
+        <td>Alkalinity</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtalkalinity"></td>
+      </tr>
+      <tr>
+        <td>BOD</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtBOD"></td>
+      </tr>
+      <tr>
+        <td>COD</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtCOD"></td>
+      </tr>
+      <tr>
+        <td>TSS</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtTSS"></td>
+      </tr>
+      <tr>
+        <td>NH4N</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtNH4N"></td>
+      </tr>
+      <tr>
+        <td>NO3N</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtNOX"></td>
+      </tr>
+      <tr>
+        <td>Total Phosphorus</td>
+        <td>mg/L</td>
+        <td><input type="number" id="efftxtTotalphosphorus"></td>
+      </tr>
+      <tr>
+        <td>Total Coliform</td>
+        <td>MPN/100ml</td>
+        <td><input type="number" id="efftxtTotalColiform"></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+  <script src="designcondition.js"></script>
+</body>
+</html>

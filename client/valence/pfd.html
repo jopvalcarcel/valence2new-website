@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Water and Sludge Line Block Flow Diagrams</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    #instructions {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 300px;
+      font-size: 14px;
+      line-height: 1.4;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+      user-select: none;
+      display: block;
+    }
+    #instructions.hidden {
+      display: none;
+    }
+    .canvas-container {
+      display: flex;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .canvas-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    canvas {
+      border: 1px solid #333;
+      background-color: #fff;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #addWaterBlockButton, #addInfluentButton, #addEffluentButton {
+      background-color: #3498db;
+    }
+    #addWaterBlockButton:hover, #addInfluentButton:hover, #addEffluentButton:hover {
+      background-color: #2179d6;
+    }
+    #addSludgeBlockButton, #addSludgeButton, #addTreatedSludgeButton {
+      background-color: #8B4513;
+    }
+    #addSludgeBlockButton:hover, #addSludgeButton:hover, #addTreatedSludgeButton:hover {
+      background-color: #654321;
+    }
+    #dischargeLeftButton, #dischargeRightButton {
+      background-color: #3498db;
+    }
+    #dischargeLeftButton:hover, #dischargeRightButton:hover {
+      background-color: #2179d6;
+    }
+    #toggleInstructionsButton {
+      background-color: #666;
+    }
+    #toggleInstructionsButton:hover {
+      background-color: #555;
+    }
+    #homeButton {
+      background-color: #2ecc71;
+    }
+    #homeButton:hover {
+      background-color: #27ae60;
+    }
+    #printWaterButton, #printSludgeButton {
+      background-color: #9b59b6;
+    }
+    #printWaterButton:hover, #printSludgeButton:hover {
+      background-color: #8e44ad;
+    }
+    .title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="instructions">
+    <p><strong>Instructions:</strong></p>
+    <ul>
+      <li>Click "Add Water Block" or "Add Sludge Block" to add a rectangular block to the respective line.</li>
+      <li>Click "Add Influent" or "Add Effluent" for water line circular blocks.</li>
+      <li>Click "Add Sludge" or "Add Treated Sludge" for sludge line circular blocks.</li>
+      <li>Click a block to select it, then click another to connect with an arrow.</li>
+      <li>Hold <kbd>Shift</kbd> and click a block to delete it and its connections.</li>
+      <li>Double-click a block to rename it.</li>
+      <li>Select a block, then click "Discharge to Left" or "Discharge to Right" to add labeled input/output arrows.</li>
+      <li>Connections can be downward or recycle back upward (shown with curved arrows).</li>
+      <li>Click "Toggle Instructions" to show or hide this instruction box.</li>
+      <li>Click "Print PDF" to generate a PDF preview of the canvas.</li>
+    </ul>
+  </div>
+
+  <div class="button-container">
+    <button id="homeButton">Home</button>
+    <button id="addWaterBlockButton">Add Water Block</button>
+    <button id="addInfluentButton">Add Influent</button>
+    <button id="addEffluentButton">Add Effluent</button>
+    <button id="addSludgeBlockButton">Add Sludge Block</button>
+    <button id="addSludgeButton">Add Sludge</button>
+    <button id="addTreatedSludgeButton">Add Treated Sludge</button>
+    <button id="dischargeLeftButton">Discharge to Left</button>
+    <button id="dischargeRightButton">Discharge to Right</button>
+    <button id="toggleInstructionsButton">Toggle Instructions</button>
+  </div>
+
+  <div class="canvas-container">
+    <div class="canvas-wrapper">
+      <div class="title">Water Line</div>
+      <canvas id="waterCanvas" width="800" height="1000"></canvas>
+      <button id="printWaterButton">Print PDF</button>
+    </div>
+    <div class="canvas-wrapper">
+      <div class="title">Sludge Line</div>
+      <canvas id="sludgeCanvas" width="800" height="1000"></canvas>
+      <button id="printSludgeButton">Print PDF</button>
+    </div>
+  </div>
+
+  <script>
+    // Configuration for both canvases
+    const canvases = {
+      water: {
+        element: document.getElementById('waterCanvas'),
+        ctx: null,
+        blocks: [],
+        connections: [],
+        arrows: [],
+        selectedBlock: null,
+        blockColor: '#3498db',
+        selectedColor: '#4287f5',
+        strokeColor: '#2179d6'
+      },
+      sludge: {
+        element: document.getElementById('sludgeCanvas'),
+        ctx: null,
+        blocks: [],
+        connections: [],
+        arrows: [],
+        selectedBlock: null,
+        blockColor: '#8B4513',
+        selectedColor: '#A0522D',
+        strokeColor: '#654321'
+      }
+    };
+
+    // Initialize canvas contexts
+    canvases.water.ctx = canvases.water.element.getContext('2d');
+    canvases.sludge.ctx = canvases.sludge.element.getContext('2d');
+
+    const addWaterBlockButton = document.getElementById('addWaterBlockButton');
+    const addInfluentButton = document.getElementById('addInfluentButton');
+    const addEffluentButton = document.getElementById('addEffluentButton');
+    const addSludgeBlockButton = document.getElementById('addSludgeBlockButton');
+    const addSludgeButton = document.getElementById('addSludgeButton');
+    const addTreatedSludgeButton = document.getElementById('addTreatedSludgeButton');
+    const dischargeLeftButton = document.getElementById('dischargeLeftButton');
+    const dischargeRightButton = document.getElementById('dischargeRightButton');
+    const toggleInstructionsButton = document.getElementById('toggleInstructionsButton');
+    const homeButton = document.getElementById('homeButton');
+    const printWaterButton = document.getElementById('printWaterButton');
+    const printSludgeButton = document.getElementById('printSludgeButton');
+
+    const blockWidth = 150;
+    const blockHeight = 50;
+    const circleRadius = 30;
+    const verticalSpacing = 40;
+    const canvasPadding = 50;
+    const arrowLength = 50;
+    const arrowHeadSize = 8;
+    const recycleLineOffsetX = 60;
+
+    // Home button functionality
+    homeButton.addEventListener('click', () => {
+      window.location.href = 'Dashboard.html';
+    });
+
+    // Toggle instructions visibility
+    function toggleInstructions() {
+      const instructions = document.getElementById('instructions');
+      instructions.classList.toggle('hidden');
+      toggleInstructionsButton.textContent = instructions.classList.contains('hidden') ? 'Show Instructions' : 'Hide Instructions';
+    }
+
+    toggleInstructionsButton.addEventListener('click', toggleInstructions);
+
+    // Print PDF functionality
+    function printCanvas(canvas, title) {
+      html2canvas(canvas, { scale: 2 }).then(canvasImage => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgData = canvasImage.toDataURL('image/png');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.autoPrint();
+        window.open(pdf.output('bloburl'), '_blank');
+      });
+    }
+
+    printWaterButton.addEventListener('click', () => {
+      printCanvas(canvases.water.element, 'Water Line Diagram');
+    });
+
+    printSludgeButton.addEventListener('click', () => {
+      printCanvas(canvases.sludge.element, 'Sludge Line Diagram');
+    });
+
+    function blockAt(canvasData, x, y) {
+      return canvasData.blocks.findIndex(b => {
+        if (b.type === 'circle') {
+          const dx = x - b.x;
+          const dy = y - b.y;
+          return dx * dx + dy * dy <= circleRadius * circleRadius;
+        } else {
+          return x >= b.x &&
+                 x <= b.x + blockWidth &&
+                 y >= b.y &&
+                 y <= b.y + blockHeight;
+        }
+      });
+    }
+
+    function drawBlocks(canvasData) {
+      const ctx = canvasData.ctx;
+      canvasData.blocks.forEach((b, i) => {
+        ctx.fillStyle = canvasData.selectedBlock === i ? canvasData.selectedColor : canvasData.blockColor;
+        ctx.strokeStyle = canvasData.strokeColor;
+        ctx.lineWidth = 2;
+
+        if (b.type === 'circle') {
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, circleRadius, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#fff';
+          ctx.font = '12px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(b.label, b.x, b.y);
+        } else {
+          ctx.fillRect(b.x, b.y, blockWidth, blockHeight);
+          ctx.strokeRect(b.x, b.y, blockWidth, blockHeight);
+
+          ctx.fillStyle = '#fff';
+          ctx.font = '16px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(b.label, b.x + blockWidth / 2, b.y + blockHeight / 2);
+        }
+      });
+    }
+
+    function drawConnections(canvasData) {
+      const ctx = canvasData.ctx;
+      ctx.strokeStyle = '#e74c3c';
+      ctx.fillStyle = '#e74c3c';
+      ctx.lineWidth = 2;
+
+      canvasData.connections.forEach(conn => {
+        const start = canvasData.blocks[conn.startIndex];
+        const end = canvasData.blocks[conn.endIndex];
+
+        let startX, startY, endX, endY;
+        if (start.type === 'circle') {
+          startX = start.x;
+          startY = start.y + circleRadius;
+        } else {
+          startX = start.x + blockWidth / 2;
+          startY = start.y + blockHeight;
+        }
+        if (end.type === 'circle') {
+          endX = end.x;
+          endY = end.y - circleRadius;
+        } else {
+          endX = end.x + blockWidth / 2;
+          endY = end.y + blockHeight / 2;
+        }
+
+        if (start.y < end.y) {
+          // Downward arrow
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(endX, endY);
+          ctx.stroke();
+
+          // Arrowhead pointing down
+          ctx.beginPath();
+          ctx.moveTo(endX, endY);
+          ctx.lineTo(endX - arrowHeadSize / 2, endY - arrowHeadSize);
+          ctx.lineTo(endX + arrowHeadSize / 2, endY - arrowHeadSize);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          // Recycle arrow
+          const offset = recycleLineOffsetX;
+          let path = [];
+          let arrowRotation;
+
+          const leftPath = [
+            { x: startX, y: startY },
+            { x: startX - offset, y: startY },
+            { x: startX - offset, y: endY },
+            { x: endX + (end.type === 'circle' ? circleRadius : blockWidth), y: endY }
+          ];
+
+          const rightPath = [
+            { x: startX, y: startY },
+            { x: startX + offset, y: startY },
+            { x: startX + offset, y: endY },
+            { x: endX - (end.type === 'circle' ? circleRadius : 0), y: endY }
+          ];
+
+          function hasCollision(path) {
+            for (let i = 1; i < path.length; i++) {
+              const x1 = path[i - 1].x;
+              const y1 = path[i - 1].y;
+              const x2 = path[i].x;
+              const y2 = path[i].y;
+
+              for (const block of canvasData.blocks) {
+                if (block.type === 'circle') {
+                  const dx = (x1 + x2) / 2 - block.x;
+                  const dy = (y1 + y2) / 2 - block.y;
+                  if (dx * dx + dy * dy <= circleRadius * circleRadius) {
+                    return true;
+                  }
+                } else {
+                  const blockLeft = block.x;
+                  const blockRight = block.x + blockWidth;
+                  const blockTop = block.y;
+                  const blockBottom = block.y + blockHeight;
+
+                  if (
+                    ((x1 >= blockLeft && x1 <= blockRight) || (x2 >= blockLeft && x2 <= blockRight)) &&
+                    ((y1 >= blockTop && y1 <= blockBottom) || (y2 >= blockTop && y2 <= blockBottom))
+                  ) {
+                    return true;
+                  }
+                }
+              }
+            }
+            return false;
+          }
+
+          const leftCollides = hasCollision(leftPath);
+          const rightCollides = hasCollision(rightPath);
+
+          if (!leftCollides) {
+            path = leftPath;
+            endX = endX + (end.type === 'circle' ? circleRadius : blockWidth);
+            arrowRotation = 0;
+          } else if (!rightCollides) {
+            path = rightPath;
+            endX = endX - (end.type === 'circle' ? circleRadius : 0);
+            arrowRotation = Math.PI;
+          } else {
+            const newOffset = offset * 2;
+            const newLeftPath = [
+              { x: startX, y: startY },
+              { x: startX - newOffset, y: startY },
+              { x: startX - newOffset, y: endY },
+              { x: endX + (end.type === 'circle' ? circleRadius : blockWidth), y: endY }
+            ];
+
+            const newRightPath = [
+              { x: startX, y: startY },
+              { x: startX + newOffset, y: startY },
+              { x: startX + newOffset, y: endY },
+              { x: endX - (end.type === 'circle' ? circleRadius : 0), y: endY }
+            ];
+
+            if (!hasCollision(newLeftPath)) {
+              path = newLeftPath;
+              endX = endX + (end.type === 'circle' ? circleRadius : blockWidth);
+              arrowRotation = 0;
+            } else {
+              path = newRightPath;
+              endX = endX - (end.type === 'circle' ? circleRadius : 0);
+              arrowRotation = Math.PI;
+            }
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(path[0].x, path[0].y);
+          for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+          }
+          ctx.stroke();
+
+          // Draw arrowhead
+          ctx.save();
+          ctx.translate(endX, endY);
+          ctx.rotate(arrowRotation);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(-arrowHeadSize, -arrowHeadSize / 2);
+          ctx.lineTo(-arrowHeadSize, arrowHeadSize / 2);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        }
+      });
+    }
+
+    function drawArrows(canvasData) {
+      const ctx = canvasData.ctx;
+      ctx.strokeStyle = '#654321';
+      ctx.fillStyle = '#654321';
+      ctx.lineWidth = 2;
+      ctx.font = '12px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#000000';
+
+      canvasData.arrows.forEach(arrow => {
+        const block = canvasData.blocks[arrow.blockIndex];
+        let startX, endX, y;
+        if (block.type === 'circle') {
+          y = block.y;
+          startX = block.x - (arrow.direction === 'left' ? circleRadius : -circleRadius);
+          endX = startX + (arrow.direction === 'left' ? -arrowLength : arrowLength);
+        } else {
+          y = block.y + blockHeight / 2;
+          startX = block.x + (arrow.direction === 'left' ? 0 : blockWidth);
+          endX = startX + (arrow.direction === 'left' ? -arrowLength : arrowLength);
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(startX, y);
+        ctx.lineTo(endX - (arrow.direction === 'left' ? -10 : 10), y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(endX - (arrow.direction === 'left' ? -2 : 2), y);
+        ctx.lineTo(endX - (arrow.direction === 'left' ? -10 : 10), y - arrowHeadSize / 2);
+        ctx.lineTo(endX - (arrow.direction === 'left' ? -10 : 10), y + arrowHeadSize / 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Adjust label position to be 10 pixels beyond the arrow's end
+        const labelX = arrow.direction === 'left' ? endX - 10 : endX + 10;
+        ctx.fillText(arrow.label, labelX, y);
+      });
+    }
+
+    function redraw(canvasData) {
+      const ctx = canvasData.ctx;
+      ctx.clearRect(0, 0, canvasData.element.width, canvasData.element.height);
+      drawConnections(canvasData);
+      drawArrows(canvasData);
+      drawBlocks(canvasData);
+    }
+
+    function redrawAll() {
+      redraw(canvases.water);
+      redraw(canvases.sludge);
+    }
+
+    function addBlock(canvasData, label, type = 'rect') {
+      const x = type === 'circle' ? canvasData.element.width / 2 : (canvasData.element.width - blockWidth) / 2;
+      const size = type === 'circle' ? circleRadius * 2 : blockHeight;
+      let y = canvasData.blocks.length === 0
+        ? canvasPadding
+        : canvasData.blocks[canvasData.blocks.length - 1].y + size + verticalSpacing;
+
+      canvasData.blocks.push({ x, y, label, type });
+      redraw(canvasData);
+    }
+
+    function addWaterBlock() {
+      addBlock(canvases.water, `Water Block ${canvases.water.blocks.length + 1}`, 'rect');
+    }
+
+    function addInfluent() {
+      addBlock(canvases.water, 'Influent', 'circle');
+    }
+
+    function addEffluent() {
+      addBlock(canvases.water, 'Effluent', 'circle');
+    }
+
+    function addSludgeBlock() {
+      addBlock(canvases.sludge, `Sludge Block ${canvases.sludge.blocks.length + 1}`, 'rect');
+    }
+
+    function addSludge() {
+      addBlock(canvases.sludge, 'Sludge', 'circle');
+    }
+
+    function addTreatedSludge() {
+      addBlock(canvases.sludge, 'Treated Sludge', 'circle');
+    }
+
+    function deleteBlock(canvasData, index) {
+      canvasData.blocks.splice(index, 1);
+      canvasData.connections = canvasData.connections.filter(
+        conn => conn.startIndex !== index && conn.endIndex !== index
+      ).map(conn => ({
+        startIndex: conn.startIndex > index ? conn.startIndex - 1 : conn.startIndex,
+        endIndex: conn.endIndex > index ? conn.endIndex - 1 : conn.endIndex
+      }));
+      canvasData.arrows = canvasData.arrows.filter(arrow => arrow.blockIndex !== index)
+        .map(arrow => ({
+          ...arrow,
+          blockIndex: arrow.blockIndex > index ? arrow.blockIndex - 1 : arrow.blockIndex
+        }));
+      for (let i = 0; i < canvasData.blocks.length; i++) {
+        const size = canvasData.blocks[i].type === 'circle' ? circleRadius * 2 : blockHeight;
+        canvasData.blocks[i].y = canvasPadding + i * (size + verticalSpacing);
+      }
+      redraw(canvasData);
+    }
+
+    function renameBlock(canvasData, index) {
+      const newName = prompt("Enter new block name:", canvasData.blocks[index].label);
+      if (newName !== null && newName.trim() !== "") {
+        canvasData.blocks[index].label = newName.trim();
+        redraw(canvasData);
+      }
+    }
+
+    function addArrow(canvasData, direction) {
+      if (canvasData.selectedBlock === null) {
+        alert("Please select a block first by clicking it.");
+        return;
+      }
+      const label = prompt(`Enter label for ${direction} arrow:`);
+      if (label !== null && label.trim() !== "") {
+        canvasData.arrows.push({ blockIndex: canvasData.selectedBlock, direction, label: label.trim() });
+        redraw(canvasData);
+      }
+    }
+
+    addWaterBlockButton.addEventListener('click', addWaterBlock);
+    addInfluentButton.addEventListener('click', addInfluent);
+    addEffluentButton.addEventListener('click', addEffluent);
+    addSludgeBlockButton.addEventListener('click', addSludgeBlock);
+    addSludgeButton.addEventListener('click', addSludge);
+    addTreatedSludgeButton.addEventListener('click', addTreatedSludge);
+    dischargeLeftButton.addEventListener('click', () => {
+      if (canvases.water.selectedBlock !== null) {
+        addArrow(canvases.water, 'left');
+      } else if (canvases.sludge.selectedBlock !== null) {
+        addArrow(canvases.sludge, 'left');
+      } else {
+        alert("Please select a block first by clicking it.");
+      }
+    });
+    dischargeRightButton.addEventListener('click', () => {
+      if (canvases.water.selectedBlock !== null) {
+        addArrow(canvases.water, 'right');
+      } else if (canvases.sludge.selectedBlock !== null) {
+        addArrow(canvases.sludge, 'right');
+      } else {
+        alert("Please select a block first by clicking it.");
+      }
+    });
+
+    // Set up event listeners for both canvases
+    Object.entries(canvases).forEach(([name, canvasData]) => {
+      canvasData.element.addEventListener('click', (e) => {
+        Object.values(canvases).forEach(c => {
+          if (c !== canvasData) {
+            c.selectedBlock = null;
+            redraw(c);
+          }
+        });
+
+        const rect = canvasData.element.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const clickedBlockIndex = blockAt(canvasData, mouseX, mouseY);
+
+        if (e.shiftKey) {
+          if (clickedBlockIndex !== -1) {
+            deleteBlock(canvasData, clickedBlockIndex);
+            canvasData.selectedBlock = null;
+            redraw(canvasData);
+          }
+        } else {
+          if (clickedBlockIndex !== -1) {
+            if (canvasData.selectedBlock === null) {
+              canvasData.selectedBlock = clickedBlockIndex;
+            } else if (canvasData.selectedBlock !== clickedBlockIndex) {
+              canvasData.connections.push({ startIndex: canvasData.selectedBlock, endIndex: clickedBlockIndex });
+              canvasData.selectedBlock = null;
+            } else {
+              canvasData.selectedBlock = null;
+            }
+            redraw(canvasData);
+          }
+        }
+      });
+
+      canvasData.element.addEventListener('dblclick', (e) => {
+        const rect = canvasData.element.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const clickedBlockIndex = blockAt(canvasData, mouseX, mouseY);
+        if (clickedBlockIndex !== -1) {
+          renameBlock(canvasData, clickedBlockIndex);
+        }
+      });
+    });
+
+    redrawAll();
+  </script>
+</body>
+</html>

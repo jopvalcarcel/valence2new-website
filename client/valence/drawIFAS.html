@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangular Tank Isometric Drawing</title>
+    <link rel="stylesheet" href="drawSBRtank.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Rectangular Tank Isometric Drawing</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="length">Length:</label>
+                <input type="number" id="length" min="1" value="100">
+            </div>
+            <div class="input-group">
+                <label for="width">Width:</label>
+                <input type="number" id="width" min="1" value="60">
+            </div>
+            <div class="input-group">
+                <label for="depth">Depth:</label>
+                <input type="number" id="depth" min="1" value="40">
+            </div>
+            <div class="volume-display">
+                <label>Volume:</label>
+                <div id="volume">240,000</div>
+                <span>units³</span>
+            </div>
+            <button id="draw-btn">Draw Tank</button>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="tankCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="drawSBRtank.js"></script>
+</body>
+</html>

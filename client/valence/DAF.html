@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="DAF.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+  
+      <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+  
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>MBR Stage with Preanoxic Tank</h1>
+
+    <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Flowrate (m3/d)<input type="number" id="Qave"></label>
+        <label>BOD (g/m3)<input type="number" id="BODin"></label>
+        <label>COD(g/m3)<input type="number" id="CODin"></label>
+        <label>TSS (g/m3)<input type="number" id="TSSin"></label>
+
+
+      </div>
+
+      <!-- Effluent -->
+      <div class="section">
+        <h3>Effluent Parameters</h3>
+        <label>Flowrate out (mg/L)<input type="number" id="Flowrateout" readonly></label>
+        <label>BOD out (mg/L)<input type="number" id="BODout" readonly></label>
+        <label>COD out (mg/L)<input type="number" id="CODout" readonly></label>
+        <label>TSS out (mg/L)<input type="number" id="TSSout" readonly></label>
+      </div>
+
+
+            <div class="section">
+        <h3>System Condition</h3>
+        <label>Brand Name<input type="text" id="Brand"></label>        
+        <label>MLSS (g/m3)<input type="number" id="MLSS"></label>
+        <label>Air Solubility (mL/mg)<input type="number" id="AirSolubility"></label>
+        <label>Air to Solids Ratio (mL/mg)<input type="number" id="ASratio"></label>
+        <label>fraction of saturation(--)<input type="number" id="FS"></label>
+        <label>Recycle-system pressure (kPa)<input type="number" id="RecyclePressure"></label>
+        <label>Surface Loading Rate (L/m2 min)<input type="number" id="SurfaceLoadingRate"></label>
+         <label>Overall Pressure (atm)<input type="number" id="OP"></label>
+         <label>Recycle Rate (m3/d)<input type="number" id="RecycleRate"></label>
+         <label>Required Surface Area (m2)<input type="number" id="RequiredSurfaceArea"></label>
+         <label>Width (m)<input type="number" id="DAFwidth"></label>
+         <label>Necessary Length (m)<input type="number" id="DAFNeclength"></label>
+         <label>Actual Length (m)<input type="number" id="DAFActlength"></label>   
+         <label>Water Level (m)<input type="number" id="DafWL"></label>        
+     
+        </div>
+
+      <!-- rbCOD -->
+      <div class="section">
+        <h3>Removal Rates</h3>
+        <label>BOD Removal (%)<input type="number" id="BODRemoval"></label>
+        <label>COD Removel(%)<input type="number" id="CODRemoval"></label>
+        <label>TSS Removal (%)<input type="number" id="TSSRemoval" readonly></label>
+      </div>
+
+      <!-- Anoxic Tank -->
+      <div class="section">
+        <h3>Coagulant Dosing</h3>
+        <label>PAC 10% AL2O3 Dosing Rater (g/m3)<input type="number" id="PACdosingrate"></label>
+        <label>Density Solution(kg/L)<input type="number" id="PACDensity" readonly></label>
+        <label>Solution Flowrate (L/d)<input type="number" id="PACFlowrate" readonly></label>
+      </div>
+
+      <!-- Pre DN Tank l -->
+      <div class="section">
+        <h3>Flocculant Dosing</h3>
+        <label>Dissolving Concentration (%)<input type="number" id="Dissolvingconcentration" readonly></label>
+        <label>Flocculant Dosing Rate (g/m3)<input type="number" id="Flocculantdosingrate" readonly></label>
+        <label>Density Solution (kg/L)<input type="number" id="FLoccDensity" readonly></label>
+        <label>Polymer Flowrate (L/d)<input type="number" id="FloccFlowrate" readonly></label>
+
+
+      </div>
+
+      <!-- PreAeration Tank -->
+      <div class="section">
+        <h3>Sludge Production</h3>
+        <label>Sludge Removal Rate (kg/d)<input type="number" id="SolidsRemovalRate" readonly></label>
+        <label>% Solids (hrs)<input type="number" id="Percentsolids" readonly></label>
+        <label>Density Sludge (kg/m3)<input type="number" id="DensitySludge" readonly></label>
+        <label>Sludge Flowrate (m3/d)<input type="number" id="Sludgeflowrate" readonly></label>
+
+      </div>
+
+
+
+      <!-- Report Section -->
+     <div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .daf-pump-info-item input {
+      width: 150px; /* Consistent, smaller width for input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-item">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName">
+    </div>
+    <div class="project-info-item">
+      <label for="projectNumber">Project Number:</label>
+      <input type="text" id="projectNumber">
+    </div>
+    <div class="project-info-item">
+      <label for="projectDate">Date:</label>
+      <input type="date" id="projectDate">
+    </div>
+    <div class="project-info-item">
+      <label for="projectVersion">Version Number:</label>
+      <input type="text" id="projectVersion" value="1.0">
+    </div>
+  </div>
+  
+  <!-- DAF Chemical Dosing Pump Information Section -->
+  <div class="daf-pump-info">
+    <h3>DAF Chemical Dosing Pump Information</h3>
+    <div class="daf-pump-info-row">
+      <div class="daf-pump-info-item">
+        <label for="pumpName">Pump Name:</label>
+        <input type="text" id="pumpName">
+      </div>
+      <div class="daf-pump-info-item">
+        <label for="dafPurpose">DAF Purpose:</label>
+        <input type="text" id="dafPurpose">
+      </div>
+      <div class="daf-pump-info-item">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand">
+      </div>
+      <div class="daf-pump-info-item">
+        <label for="model">Model:</label>
+        <input type="text" id="model">
+      </div>
+      <div class="daf-pump-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dissolved Air Flotation -->
+  <h3>Dissolved Air Flotation</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Flowrate</td>
+        <td>m<sup>3</sup>/d</td>
+        <td><input type="text" id="Flowrateout2" readonly /></td>
+      </tr>
+      <tr>
+        <td>BOD In</td>
+        <td>mg/L</td>
+        <td><input type="text" id="BODin2" readonly /></td>
+      </tr>
+      <tr>
+        <td>TSS In</td>
+        <td>mg/L</td>
+        <td><input type="text" id="TSSin2" readonly /></td>
+      </tr>
+      <tr>
+        <td>BOD Out</td>
+        <td>mg/L</td>
+        <td><input type="text" id="BODout2" readonly /></td>
+      </tr>
+      <tr>
+        <td>TSS Out</td>
+        <td>mg/L</td>
+        <td><input type="text" id="TSSout2" readonly /></td>
+      </tr>
+      <tr>
+        <td>BOD Removal</td>
+        <td>%</td>
+        <td><input type="text" id="BODRemoval2" readonly /></td>
+      </tr>
+      <tr>
+        <td>TSS Removal</td>
+        <td>%</td>
+        <td><input type="text" id="TSSRemoval2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Surface Loading Rate</td>
+        <td>L/m<sup>2</sup>/d</td>
+        <td><input type="text" id="SurfaceLoadingRate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Surface Area</td>
+        <td>m<sup>2</sup></td>
+        <td><input type="text" id="RequiredSurfaceArea2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Coagulant Dosing (PACl)</td>
+        <td>m<sup>3</sup></td>
+        <td><input type="text" id="PACFlowrate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Polymer Dosing</td>
+        <td>m<sup>3</sup></td>
+        <td><input type="text" id="FloccFlowrate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Sludge Production</td>
+        <td>m<sup>3</sup>/day</td>
+        <td><input type="text" id="Sludgeflowrate2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Tank Dimensions</td>
+        <td>L×W×D (m)</td>
+        <td><input type="text" id="txtTankDimensions2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Rectangular Tank Isometric Drawing Section -->
+      <div class="section" style="flex: 1 1 100%;">
+        <h1>Tank Isometric Drawing</h1>
+        
+        <div class="tank-type-selector">
+            <button id="rectangular-btn" class="tank-type-btn active">Rectangular Tank</button>
+            <button id="cylindrical-btn" class="tank-type-btn">Cylindrical Tank</button>
+        </div>
+        
+        <div class="input-section">
+            <div id="rectangular-inputs">
+                <div class="input-group">
+                    <label for="length">Length:</label>
+                    <input type="number" id="length" min="1" value="100">
+                </div>
+                <div class="input-group">
+                    <label for="width">Width:</label>
+                    <input type="number" id="width" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="depth">Depth:</label>
+                    <input type="number" id="depth" min="1" value="40">
+                </div>
+            </div>
+            
+            <div id="cylindrical-inputs" style="display: none;">
+                <div class="input-group">
+                    <label for="diameter">Diameter:</label>
+                    <input type="number" id="diameter" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="cyl-depth">Depth:</label>
+                    <input type="number" id="cyl-depth" min="1" value="40">
+                </div>
+            </div>
+            
+            <div class="calculation-displays">
+                <div class="area-display">
+                    <label>Area:</label>
+                    <div id="area">6,000</div>
+                    <span>units²</span>
+                </div>
+                <div class="volume-display">
+                    <label>Volume:</label>
+                    <div id="volume">240,000</div>
+                    <span>units³</span>
+                </div>
+            </div>
+            <button id="draw-btn">Draw Tank</button>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="tankCanvas"></canvas>
+        </div>
+    </div>
+ 
+  <script src="DAF.js"></script>
+  <script src="drawDAF.js"></script>
+</body>
+</html>

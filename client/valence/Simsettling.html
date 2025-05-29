@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particle Sedimentation Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            position: relative;
+            width: 600px;
+            height: 300px;
+        }
+        
+        .tank {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #add8e6; /* Light blue water */
+            border: 3px solid #4682b4; /* Steel blue border */
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #8b4513; /* Brown particle */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .label {
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            text-align: center;
+            color: #4682b4;
+            font-weight: bold;
+        }
+        
+        .water-surface {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.2));
+        }
+        
+        .tank-bottom {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 10px;
+            background-color: #5f4b32; /* Dark brown sediment layer */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tank">
+            <div class="water-surface"></div>
+            <div class="tank-bottom"></div>
+            <div class="particle" id="particle"></div>
+        </div>
+        <div class="label">Sedimentation Tank</div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const particle = document.getElementById('particle');
+        const tank = document.querySelector('.tank');
+        const tankWidth = tank.offsetWidth;
+        const tankHeight = tank.offsetHeight;
+
+        // Initial and target positions
+        const startX = 20;
+        const startY = 30;
+        const endX = tankWidth - 10;
+        const endY = tankHeight - 15;
+
+        const duration = 4000; // Total animation duration in ms
+        const startTime = performance.now();
+
+        function animate(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1); // Clamp to [0,1]
+
+            // Linear interpolation
+            const x = startX + (endX - startX) * progress;
+            const y = startY + (endY - startY) * progress;
+
+            // Move particle
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                particle.style.backgroundColor = '#5f4b32'; // Change color when settled
+            }
+        }
+
+        // Initialize position and start animation
+        particle.style.left = startX + 'px';
+        particle.style.top = startY + 'px';
+        requestAnimationFrame(animate);
+    });
+    </script>
+</body>
+</html>"

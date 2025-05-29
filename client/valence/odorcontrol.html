@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valence Pro - Odor Control Calculator</title>
+  <link rel="stylesheet" href="odorcontrol.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+      
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="Dashboard.html">
+          <i class='bx bx-home-alt icon'></i>
+          <span class="text nav-text">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Odor Control Calculator</h1>
+
+    <div class="container">
+      <!-- Tank Input Section -->
+      <div class="section">
+        <h3>Tank Parameters</h3>
+        <div id="tankInputs">
+          <div class="tank-row">
+            <label>Tank Name <input type="text" class="tank-name" placeholder="e.g., Equalization Tank"></label>
+            <label>Volume (m³) <input type="number" class="tank-volume" min="0" step="0.1"></label>
+            <button class="remove-tank" onclick="removeTank(this)">×</button>
+          </div>
+        </div>
+        <button onclick="addTank()" style="margin-top: 10px;">Add Another Tank</button>
+      </div>
+
+      <!-- Air Changes Section -->
+      <div class="section">
+        <h3>Ventilation Parameters</h3>
+        <label>Air Changes per Hour <input type="number" id="airChanges" min="0" step="0.1"></label>
+        <label>Total Volume (m³) <input type="number" id="totalVolume" readonly></label>
+        <label>Required Air Flow (m³/h) <input type="number" id="airFlowHour" readonly></label>
+        <label>Required Air Flow (m³/min) <input type="number" id="airFlowMinute" readonly></label>
+        <label>Safety Factor (%) <input type="number" id="safetyFactor" value="20" min="0" max="100"></label>
+        <label>Final Blower Capacity (m³/min) <input type="number" id="finalCapacity" readonly></label>
+      </div>
+
+      <!-- Report Section (hidden by default) -->
+<div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .odor-control-info-item input {
+      width: 150px; /* Consistent, smaller width for input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-item">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName">
+    </div>
+    <div class="project-info-item">
+      <label for="projectNumber">Project Number:</label>
+      <input type="text" id="projectNumber">
+    </div>
+    <div class="project-info-item">
+      <label for="projectDate">Date:</label>
+      <input type="date" id="projectDate">
+    </div>
+    <div class="project-info-item">
+      <label for="projectVersion">Version Number:</label>
+      <input type="text" id="projectVersion" value="1.0">
+    </div>
+  </div>
+  
+  <!-- Odor Control Information Section -->
+  <div class="odor-control-info">
+    <h3>Odor Control Information</h3>
+    <div class="odor-control-info-row">
+      <div class="odor-control-info-item">
+        <label for="odorControlName">Name:</label>
+        <input type="text" id="odorControlName">
+      </div>
+      <div class="odor-control-info-item">
+        <label for="odorControlType">Type:</label>
+        <input type="text" id="odorControlType">
+      </div>
+      <div class="odor-control-info-item">
+        <label for="odorControlBrand">Brand:</label>
+        <input type="text" id="odorControlBrand">
+      </div>
+      <div class="odor-control-info-item">
+        <label for="duty">Duty:</label>
+        <input type="text" id="duty">
+      </div>
+      <div class="odor-control-info-item">
+        <label for="standby">Standby:</label>
+        <input type="text" id="standby">
+      </div>
+      <div class="odor-control-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Odor Tank Sources -->
+  <h3>Odor Tank Sources</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Tank Name</th>
+        <th>Volume (m³)</th>
+      </tr>
+    </thead>
+    <tbody id="reportTankTable">
+    </tbody>
+  </table>
+
+  <!-- Ventilation Results -->
+  <h3>Ventilation Results</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Value</th>
+        <th>Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total Volume</td>
+        <td><input type="text" id="reportTotalVolume" readonly></td>
+        <td>m³</td>
+      </tr>
+      <tr>
+        <td>Air Changes per Hour</td>
+        <td><input type="text" id="reportAirChanges" readonly></td>
+        <td>/hr</td>
+      </tr>
+      <tr>
+        <td>Required Air Flow</td>
+        <td><input type="text" id="reportAirFlow" readonly></td>
+        <td>m³/min</td>
+      </tr>
+      <tr>
+        <td>Safety Factor</td>
+        <td><input type="text" id="reportSafetyFactor" readonly></td>
+        <td>%</td>
+      </tr>
+      <tr>
+        <td>Final Blower Capacity</td>
+        <td><input type="text" id="reportFinalCapacity" readonly></td>
+        <td>m³/min</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+    </div>
+  </div>
+
+  <script src="odorcontrol.js"></script>
+</body>
+</html>

@@ -1,0 +1,956 @@
+ /* Base Settings */
+ * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    color: #333;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 220px;
+    background: linear-gradient(180deg, #FFF2F2, #0059b3);
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(233, 230, 230, 0.1);
+}
+
+.sidebar h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #2D336B;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    color: white;
+}
+
+.sidebar button:hover {
+    background: hwb(216 26% 59%);
+    color: white;
+}
+
+/* Additional text elements that might appear in the sidebar */
+.sidebar p,
+.sidebar span,
+.sidebar div,
+.sidebar a,
+.sidebar li {
+    color: white;
+}
+
+/* If you have links in the sidebar */
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: white;
+    text-decoration: underline;
+}
+  
+
+
+
+      /* Back to dashboard */
+/* Menu Links Styling */
+.menu-links {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+}
+
+.nav-link {
+  height: 50px;
+  margin-top: 10px;
+  list-style: none;
+}
+
+.nav-link a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  text-decoration: none; /* Removes underline by default */
+  border-radius: 6px;
+  padding: 0 10px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.nav-link a:hover {
+  background: #2D336B;
+  text-decoration: none; /* Ensures no underline appears on hover */
+}
+
+.icon {
+  min-width: 30px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-text {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+  
+  /* Main Content */
+  .main {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto;
+  }
+  h1 {
+    margin-top: 0;
+    color: #003366;
+  }
+  h2, h3 {
+    color: #004080;
+  }
+  
+  /* Container for Sections */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Each Section Box */
+  .section {
+    flex: 1 1 320px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    min-width: 300px;
+  }
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  /* Editable Inputs */
+  input[type="number"] {
+    width: 120px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  /* Read-only Inputs */
+  input[type="number"][readonly] {
+    background-color: #b3bdcc;
+    color: #0e1011;
+    border: 1px solid #758298;
+    cursor: not-allowed;
+  }
+  
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  /* Results */
+  #results {
+    margin-top: 20px;
+    background: #e6f0ff;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  /* Add this to your existing CSS */
+  
+  /* Tooltip container */
+  label[for="txtStartsperhour"], 
+  label:has(input#txtStartsperhour) {
+    position: relative;
+    display: inline-flex;
+    cursor: help;
+  }
+  
+  /* Update the label and input styles */
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    width: 100%; /* Ensure label takes full width */
+  }
+  
+  /* Specific style for the Starts per Hour label */
+  label:has(input#txtStartsperhour) {
+    position: relative;
+  }
+  
+  /* Input alignment - this will affect all number inputs */
+  input[type="number"] {
+    width: 120px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+    margin-left: auto; /* This pushes the input to the right */
+  }
+  
+  /* Read-only Inputs */
+  input[type="number"][readonly] {
+    background-color: #2d3748;
+    color: #f7fafc;
+    border: 1px solid #4a5568;
+    cursor: not-allowed;
+  }
+  
+  /* Keep your existing tooltip styles */
+  label:has(input#txtStartsperhour)::after {
+    content: "The number of times the equipment starts each hour, recommended is usually <15";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 8px;
+    background-color: #a09595;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  label:has(input#txtStartsperhour):hover::after {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Specific lowlowleve per Hour label */
+  label:has(input#txtLowLowlevel) {
+    position: relative;
+  }
+  
+  /* Input alignment - this will affect all number inputs */
+  input[type="number"] {
+    width: 120px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+    margin-left: auto; /* This pushes the input to the right */
+  }
+  
+  /* Read-only Inputs */
+  input[type="number"][readonly] {
+    background-color: #2d3748;
+    color: #f7fafc;
+    border: 1px solid #4a5568;
+    cursor: not-allowed;
+  }
+  
+  /* Keep your existing tooltip styles */
+  label:has(input#txtLowLowlevel)::after {
+    content: "Operating below this volume maycause vortices, which can damage the pump ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 8px;
+    background-color: #a09595;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  label:has(input#txtLowLowlevel):hover::after {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  
+  /* Specific Detention time */
+  label:has(input#txtdetentiontimels) {
+    position: relative;
+  }
+  
+  /* Input alignment - this will affect all number inputs */
+  input[type="number"] {
+    width: 120px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+    margin-left: auto; /* This pushes the input to the right */
+  }
+  
+  /* Read-only Inputs */
+  input[type="number"][readonly] {
+    background-color: #2d3748;
+    color: #f7fafc;
+    border: 1px solid #4a5568;
+    cursor: not-allowed;
+  }
+  
+  /* Keep your existing tooltip styles */
+  label:has(input#txtdetentiontimels)::after {
+    content: "time the chamber can hold if peak flow enters and no pump is running ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 8px;
+    background-color: #a09595;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  label:has(input#txtdetentiontimels):hover::after {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  
+  /* SBR Simulation Styles */
+  .sbr-simulator {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 10px;
+  }
+  
+  .simulation-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .tank-display {
+    width: 100%;
+    height: 300px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    background-color: #e6f7ff;
+  }
+  
+  #waterLevelIndicator {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0%;
+    background-color: #3498db;
+    transition: height 0.5s ease;
+  }
+  
+  .phase-fill {
+    color: #3498db;
+    font-weight: bold;
+  }
+  
+  .phase-react {
+    color: #2ecc71;
+    font-weight: bold;
+  }
+  
+  .phase-decant {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  
+  .chart-container {
+    margin-top: 30px;
+    height: 300px;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .control-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #startButton {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  #resetButton {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  #speedButton {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .control-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+  
+  .control-button:active {
+    transform: translateY(0);
+  }
+  
+  .status-display {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .status-item {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+  }
+  
+  .status-item strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .tank-display {
+    width: 150px;
+    height: 300px;
+    border: 3px solid #333;
+    border-radius: 8px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  #waterLevelIndicator {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0%;
+    background-color: rgba(52, 152, 219, 0.7);
+    transition: height 0.5s ease;
+    background-image: linear-gradient(
+      to top,
+      rgba(255,255,255,0.3) 0%,
+      rgba(255,255,255,0) 20%
+    );
+  }
+  
+  /* Freeboard space - always visible at the top */
+  .tank-display::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10%; /* Represents freeboard space */
+    background-color: rgba(255,255,255,0.5);
+    border-bottom: 1px dashed #333;
+  }
+  
+  /* Depth marker */
+  .depth-marker {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #333;
+    font-size: 12px;
+    font-weight: bold;
+    background: rgba(255,255,255,0.7);
+    padding: 2px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  
+  /* Phase status indicators */
+  .phase-fill { color: #3498db; }
+  .phase-react { color: #2ecc71; }
+  .phase-settle { color: #f39c12; }
+  .phase-decant { color: #e74c3c; }
+  
+  .tank-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .tank-column {
+    text-align: center;
+    width: 200px;
+  }
+  
+  .tank-display {
+    width: 150px;
+    height: 300px;
+    margin: 0 auto 15px;
+  }
+  
+  .water-level {
+    background-color: var(--tank-color);
+  }
+  
+  #waterLevelIndicator-1 {
+    --tank-color: rgba(75, 192, 192, 0.7);
+  }
+  
+  #waterLevelIndicator-2 {
+    --tank-color: rgba(153, 102, 255, 0.7);
+  }
+  
+  .phase-fill { color: #3498db; }
+  .phase-react { color: #2ecc71; }
+  .phase-settle { color: #f39c12; }
+  .phase-decant { color: #e74c3c; }
+  
+  /* Control Buttons */
+  .simulation-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .control-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .control-button.start {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .control-button.reset {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .control-button.speed {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .control-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .control-button:active {
+    transform: translateY(0);
+  }
+  
+  
+  
+  
+  /* Results Container */
+  .results-container {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+  }
+  
+  .result-item {
+  padding: 10px;
+  margin: 8px 0;
+  background: #f8f9fa;
+  border-left: 4px solid #4CAF50;
+  border-radius: 4px;
+  }
+  
+  .result-item.error {
+  border-left-color: #f44336;
+  }
+  
+  .result-fields {
+  margin-top: 15px;
+  }
+  
+  .result-fields label {
+  display: block;
+  margin-bottom: 10px;
+  }
+  
+  .result-fields textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f5f5f5;
+  resize: none;
+  }
+  
+  
+  
+  /* Toggle Button */
+  .toggle-container {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+  
+  .switch-with-labels {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 34px;
+  }
+  
+  .switch-with-labels input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  }
+  
+  .slider-with-labels {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #136ed6;
+  transition: 0.4s;
+  border-radius: 34px;
+  }
+  
+  .slider-with-labels:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: rgb(242, 241, 241);
+  transition: 0.4s;
+  border-radius: 50%;
+  z-index: 2;
+  }
+  
+  input:checked + .slider-with-labels {
+  background-color: #4CAF50;
+  }
+  
+  input:checked + .slider-with-labels:before {
+  transform: translateX(42px);
+  }
+  
+  .option-label {
+  position: absolute;
+  font-size: 12px;
+  color: white;
+  z-index: 1;
+  top: 8px;
+  font-weight: bold;
+  pointer-events: none;
+  }
+  
+  .option-a {
+  left: 10px;
+  }
+  
+  .option-b {
+  right: 10px;
+  }
+  
+  
+  /*draw tank*/
+
+  /* Volume Display Styles - Matches Parent Theme */
+.volume-display {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  margin-left: 15px;
+  min-width: 140px;
+  border-left: 4px solid #4CAF50;
+}
+
+.volume-display label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+
+.volume-display #volume {
+  font-size: 18px;
+  font-weight: bold;
+  color: #003366;
+  margin: 4px 0;
+}
+
+.volume-display span {
+  font-size: 11px;
+  color: #666;
+  display: block;
+}
+
+/* Input Section Adjustments */
+.input-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #333;
+}
+
+/* Button Styles to Match Parent */
+#draw-btn {
+  padding: 10px 20px;
+  background: #0066cc;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  height: fit-content;
+  margin-left: auto;
+}
+
+#draw-btn:hover {
+  background: #3385ff;
+}
+
+/* Canvas Container */
+.canvas-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+}
+
+canvas {
+  width: 100%;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .input-section {
+      flex-direction: column;
+      align-items: stretch;
+  }
+  
+  .volume-display {
+      margin-left: 0;
+      margin-top: 10px;
+  }
+  
+  #draw-btn {
+      margin-left: 0;
+      width: 100%;
+  }
+}
+
+/* Additional styles for the report section */
+    .report-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-top: 20px;
+    }
+    
+    .report-section h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+    
+    .report-section h3 {
+      color: #004080;
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
+    
+    .report-section table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    
+    .report-section th, 
+    .report-section td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    
+    .report-section th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    
+    .report-section input[readonly] {
+      border: none;
+      background: transparent;
+      width: 100%;
+      padding: 5px;
+    }
+    
+    .report-section input:not([readonly]) {
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 100%;
+    }
+    
+    .print-button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .print-button:hover {
+      background: #3385ff;
+    }
+    
+    .project-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .project-info-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .project-info-item label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    
+    .project-info-item input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    @media (max-width: 768px) {
+      .project-info {
+        grid-template-columns: 1fr;
+      }
+    }

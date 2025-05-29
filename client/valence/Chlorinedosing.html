@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBR Calculator</title>
+  <link rel="stylesheet" href="Chlorinedosing.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+     <button onclick="generateReport()">Generate Report</button>
+  
+  
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="Dashboard.html">
+          <i class='bx bx-home-alt icon'></i>
+          <span class="text nav-text">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Chlorine Dosing</h1>
+
+    <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="txtFlowrateCl"></label>
+<label>Coliform Count Before Disinfection (MPN/100mL)
+  <div class="scientific-input">
+    <input type="number" id="txtinfluentMPN_coeff" step="0.01" placeholder="Coefficient">
+    <span> × 10<sup><input type="number" id="txtinfluentMPN_exp" step="1" placeholder="Exponent"></sup></span>
+    <input type="hidden" id="txtinfluentMPN"> <!-- This will store the actual value -->
+  </div>
+</label>
+
+
+        <label>Coliform count after Disinfection (MPN/100mL)
+  <div class="scientific-input">
+    <input type="number" id="txteffluentMPN_coeff" step="0.01" placeholder="Coefficient">
+    <span> × 10<sup><input type="number" id="txteffluentMPN_exp" step="1" placeholder="Exponent"></sup></span>
+    <input type="hidden" id="txteffluentMPN"> <!-- This stores the actual value -->
+  </div>
+</label>
+        <label>Chlorine Contact Time (min)<input type="number" id="txtCCT"></label>
+        <label>1. Immediate Chlorine Demand (mg/l)<input type="number" id="txtImmediateCldemand" readonly></label>
+        <label>2. Chlorine DemandDue to decay in contact tanks (mg/l)<input type="number" id="txtChlorinedemandduetodecay" readonly></label>
+        <label>n=2.8 Slope Inactivation Curve (mg/l)<input type="number" id="nvalue"></label>
+        <label>b=4 Chlorine dose for reduction of Coliform<input type="number" id="CTb"></label>
+        <label>3. Chlorine Dose for Coliform Reduction<input type="number" id="txtCldoseColiform" readonly></label>
+        <label>Total Chlorine Dose (mg/L)<input type="number" id="txtTotalChlorineDose"></label>
+        <label>NaOCl concentration Chlorine Dose at 7% eff. conc. (kg/d)<input type="number" id="txtNaOClkgd" readonly></label>
+        <label>NaOCl concentration Chlorine Dose 7% eff. conc.(L/hr)<input type="number" id="txtNaOClLhr" readonly></label>
+        <label>NaOCl concentration Chlorine Dose 7% eff. conc.(L/d)<input type="number" id="txtNaOClLday" readonly></label>
+        <label>Storage days (d)<input type="number" id="txtClStoragedays" readonly></label>
+        <label>Storage Volume (m³)<input type="number" id="txtClStorageTank" readonly></label>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="report-section" id="reportSection" style="display: none;">
+  <style>
+    .chlorine-pump-info-item input {
+      width: 150px; /* Consistent, smaller width for input fields */
+      box-sizing: border-box;
+    }
+  </style>
+  <h1>Design Report</h1>
+  
+  <!-- Project Information Section -->
+  <div class="project-info">
+    <div class="project-info-item">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName">
+    </div>
+    <div class="project-info-item">
+      <label for="projectNumber">Project Number:</label>
+      <input type="text" id="projectNumber">
+    </div>
+    <div class="project-info-item">
+      <label for="projectDate">Date:</label>
+      <input type="date" id="projectDate">
+    </div>
+    <div class="project-info-item">
+      <label for="projectVersion">Version Number:</label>
+      <input type="text" id="projectVersion" value="1.0">
+    </div>
+  </div>
+  
+  <!-- Chlorine Dosing Pump Information Section -->
+  <div class="chlorine-pump-info">
+    <h3>Chlorine Dosing Pump Information</h3>
+    <div class="chlorine-pump-info-row">
+      <div class="chlorine-pump-info-item">
+        <label for="pumpName">Pump Name:</label>
+        <input type="text" id="pumpName">
+      </div>
+      <div class="chlorine-pump-info-item">
+        <label for="pumpType">Pump Type:</label>
+        <input type="text" id="pumpType">
+      </div>
+      <div class="chlorine-pump-info-item">
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand">
+      </div>
+      <div class="chlorine-pump-info-item">
+        <label for="model">Model:</label>
+        <input type="text" id="model">
+      </div>
+      <div class="chlorine-pump-info-item">
+        <label for="duty">Duty:</label>
+        <input type="text" id="duty">
+      </div>
+      <div class="chlorine-pump-info-item">
+        <label for="standby">Standby:</label>
+        <input type="text" id="standby">
+      </div>
+      <div class="chlorine-pump-info-item">
+        <label for="powerConsumption">Power Consumption (kW):</label>
+        <input type="text" id="powerConsumption">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Chlorine Dosing Rate -->
+  <h3>Chlorine Dosing Rate</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Unit</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Flowrate</td>
+        <td>m<sup>3</sup>/d</td>
+        <td><input type="text" id="txtFlowrateCl2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Total Chlorine Dosing Rate</td>
+        <td>mg/L</td>
+        <td><input type="text" id="txtTotalChlorineDose2" readonly /></td>
+      </tr>
+      <tr>
+        <td>NaOCl 7% Effective Concentration Dosing</td>
+        <td>L/hr</td>
+        <td><input type="text" id="txtNaOClLhr2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Storage Days</td>
+        <td>d</td>
+        <td><input type="text" id="txtClStoragedays2" readonly /></td>
+      </tr>
+      <tr>
+        <td>Storage Volume</td>
+        <td>m<sup>3</sup></td>
+        <td><input type="text" id="txtClStorageTank2" readonly /></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <button class="print-button" onclick="printReport()">Print Report</button>
+</div>
+  </div>
+
+
+
+
+
+
+  <script src="Chlorinedosing.js"></script>
+</body>
+</html>

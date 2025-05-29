@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tank Isometric Drawing</title>
+    <link rel="stylesheet" href="drawDAF.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tank Isometric Drawing</h1>
+        
+        <div class="tank-type-selector">
+            <button id="rectangular-btn" class="tank-type-btn active">Rectangular Tank</button>
+            <button id="cylindrical-btn" class="tank-type-btn">Cylindrical Tank</button>
+        </div>
+        
+        <div class="input-section">
+            <div id="rectangular-inputs">
+                <div class="input-group">
+                    <label for="length">Length:</label>
+                    <input type="number" id="length" min="1" value="100">
+                </div>
+                <div class="input-group">
+                    <label for="width">Width:</label>
+                    <input type="number" id="width" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="depth">Depth:</label>
+                    <input type="number" id="depth" min="1" value="40">
+                </div>
+            </div>
+            
+            <div id="cylindrical-inputs" style="display: none;">
+                <div class="input-group">
+                    <label for="diameter">Diameter:</label>
+                    <input type="number" id="diameter" min="1" value="60">
+                </div>
+                <div class="input-group">
+                    <label for="cyl-depth">Depth:</label>
+                    <input type="number" id="cyl-depth" min="1" value="40">
+                </div>
+            </div>
+            
+            <div class="calculation-displays">
+                <div class="area-display">
+                    <label>Area:</label>
+                    <div id="area">6,000</div>
+                    <span>units²</span>
+                </div>
+                <div class="volume-display">
+                    <label>Volume:</label>
+                    <div id="volume">240,000</div>
+                    <span>units³</span>
+                </div>
+            </div>
+            <button id="draw-btn">Draw Tank</button>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="tankCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="drawDAF.js"></script>
+</body>
+</html>

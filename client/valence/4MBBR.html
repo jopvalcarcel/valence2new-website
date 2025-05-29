@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+  
+  <meta charset="UTF-8">
+  <title>SBR Calculator</title>
+  <link rel="stylesheet" href="4MBBR.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+  
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Calculator</h2>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="fillExample()">Example</button>
+    <button onclick="generateReport()">Generate Report</button>
+
+     <ul class="menu-links">
+    <li class="nav-link">
+      <a href="Dashboard.html">
+        <i class='bx bx-home-alt icon'></i>
+        <span class="text nav-text">Dashboard</span>
+      </a>
+    </li>
+
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>MBBR 1 Stage</h1>
+
+    <div class="container">
+      <!-- MBBR Parameters -->
+      <div class="section">
+        <h3>Influent Parameters</h3>
+        <label>Flowrate (m³/d)<input type="number" id="ivFlowrate" /></label>
+        <label>Temperature (°C)<input type="number" id="ivTemp" /></label>
+        <label>Alkalinity (h)<input type="number" id="ivAlkalinityin" /></label>
+        <label>BOD/TKN (h)<input type="number" id="ivBODTKN" readonly/></label>
+        <label>TKN (mg/L)<input type="number" id="ivTKN" /></label>
+        <label>bCOD/BOD (h)<input type="number" id="ivbCODBOD" readonly/></label>
+        <label>rbCOD (mg/L)<input type="number" id="ivrbcod" /></label>
+        <label>BOD (mg/L)<input type="number" id="ivBODin" /></label>
+        <label>NH4N (mg/L)<input type="number" id="ivNH4Nin" /></label>
+        <label>NO3N (mg/L)<input type="number" id="ivNO3Nin" /></label>
+        <label>TSS (mg/L)<input type="number" id="ivTSSin" /></label>
+        <label>VSS (mg/L)<input type="number" id="ivVSSin" /></label>
+        <label>nbVSS (mg/L)<input type="number" id="ivNBVSS" /></label>
+
+
+
+       
+
+
+
+      </div>
+
+      <!-- Effluent -->
+      <div class="section">
+        <h3>Effluent</h3>
+        <label>BOD (mg/L)<input type="number" id="ivBODeff" readonly></label>
+        <label>NH4N (mg/L)<input type="number" id="ivNH4Neff" readonly></label>
+        <label>NO3N (mg/L)<input type="number" id="ivNO3Neff" readonly></label>
+   
+
+      </div>
+
+
+
+
+      <!-- NO3N Removal -->
+      <div class="section">
+        <h3>Nitrate Removal</h3>
+        <label>Applied NO3N Removal Flux(g/m²d) SALR<input type="number" id="ivSALRNO3N" ></label>
+        <label>Applied BOD Removal Flux(g/m²d) SARR<input type="number" id="ivSARRNO3N" readonly></label>
+        <label>Media Area (m²)<input type="number" id="ivMediaareaNO3N" readonly></label>
+        <label>Media Volume (m³)<input type="number" id="iv3Mediavolume" readonly></label>
+        <label>IR <input type="number" id="ivIR" readonly></label>
+        <label>NO3N Removal(%)<input type="number" id="ivNO3Nremoval"></label>
+        <label>Plastic Biofilm Media Specific Surface Area(m²/m³)<input type="number" id="ivNO3NSSA"></label>
+        <label>Media fill Volume (%)<input type="number" id="ivMediaFillVolNO3N"></label>
+        <label>Media Void (%)<input type="number" id="iv3mediavoid"></label>
+        <label>Media Displaced Volume (m³)<input type="number" id="iv3Mediadisplacedvolume" readonly></label>
+       <label>Tank Volume(m³)<input type="number" id="iv3tankvol" readonly></label>
+        <label>HRT (hrs)<input type="number" id="ivHRTstage3" readonly></label>
+        <label>Anoxic Mixer (kW/m³)<input type="number" id="ivkwperm3" readonly></label>
+        <label>Power (kW)<input type="number" id="ivkw" readonly></label>
+
+
+  </div>
+
+
+        <!-- BOD Removal -->
+      <div class="section">
+        <h3>BOD Removal</h3>
+        <label>Applied BOD Removal Flux(g/m²d) SALR<input type="number" id="ivSALR"></label>
+        <label>BOD Removal(%)<input type="number" id="ivBODremoval"></label>
+        <label>BOD Removal Flux(g/m²d) SARR<input type="number" id="ivSARR" readonly></label>
+        <label>Media Area (m²)<input type="number" id="iv1Mediaarea" readonly></label>
+        <label>Media Volume (m³)<input type="number" id="iv1Mediavolume" readonly></label>
+        <label>Plastic Biofilm Media Specific Surface Area(m²/m³)<input type="number" id="ivSSA"></label>
+        <label>Media fill Volume (%)<input type="number" id="ivMediaFillVol"></label>
+        <label>Media Void (%)<input type="number" id="iv1mediavoid"></label>
+        <label>Media Displaced Volume (m³)<input type="number" id="iv1Mediadisplacedvolume"readonly></label>
+        <label>Tank Volume(m³)<input type="number" id="iv1tankvol" readonly></label>
+        <label>HRT (hrs)<input type="number" id="ivHRTstage1"readonly></label>
+
+
+
+           <!-- Image below inputs -->
+   <img src="Removal Rates.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+  </div>
+
+          <div class="section">
+        <h3>Tank Illustration</h3>
+        <img src="typicalmbbrvalues.jpg" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+          <!-- NH4N Removal -->
+      <div class="section">
+        <h3>Ammonia Removal</h3>
+        <label>DO (mg/L) <input type="number" id="ivDO"></label>
+        <label>Applied BOD Removal Flux(g/m²d) SALR<input type="number" id="ivSALRNH4N" readonly></label>
+        <label>Media Area (m²)<input type="number" id="ivMediaareaNH4N" readonly></label>
+        <label>Media Volume (m³)<input type="number" id="iv2Mediavolume" readonly></label>
+        <label>NH4N Removal Flux (gN/m²d) SARR<input type="number" id="ivNH4Nflux" readonly></label>
+        <label>SARR Corrected<input type="number" id="ivNH4Nfluxcor"></label>
+        <label>NH4N Removal (%)<input type="number" id="ivNH4Nremoval"></label>
+        <label>Bulk Liquid Concentration<input type="number" id="ivNH4Ne"></label>
+        <label>Specific Surface Area (m²/m³)<input type="number" id="ivNH4NSSA"></label>
+        <label>Media Fill Volume (%)<input type="number" id="ivMediaFillVolNH4N"></label>
+        <label>Media Void (%)<input type="number" id="iv2mediavoid"></label>
+        <label>Media Displaced Volume (%)<input type="number" id="iv2Mediadisplacedvolume" readonly></label>
+        <label>Tank Volume(m³)<input type="number" id="iv2tankvol" readonly></label>
+        <label>HRT (hrs)<input type="number" id="ivHRTstage2" readonly></label>
+        
+
+
+  </div>
+
+       <div class="section">
+        <h3>Tank Illustration</h3>
+        <img src="4MBBR.png" alt="Mass Balance Diagram" style="max-width: 100%; height: auto;">
+      </div>
+      <!-- Biological Parameter -->
+      <div class="section">
+        <h3>Biological Parameters</h3>
+        <label>SRT (d)<input type="number" id="ivSRT"></label>
+        <label>bh(--) <input type="number" id="ivbh" readonly></label>
+        <label>bn(--)<input type="number" id="ivbn" readonly></label>
+        <label>fd(--)<input type="number" id="ivfd" readonly></label>
+        <label>YH(--)<input type="number" id="ivYH" readonly></label>
+        <label>YN(--)<input type="number" id="ivYn" readonly></label>
+        <label>PX,BIO(kg/d)<input type="number" id="ivpxbio" readonly></label>
+        <label>HETEROTROPHS(kg/d)<input type="number" id="ivpxbioHET" readonly></label>
+        <label>AOB(kg/d)<input type="number" id="ivpxbioAOB" readonly></label>
+        <label>PX,VSS(Kg/d)<input type="number" id="ivpxvss" readonly></label>
+        <label>PX,TSS(Kg/d)<input type="number" id="ivpxtss" readonly></label>
+      </div>
+
+      <!-- Air Parameters -->
+      <div class="section">
+        <h3>Aeration Parameters BOD Removal</h3>
+      <label>AOTR (kg/h)<input type="number" id="iv1txtOUR" readonly></label>
+      <label>Elevation (m)<input type="number" id="iv1txtelev"></label>
+      <label>Temperature (°C)<input type="number" id="iv1txtTemp"></label>
+      <label>Pa/Pb Relative Pressure at Elevation<input type="number" id="iv1txtRP"></label>
+      <label>Water Depth (m)<input type="number" id="iv1txtLD"></label>
+      <label>Diffuser height (m)<input type="number" id="iv1txtDDfromBottom"></label>
+      <label>Diffuser Depth (m)<input type="number" id="iv1txtDD" readonly></label>
+      <label>Mid Depth Correction Factor<input type="number" id="iv1txtde"></label>
+      <label>Oxygen Conc. at Standard<input type="number" id="iv1txtOCS"></label>
+      <label>Oxygen Conc. at Temperature<input type="number" id="iv1txtOCT"></label>
+      <label>Oxygen Conc. at diff.Depth<input type="number" id="iv1txtOCSd"></label>
+      <label>α<input type="number" id="iv1txta"></label>
+      <label>β<input type="number" id="iv1txtb"></label>
+      <label>Fouling Factor<input type="number" id="iv1txtf"></label>
+      <label>Operating DO (mg/L)<input type="number" id="iv1txtDO"></label>
+      <label>SOTR (kg/hr)<input type="number" id="iv1txtSOTR" readonly></label>
+      <label>Density of Air (kg/m³)<input type="number" id="iv1txtDA"></label>
+      <label>Concentration of Air (kg/m³)<input type="number" id="iv1txtO2"></label>
+      <label>OTE% per level(%/m)<input type="number" id="iv1OTEpersubmerged"></label>
+      <label>Clean Water Transfer, %<input type="number" id="iv1txtE" readonly></label>
+      <label>Air Requirement (m³/min)<input type="number" id="iv1txtAF" readonly></label>
+
+        
+      </div>
+
+      <div class="section">
+    <h3>Aeration Parameters NH4N Removal</h3>
+    <label>AOTR (kg/h)<input type="number" id="iv2txtOUR" readonly></label>
+    <label>Elevation (m)<input type="number" id="iv2txtelev"></label>
+    <label>Temperature (°C)<input type="number" id="iv2txtTemp"></label>
+    <label>Pa/Pb Relative Pressure at Elevation<input type="number" id="iv2txtRP"></label>
+    <label>Water Depth (m)<input type="number" id="iv2txtLD"></label>
+    <label>Diffuser height (m)<input type="number" id="iv2txtDDfromBottom"></label>
+    <label>Diffuser Depth (m)<input type="number" id="iv2txtDD" readonly></label>
+    <label>Mid Depth Correction Factor<input type="number" id="iv2txtde"></label>
+    <label>Oxygen Conc. at Standard<input type="number" id="iv2txtOCS"></label>
+    <label>Oxygen Conc. at Temperature<input type="number" id="iv2txtOCT"></label>
+    <label>Oxygen Conc. at diff.Depth<input type="number" id="iv2txtOCSd"></label>
+    <label>α<input type="number" id="iv2txta"></label>
+    <label>β<input type="number" id="iv2txtb"></label>
+    <label>Fouling Factor<input type="number" id="iv2txtf"></label>
+    <label>Operating DO (mg/L)<input type="number" id="iv2txtDO"></label>
+    <label>SOTR (kg/hr)<input type="number" id="iv2txtSOTR" readonly></label>
+    <label>Density of Air (kg/m³)<input type="number" id="iv2txtDA"></label>
+    <label>Concentration of Air (kg/m³)<input type="number" id="iv2txtO2"></label>
+    <label>OTE% per level(%/m)<input type="number" id="iv2OTEpersubmerged"></label>
+    <label>Clean Water Transfer, %<input type="number" id="iv2txtE" readonly></label>
+    <label>Air Requirement (m³/min)<input type="number" id="iv2txtAF" readonly></label>
+</div>
+
+     <!-- Air Requirements -->
+     <div class="section">
+      <h3>Air Requirements</h3>
+      
+<label>OTR (kg/O₂d) Total<input type="number" id="ivOTR" readonly></label>
+<label>OTR (kg O₂/d)-BOD<input type="number" id="ivOTRBOD" readonly></label>
+<label>OTR (kg O₂/d)-NH4N<input type="number" id="ivOTRNH4N" readonly></label>
+<label>Total Air Requirement (m³/min)<input type="number" id="ivtxtAFTOT" readonly></label>
+<label>Air Requirement-BOD (m³/min)<input type="number" id="iv1airreq" readonly></label>
+<label>Air Requirement-NH4N (m³/min)<input type="number" id="iv2airreq" readonly></label>
+    </div>
+
+   
+
+
+
+      <!-- Solids Parameters -->
+      <div class="section">
+        <h3>Solids Parameters</h3>
+        <label>Solids Content (%)<input type="number" id="ivtxtSolidsContent"></label>
+        <label>SG Sludge (kg/m³)<input type="number" id="ivtxtSGSludgeperm3Sludge"></label>
+        <label>Sludge Flowrate (m³/d)<input type="number" id="ivtxtSludgeflowrate"readonly></label>
+      </div>
+
+
+          <!--Carbon Dosing -->
+      <div class="section">
+        <h3>Carbon Dosing</h3>
+        <label>Nitrate Removal Rate (g/d)<input type="number" id="ivRNO3"></label>
+        <label>COD  (kg/kg N)<input type="number" id="ivCODkgkgNremoved"></label>
+        <label>Ethanol (kg/kg N)<input type="number" id="ivEthkgkgNremoved"readonly></label>
+        <label>COD (kg/d)<input type="number" id="ivCODdosing"readonly></label>
+        <label>Ethanol (kg/d)<input type="number" id="ivEthdosing"readonly></label>
+
+
+      </div>
+
+      <!-- Clarifier Sizing -->
+      <div class="section">
+        <h3>Clarifier Sizing</h3>
+    <label>Surface Loading Rate (m³/m²d)<input type="number" id="ivSLR"></label>
+    <label>Clarifier Area (m²)<input type="number" id="ivClarifiersize" readonly></label>
+       
+      </div>
+
+
+      <!-- Clarifier Sizing -->
+      <div class="section">
+        <h3>Alkalinity Dosing</h3>
+   <label>Residual Alkalinity (mg/L)<input type="number" id="ivResAlkalinity"></label>
+<label>Influent Alkalinity (mg/L)<input type="number" id="ivInfAlkalinity" readonly></label>
+<label>Alkalinity used (mg/L)<input type="number" id="ivAlkalinityUsed"></label>
+<label>Alkalinity Produced (mg/L)<input type="number" id="ivAlkalinityProduced" readonly></label>
+<label>Alkalinity Added (mg/L)<input type="number" id="ivAlkalinitytobeAdded"></label>
+<label>Mass to be Added as CaCO₃ (g/d)<input type="number" id="ivMassAlkalinity" readonly></label>
+<label>NaHCO₃ Mass to be added (g/d)<input type="number" id="ivNaHCO3" readonly></label>
+       
+      </div>
+     <!-- Report Section -->
+      <div class="report-section" id="reportSection" style="display: none;">
+        <h1>Design Report</h1>
+        
+        <div class="project-info">
+          <div class="project-info-item">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName">
+          </div>
+          <div class="project-info-item">
+            <label for="projectNumber">Project Number:</label>
+            <input type="text" id="projectNumber">
+          </div>
+          <div class="project-info-item">
+            <label for="projectDate">Date:</label>
+            <input type="date" id="projectDate">
+          </div>
+          <div class="project-info-item">
+            <label for="projectVersion">Version Number:</label>
+            <input type="text" id="projectVersion" value="1.0">
+          </div>
+        </div>
+        
+
+
+          <!-- MBBR Media Information Section -->
+  <div class="mbbr-media-info">
+    <h3>MBBR Media Information</h3>
+    <div class="mbbr-media-info-row">
+      <div class="mbbr-media-info-item">
+        <label for="mediaBrand">Media Brand:</label>
+        <input type="text" id="mediaBrand">
+      </div>
+      <div class="mbbr-media-info-item">
+        <label for="mediaName">Media Name:</label>
+        <input type="text" id="mediaName">
+      </div>
+    </div>
+  </div>
+        <h3>MBR Tank Design Report</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Unit</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+         <td>Average Flowrate</td>
+    <td>m<sup>3</sup>/d</td>
+    <td><input type="text" id="ivFlowrate2" readonly /></td>
+  </tr>
+  <tr>
+    <td>TEMP</td>
+    <td>degC</td>
+    <td><input type="text" id="ivTemp2" readonly /></td>
+  </tr>
+  <tr>
+    <td>BODin</td>
+    <td>mg/L</td>
+    <td><input type="text" id="ivBODin2" readonly /></td>
+  </tr>
+
+
+  <tr>
+    <td>TKNin</td>
+    <td>mg/L</td>
+    <td><input type="text" id="ivTKN2" readonly /></td>
+  </tr>
+  <tr>
+    <td>BODout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="ivBODeff2" readonly /></td>
+  </tr>
+  <tr>
+    <td>NH4Nout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="ivNH4Neff2" readonly /></td>
+  </tr>
+  <tr>
+    <td>NO3Nout</td>
+    <td>mg/L</td>
+    <td><input type="text" id="ivNO3Neff2" readonly /></td>
+  </tr>
+  <tr>
+    <td>Anoxic Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="iv3tankvol2" readonly /></td>
+  </tr>
+  <tr>
+    <td>Aeration Tank BOD Removal</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="iv1tankvol2" readonly /></td>
+  </tr>
+  <tr>
+    <td>Aeration Tank NH4N Removal</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="iv2tankvol2" readonly /></td>
+  </tr>
+     
+    <tr>
+    <td>Media fill  Anoxic Tank</td>
+    <td>%</td>
+    <td><input type="text" id="ivMediaFillVolNO3N2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Media Fill Aeration Tank (BOD)</td>
+    <td>%</td>
+    <td><input type="text" id="ivMediaFillVol2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Media Fill  (N4HN)</td>
+    <td>%</td>
+    <td><input type="text" id="ivMediaFillVolNH4N2" readonly /></td>
+  </tr>
+
+
+      <tr>
+    <td>SALR Anoxic Tank</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="ivSALRNO3N2" readonly /></td>
+  </tr>
+    <tr>
+    <td>SALR Aeration Tank(BOD)</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="ivSALR2" readonly /></td>
+  </tr>
+    <tr>
+    <td>SALR  Volume(N4HN)</td>
+    <td>m<sup>3</sup></td>
+    <td><input type="text" id="ivSALRNH4N2" readonly /></td>
+  </tr>
+
+
+  
+      <tr>
+    <td>Rremoval NO3N</td>
+    <td>% </td>
+    <td><input type="text" id="ivNO3Nremoval2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Removal BOD</td>
+    <td>% </td>
+    <td><input type="text" id="ivBODremoval2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Removal NH4N</td>
+    <td>% </td>
+    <td><input type="text" id="ivNH4Nremoval2" readonly /></td>
+  </tr>
+
+
+      <tr>
+    <td>Anoxing Mixing Energy</td>
+    <td>kW </td>
+    <td><input type="text" id="ivkw2" readonly /></td>
+  </tr>
+
+
+     <tr>
+    <td>Internal Recycle</td>
+    <td>(--)</td>
+    <td><input type="text" id="ivIR2" readonly /></td>
+  </tr>
+
+
+      <tr>
+    <td>Specific Surface Area NO3N</td>
+    <td>(m²/m³)</td>
+    <td><input type="text" id="ivNO3NSSA2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Specific Surface Area BOD</td>
+    <td>(m²/m³)</td>
+    <td><input type="text" id="ivSSA2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Specific Surface Area NH4N</td>
+    <td>(m²/m³)</td>
+    <td><input type="text" id="ivNH4NSSA2" readonly /></td>
+  </tr>
+
+
+  
+
+    <tr>
+    <td>Oxygen Transfer rate BOD</td>
+    <td>(kg/O₂d) </td>
+    <td><input type="text" id="ivOTRBOD2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Oxygen Transfer rate NH4N</td>
+    <td>(kg/O₂d) </td>
+    <td><input type="text" id="ivOTRNH4N2" readonly /></td>
+  </tr>
+
+
+
+
+
+    <tr>
+    <td>DO set point BOD Removal</td>
+    <td>(mg/L)</td>
+    <td><input type="text" id="iv1txtDO2" readonly /></td>
+  </tr>
+    <tr>
+    <td>DO set point BOD NH4N</td>
+    <td>(mg/L)</td>
+    <td><input type="text" id="iv2txtDO2" readonly /></td>
+  </tr>
+
+      <tr>
+    <td>Water level  BOD Removal</td>
+    <td>m</td>
+    <td><input type="text" id="iv1txtLD2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Water level BOD NH4N</td>
+    <td>m</td>
+    <td><input type="text" id="iv2txtLD2" readonly /></td>
+  </tr>
+
+
+     <tr>
+    <td>Oxygen Transfer Efficiency(BOD)</td>
+    <td>%</td>
+    <td><input type="text" id="iv1txtE2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Oxygen Transfer Efficiency(NH4N)</td>
+    <td>%</td>
+    <td><input type="text" id="iv2txtE2" readonly /></td>
+  </tr>
+
+   <tr>
+    <td>Air Requirement (BOD)</td>
+    <td>m³/min</td>
+    <td><input type="text" id="iv1txtAF2" readonly /></td>
+  </tr>
+    <tr>
+    <td>Air Requirement  (NH4N)</td>
+    <td>m³/min</td>
+    <td><input type="text" id="iv2txtAF2" readonly /></td>
+  </tr>
+
+      <tr>
+    <td>Clarifier Area </td>
+    <td>m²</td>
+    <td><input type="text" id="ivClarifiersize2" readonly /></td>
+  </tr>
+
+
+
+    <tr>
+    <td>SRT</td>
+    <td>(d)</td>
+    <td><input type="text" id="ivSRT2" readonly /></td>
+  </tr>
+
+
+        <tr>
+    <td>Sludge Wasting </td>
+    <td>(m³/d)</td>
+    <td><input type="text" id="ivtxtSludgeflowrate2" readonly /></td>
+  </tr>
+
+
+       <tr>
+    <td>Carbon Dosing(Ethanol)</td>
+    <td>kg/d</td>
+    <td><input type="text" id="ivEthdosing2" readonly /></td>
+  </tr>
+
+    <tr>
+    <td>NaHCO3 to be added</td>
+    <td>g/d</td>
+    <td><input type="text" id="ivNaHCO32" readonly /></td>
+  </tr>
+
+     <tr>
+    <td>Residual Alkalinity</td>
+    <td>(mg/L)</td>
+    <td><input type="text" id="ivResAlkalinity2" readonly /></td>
+  </tr>
+
+
+
+
+
+
+
+  
+          </tbody>
+        </table>
+ <button class="print-button" onclick="printReport()">Print Report</button>
+
+    </div>
+
+
+
+
+<!-- Mass Balance -->
+<div class="section">
+  <h3>Mass Balance</h3>
+
+  <div style="display: flex; gap: 20px; margin-bottom: 20px; width: 100%; overflow-x: auto;">
+    <!-- BOD Column -->
+    <div style="display: flex; flex-direction: column; gap: 10px; min-width: 180px;">
+      <h4 style="margin: 0 0 5px 0; text-align: center;">BOD (kg/d)</h4>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs1BODLoading">(1) BOD1</label>
+        <input type="number" id="ivs1BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs2BODLoading">(2) BOD2</label>
+        <input type="number" id="ivs2BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs3BODLoading">(3) BOD3</label>
+        <input type="number" id="ivs3BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs4BODLoading">(4) BOD4</label>
+        <input type="number" id="ivs4BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs5BODLoading">(5) BOD5</label>
+        <input type="number" id="ivs5BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs6BODLoading">(6) BOD6</label>
+        <input type="number" id="ivs6BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs7BODLoading">(7) BOD7</label>
+        <input type="number" id="ivs7BODLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+    </div>
+
+    <!-- NH4N Column -->
+    <div style="display: flex; flex-direction: column; gap: 10px; min-width: 180px;">
+      <h4 style="margin: 0 0 5px 0; text-align: center;">NH4N (kg/d)</h4>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs1NH4NLoading">(1) NH4N1</label>
+        <input type="number" id="ivs1NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs2NH4NLoading">(2) NH4N2</label>
+        <input type="number" id="ivs2NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs3NH4NLoading">(3) NH4N3</label>
+        <input type="number" id="ivs3NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs4NH4NLoading">(4) NH4N4</label>
+        <input type="number" id="ivs4NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs5NH4NLoading">(5) NH4N5</label>
+        <input type="number" id="ivs5NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs6NH4NLoading">(6) NH4N6</label>
+        <input type="number" id="ivs6NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs7NH4NLoading">(7) NH4N7</label>
+        <input type="number" id="ivs7NH4NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+    </div>
+
+    <!-- NO3N Column -->
+    <div style="display: flex; flex-direction: column; gap: 10px; min-width: 180px;">
+      <h4 style="margin: 0 0 5px 0; text-align: center;">NO3N (kg/d)</h4>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs1NO3NLoading">(1) NO3N1</label>
+        <input type="number" id="ivs1NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs2NO3NLoading">(2) NO3N2</label>
+        <input type="number" id="ivs2NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs3NO3NLoading">(3) NO3N3</label>
+        <input type="number" id="ivs3NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs4NO3NLoading">(4) NO3N4</label>
+        <input type="number" id="ivs4NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs5NO3NLoading">(5) NO3N5</label>
+        <input type="number" id="ivs5NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs6NO3NLoading">(6) NO3N6</label>
+        <input type="number" id="ivs6NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <label for="ivs7NO3NLoading">(7) NO3N7</label>
+        <input type="number" id="ivs7NO3NLoading" readonly style="width: 100%; padding: 6px;">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+      </div> 
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+
+
+
+           <!-- Draw SBR Tank Section - Correctly placed at the same level as other sections -->
+           <div class="section" style="flex: 1 1 100%;">
+            <h2>Rectangular Tank Isometric Drawing</h2>
+            <div class="input-section">
+              <div class="input-group">
+                <label for="length">Length(m):</label>
+                <input type="number" id="length" min="1" value="35">
+              </div>
+              <div class="input-group">
+                <label for="width">Width(m):</label>
+                <input type="number" id="width" min="1" value="25">
+              </div>
+              <div class="input-group">
+                <label for="depth">Depth:</label>
+                <input type="number" id="depth" min="1" value="6">
+              </div>
+              <div class="volume-display">
+                <label>Volume:</label>
+                <div id="volume">240,000</div>
+                <span>(m³)</span>
+              </div>
+              <button id="draw-btn">Draw Tank</button>
+            </div>
+            
+            <div class="canvas-container">
+              <canvas id="tankCanvas"></canvas>
+            </div>
+          </div>
+
+
+
+
+  <script src="4MBBR.js"></script>
+  <script src="draw4MBBR.js"></script>
+</body>
+</html>
